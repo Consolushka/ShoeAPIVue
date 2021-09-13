@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +17,12 @@ namespace ShoeAPIVue.Controllers
     public class ShoesController : ControllerBase
     {
         private readonly ShoeContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public ShoesController(ShoeContext context)
+        public ShoesController(ShoeContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // GET: api/Shoes
@@ -98,6 +102,31 @@ namespace ShoeAPIVue.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [Route("SaveFile")]
+        [HttpPost]
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httprequest = Request.Form;
+                var requestFile = httprequest.Files[0];
+                string fileName = requestFile.FileName;
+                var PhysicalPath = _env.ContentRootPath + "/Photos/" + fileName;
+
+                using (var stream = new FileStream(PhysicalPath, FileMode.Create))
+                {
+                    requestFile.CopyTo(stream);
+
+                }
+
+                return new JsonResult(fileName);
+            }
+            catch
+            {
+                return new JsonResult("error.png");
+            }
         }
 
         private bool ShoeExists(int id)
