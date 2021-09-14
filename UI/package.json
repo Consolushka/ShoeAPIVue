@@ -1,0 +1,71 @@
+{
+  "name": "webpacktemplate",
+  "version": "1.0.0",
+  "description": "My template",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --open --config ./build/webpack.dev.conf.js",
+    "build": "webpack --config ./build/webpack.build.conf.js",
+    "images": "gulp build"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 3 version"
+  ],
+  "author": "https://github.com/vedees",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vedees/webpack-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vedees/webpack-template/issues"
+  },
+  "keywords": [
+    "webpack",
+    "webpack4",
+    "merge",
+    "bable",
+    "bable7",
+    "scss",
+    "vue"
+  ],
+  "dependencies": {
+    "@splidejs/vue-splide": "^0.3.5",
+    "express": "^4.17.1",
+    "gulp-rename": "^2.0.0",
+    "mongoose": "^5.11.15",
+    "vue": "^2.6.11",
+    "vue-burger-menu": "^2.0.5",
+    "vue-router": "^3.5.2",
+    "vue-simple-accordion": "^0.1.0",
+    "vue-slick-carousel": "^1.0.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "autoprefixer": "^9.8.5",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "css-loader": "^4.1.1",
+    "cssnano": "^4.1.10",
+    "file-loader": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-svgstore": "^7.0.1",
+    "gulp-webp": "^4.0.1",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^9.0.3",
+    "style-loader": "^1.2.1",
+    "svg-sprite-loader": "^5.0.0",
+    "vue-loader": "^15.9.3",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
+  }
+}
