@@ -19,5 +19,10 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: "#app",
-  router
+  router,
+  data(){
+      return {
+        variables: require("./js/variables.js").default
+      }
+  }
 });

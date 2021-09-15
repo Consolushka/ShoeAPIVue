@@ -1,5 +1,4 @@
-var variables = {
-    API_URL: "http://localhost:27536/api",
+export const variables = {
+    API_URL: "http://localhost:27536/api/",
     PHOTO_URL: "http://localhost:27536/photos/"
 }
-console.log(variables);
