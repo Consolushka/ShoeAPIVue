@@ -4,6 +4,23 @@
 
 <script>
 export default {
-  name: "brand"
+  name: "brand",
+  data(){
+    return {
+      brands: []
+    }
+  },
+  methods: {
+    refreshBrands(){
+      axios.get(variables.API_URL+"brand")
+      .then((response)=>{
+        this.brands = response.data;
+      });
+      console.log(this.brands);
+    }
+  },
+  mounted(){
+    this.refreshBrands();
+  }
 }
 </script>
