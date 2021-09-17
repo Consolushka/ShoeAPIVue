@@ -147,7 +147,7 @@ export default {
   },
   methods: {
     refreshBrands() {
-      axios.get(variables.API.BRANDS.ROOT,{
+      axios.get(variables.API.BRANDS,{
         onDownloadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
           console.log("onUploadProgress", totalLength);
@@ -161,7 +161,7 @@ export default {
         });
     },
     UpdateBrand() {
-      axios.put(variables.API.BRANDS.OBJECT + this.changingBrand.Id, {
+      axios.put(variables.API.BRANDS + this.changingBrand.Id, {
         Id: this.changingBrand.Id,
         Name: this.changingBrand.Name
       }).then((response) => {
@@ -171,7 +171,7 @@ export default {
       });
     },
     DeleteBrand() {
-      axios.delete(variables.API.BRANDS.OBJECT + this.changingBrand.Id)
+      axios.delete(variables.API.BRANDS + this.changingBrand.Id)
         .then((response) => {
           if (response.status === 204) {
             this.refreshBrands();

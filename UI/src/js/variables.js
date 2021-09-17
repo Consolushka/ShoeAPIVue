@@ -1,13 +1,9 @@
+const ROOT = "http://localhost:5000/";
+
 export const variables = {
   API: {
-    BRANDS: {
-      ROOT: "http://localhost:27536/api/brands",
-      OBJECT: "http://localhost:27536/api/brands/"
-    },
-    SHOES:{
-      ROOT: "http://localhost:27536/api/shoes",
-      OBJECT: "http://localhost:27536/api/shoes/"
-    }
+    BRANDS: `${ROOT}api/brands/`,
+    SHOES:`${ROOT}api/shoes/`
   },
-  PHOTO_URL: "http://localhost:27536/photos/"
+  PHOTO_URL: `${ROOT}photos`
 }
