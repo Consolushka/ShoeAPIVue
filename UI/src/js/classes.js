@@ -17,6 +17,7 @@ export class Shoe{
   Id
   Name
   Brand
+  BrandId
   CreationTime
   PhotoFileName
 
@@ -34,6 +35,16 @@ export class Shoe{
       this.Brand = shoe.Brand;
       this.CreationTime = shoe.CreationTime;
       this.PhotoFileName = shoe.PhotoFileName;
+    }
+  }
+
+  ToModel(){
+    return {
+      Id: this.Id,
+      Name: this.Name,
+      BrandId: this.BrandId,
+      CreationTime: this.CreationTime,
+      PhotoFileName: this.PhotoFileName
     }
   }
 }
