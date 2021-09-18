@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import {variables} from "../variables.js"
+import {utils} from "../utils.js"
 import {Brand} from "../classes.js";
 
 export default {
@@ -172,7 +172,7 @@ export default {
   },
   methods: {
     refreshBrands() {
-      axios.get(variables.API.BRANDS,{
+      axios.get(utils.API.BRANDS,{
         onDownloadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
           // console.log("onUploadProgress", totalLength);
@@ -189,29 +189,29 @@ export default {
         });
     },
     UpdateBrand() {
-      axios.put(variables.API.BRANDS + this.selectedBrand.Id, this.selectedBrand).then((response) => {
+      axios.put(utils.API.BRANDS + this.selectedBrand.Id, this.selectedBrand).then((response) => {
         if (response.status === 204) {
           this.refreshBrands();
         }
       });
     },
     DeleteBrand() {
-      axios.delete(variables.API.BRANDS + this.selectedBrand.Id)
+      axios.delete(utils.API.BRANDS + this.selectedBrand.Id)
         .then((response) => {
           if (response.status === 204) {
             this.refreshBrands();
-            variables.CloseModal("Delete", "Brand");
+            utils.CloseModal("Delete", "Brand");
           }
         });
     },
     CreateBrand(){
-      axios.post(variables.API.BRANDS, {
+      axios.post(utils.API.BRANDS, {
         Name: this.selectedBrand.Name
       })
         .then((response) => {
           if (response.status === 201) {
             this.refreshBrands();
-            variables.CloseModal("Create", "Brand");
+            utils.CloseModal("Create", "Brand");
           }
           else{
             console.log(response);

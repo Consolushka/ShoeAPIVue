@@ -22,7 +22,7 @@ const app = new Vue({
   router,
   data(){
       return {
-        variables: require("./js/variables.js").default
+        variables: require("./js/utils.js").default
       }
   }
 });

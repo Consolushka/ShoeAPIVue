@@ -218,7 +218,7 @@
 </style>
 
 <script>
-import {variables} from "../variables.js"
+import {utils} from "../utils.js"
 import {Shoe} from "../classes.js";
 
 export default {
@@ -227,13 +227,13 @@ export default {
     return {
       shoes: [],
       selectedShoe: new Shoe(),
-      photoUrl: variables.PHOTO_URL,
+      photoUrl: utils.PHOTO_URL,
       brands: []
     }
   },
   methods: {
     RefreshShoes() {
-      axios.get(variables.API.SHOES, {
+      axios.get(utils.API.SHOES, {
         onDownloadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
           // console.log("onUploadProgress", totalLength);
@@ -251,28 +251,28 @@ export default {
         });
     },
     UpdateShoe() {
-      axios.put(variables.API.SHOES + this.selectedShoe.Id, this.selectedShoe).then((response) => {
+      axios.put(utils.API.SHOES + this.selectedShoe.Id, this.selectedShoe).then((response) => {
         if (response.status === 204) {
           this.RefreshShoes();
         }
       });
     },
     DeleteShoe() {
-      axios.delete(variables.API.SHOES + this.selectedShoe.Id)
+      axios.delete(utils.API.SHOES + this.selectedShoe.Id)
         .then((response) => {
           if (response.status === 204) {
             this.RefreshShoes();
-            variables.CloseModal("Delete", "Shoe");
+            utils.CloseModal("Delete", "Shoe");
           }
         });
     },
     CreateShoe() {
       console.log(this.selectedShoe);
-      axios.post(variables.API.SHOES, this.selectedShoe.ToModel())
+      axios.post(utils.API.SHOES, this.selectedShoe.ToModel())
         .then((response) => {
           if (response.status === 201) {
             this.RefreshShoes();
-            variables.CloseModal("Create", "Shoe");
+            utils.CloseModal("Create", "Shoe");
           } else {
             console.log(response);
           }
@@ -292,7 +292,7 @@ export default {
     ImageUpload(e){
       let form = new FormData();
       form.append("file", e.target.files[0]);
-      axios.post(`${variables.API.SHOES}SaveFile`, form)
+      axios.post(`${utils.API.SHOES}SaveFile`, form)
         .then((response)=>{
           this.selectedShoe.PhotoFileName = response.data;
           document.querySelector("#UploadImage").setAttribute("src", `${this.photoUrl}${this.selectedShoe.PhotoFileName}`);
@@ -302,7 +302,7 @@ export default {
   },
   mounted() {
     this.RefreshShoes();
-    axios.get(variables.API.BRANDS)
+    axios.get(utils.API.BRANDS)
       .then((response) => {
         this.brands = [];
         // console.log("100");
