@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeAPIVue.Data;
@@ -27,9 +25,14 @@ namespace ShoeAPIVue.Controllers
 
         // GET: api/Shoes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Shoe>>> GetShoe()
+        public IEnumerable<Shoe> GetShoe()
         {
-            return await _context.Shoe.ToListAsync();
+            List<Shoe> shoes = new List<Shoe>();
+            foreach (var shoe in _context.Shoe.ToList())
+            {
+                shoes.Add(shoe.FillBrand(_context));
+            }
+            return shoes;
         }
 
         // GET: api/Shoes/5

@@ -17,8 +17,14 @@
         </td>
         <td> {{ brand.Name }}</td>
         <td>
+          <button class="btn btn-light" v-on:click="SwitchSelectedBrand(brand)" data-toggle="modal" data-target="#InfoBrandModal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
+              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg>
+          </button>
           <button type="button" class="btn btn-light mr-1"
-                  v-on:click="changingBrand.Id = brand.Id; changingBrand.Name = brand.Name" data-toggle="modal"
+                  v-on:click="SwitchSelectedBrand(brand)" data-toggle="modal"
                   data-target="#UpdateBrandModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                  class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -28,7 +34,7 @@
                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
             </svg>
           </button>
-          <button type="button" class="btn btn-light" v-on:click="changingBrand.Id = brand.Id" data-toggle="modal"
+          <button type="button" class="btn btn-light" v-on:click="SwitchSelectedBrand(brand)" data-toggle="modal"
                   data-target="#DeleteBrandModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
                  viewBox="0 0 16 16">
@@ -42,7 +48,7 @@
       </tr>
       <tr>
         <td>
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#CreateNewModel">
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#CreateBrandModal">
             Create new Brand
           </button>
         </td>
@@ -50,16 +56,6 @@
       </tr>
       </tbody>
     </table>
-
-    <button class="btn p-l-0">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square"
-           viewBox="0 0 16 16">
-        <path
-          d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-        <path
-          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-      </svg>
-    </button>
 
     <div class="modal fade" id="UpdateBrandModal" tabindex="-1" role="dialog" aria-labelledby="UpdateBrandModalLabel"
          aria-hidden="true">
@@ -74,8 +70,8 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="ChangeBrandName">Name</span>
               </div>
-              <input type="text" v-model="changingBrand.Name" class="form-control js-cn" aria-label="Small"
-                     aria-describedby="ChangeBrandName" :placeholder=changingBrand.Name>
+              <input type="text" v-model="selectedBrand.Name" class="form-control js-cn" aria-label="Small"
+                     aria-describedby="ChangeBrandName" :placeholder=selectedBrand.Name>
             </div>
           </div>
           <div class="modal-footer">
@@ -102,12 +98,12 @@
       </div>
     </div>
 
-    <div class="modal fade" id="CreateNewModel" tabindex="-1" role="dialog" aria-labelledby="CreateNewModelLabel"
+    <div class="modal fade" id="CreateBrandModal" tabindex="-1" role="dialog" aria-labelledby="CreateNewModalLabel"
          aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="CreateNewModelLabel">Change Brand</h5>
+            <h5 class="modal-title" id="CreateNewModalLabel">Change Brand</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -116,7 +112,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="NewBrandName">Name</span>
                 </div>
-                <input type="text" v-model="changingBrand.Name" class="form-control js-cn" aria-label="Small"
+                <input type="text" v-model="selectedBrand.Name" class="form-control js-cn" aria-label="Small"
                        aria-describedby="NewBrandName">
               </div>
             </div>
@@ -128,21 +124,50 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="InfoBrandModal" tabindex="-1" role="dialog" aria-labelledby="InfoBrandModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="InfoBrandModalLabel">Change Brand</h5>
+            <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group input-group-md mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="InfoBrandId">Id</span>
+              </div>
+              <input type="text" v-model="selectedBrand.Id" class="form-control js-cn" aria-label="Small"
+                     aria-describedby="InfoBrandId" :placeholder=selectedBrand.Id readonly>
+            </div>
+            <div class="input-group input-group-md mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="InfoBrandName">Name</span>
+              </div>
+              <input type="text" v-model="selectedBrand.Name" class="form-control js-cn" aria-label="Small"
+                     aria-describedby="InfoBrandName" :placeholder=selectedBrand.Name readonly>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
 import {variables} from "../variables.js"
+import {Brand} from "../classes.js";
 
 export default {
   name: "brand",
   data() {
     return {
       brands: [],
-      changingBrand: {
-        Id: 0,
-        Name: "null"
-      }
+      selectedBrand: new Brand()
     }
   },
   methods: {
@@ -150,46 +175,51 @@ export default {
       axios.get(variables.API.BRANDS,{
         onDownloadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-          console.log("onUploadProgress", totalLength);
+          // console.log("onUploadProgress", totalLength);
           if (totalLength !== null) {
-            console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
+            // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
           }
         }})
         .then((response) => {
-          console.log("100");
-          this.brands = response.data;
+          this.brands = [];
+          // console.log("100");
+          response.data.forEach((brand)=>{
+            this.brands.push(new Brand(brand));
+          });
         });
     },
     UpdateBrand() {
-      axios.put(variables.API.BRANDS + this.changingBrand.Id, {
-        Id: this.changingBrand.Id,
-        Name: this.changingBrand.Name
-      }).then((response) => {
+      axios.put(variables.API.BRANDS + this.selectedBrand.Id, this.selectedBrand).then((response) => {
         if (response.status === 204) {
           this.refreshBrands();
         }
       });
     },
     DeleteBrand() {
-      axios.delete(variables.API.BRANDS + this.changingBrand.Id)
+      axios.delete(variables.API.BRANDS + this.selectedBrand.Id)
         .then((response) => {
           if (response.status === 204) {
             this.refreshBrands();
+            variables.CloseModal("Delete", "Brand");
           }
         });
     },
     CreateBrand(){
-      axios.post(variables.API.BRANDS.ROOT, {
-        Name: this.changingBrand.Name
+      axios.post(variables.API.BRANDS, {
+        Name: this.selectedBrand.Name
       })
         .then((response) => {
           if (response.status === 201) {
             this.refreshBrands();
+            variables.CloseModal("Create", "Brand");
           }
           else{
             console.log(response);
           }
         });
+    },
+    SwitchSelectedBrand(brand){
+      this.selectedBrand = new Brand(brand);
     }
   },
   mounted() {
