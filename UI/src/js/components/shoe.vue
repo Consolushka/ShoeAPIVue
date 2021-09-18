@@ -37,7 +37,7 @@
           </li>
           <li>
             <button type="button" class="btn btn-light" v-on:click="SwitchSelectedShoe(shoe)" data-toggle="modal"
-                    data-target="#DeleteBrandModal">
+                    data-target="#DeleteShoeModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
                    viewBox="0 0 16 16">
                 <path
@@ -79,17 +79,55 @@
       </div>
     </div>
 
-    <div class="modal fade" id="DeleteBrandModal" tabindex="-1" role="dialog" aria-labelledby="DeleteBrandModalLabel"
+    <div class="modal fade" id="DeleteShoeModal" tabindex="-1" role="dialog" aria-labelledby="DeleteShoeModalLabel"
          aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="DeleteBrandModalLabel">Delete Brand</h5>
+            <h5 class="modal-title" id="DeleteShoeModalLabel">Delete Shoe</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body row">
+            <div class="col-6">
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="DeleteShoeId">Id</span>
+                </div>
+                <input type="text" class="form-control js-cn" aria-label="Small"
+                       aria-describedby="DeleteShoeId" :placeholder=selectedShoe.Id disabled>
+              </div>
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="DeleteShoeName">Name</span>
+                </div>
+                <input type="text" class="form-control js-cn" aria-label="Small"
+                       aria-describedby="DeleteShoeName" :placeholder=selectedShoe.Name disabled>
+              </div>
+
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="DeleteShoeBrand">Brand</span>
+                </div>
+                <input type="text" class="form-control js-cn" aria-label="Small"
+                       aria-describedby="DeleteShoeBrand" :placeholder=selectedShoe.Brand.Name disabled>
+              </div>
+
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="DeleteShoeCreation">Creation Time</span>
+                </div>
+                <input type="text" class="form-control js-cn" aria-label="Small"
+                       aria-describedby="DeleteShoeCreation" :placeholder=ConvertDate(selectedShoe.CreationTime) disabled>
+              </div>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+              <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
+                   style="object-fit: cover; max-width: 100%;" alt="">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" v-on:click="DeleteShoe">Delete Brand</button>
+            <button type="button" class="btn btn-primary" v-on:click="DeleteShoe">Delete Shoe</button>
           </div>
         </div>
       </div>
@@ -185,7 +223,7 @@
             </div>
             <div class="col-6 d-flex justify-content-center">
               <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
-                   style="object-fit: contain; text-align: center" alt="">
+                   style="object-fit: cover;  max-width: 100%;" alt="">
             </div>
           </div>
           <div class="modal-footer">
