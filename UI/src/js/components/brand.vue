@@ -62,7 +62,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="UpdateBrandModalLabel">Change Brand</h5>
+            <h5 class="modal-title" id="UpdateBrandModalLabel">Update Brand</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -103,7 +103,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="CreateNewModalLabel">Change Brand</h5>
+            <h5 class="modal-title" id="CreateNewModalLabel">Create New Brand</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -130,7 +130,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="InfoBrandModalLabel">Change Brand</h5>
+            <h5 class="modal-title" id="InfoBrandModalLabel">More information of Brand</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">

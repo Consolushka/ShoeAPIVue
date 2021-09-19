@@ -101,7 +101,7 @@ namespace ShoeAPIVue.Controllers
                 return NotFound();
             }
 
-            _context.Shoe.Remove(shoe);
+            _context.Shoe.Remove(shoe);  
             await _context.SaveChangesAsync();
 
             return NoContent();

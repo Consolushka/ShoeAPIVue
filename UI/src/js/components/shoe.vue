@@ -1,16 +1,17 @@
 <template>
   <section>
     <h1>This is Shoes Page</h1>
-    <h2>Here you can change brands</h2>
+    <h2>Here you can change shoes</h2>
+    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#CreateShoeModal">
+      Create new Shoe
+    </button>
     <section class="cards-collection">
       <article v-for="shoe in shoes" class="card">
         <img height="350" :src="`${photoUrl}${shoe.PhotoFileName}`" :alt="shoe.Name" class="card-image">
-        <h4 class="card-id">{{ shoe.Id }}</h4>
-        <h3 class="card-name">{{ shoe.Name }}</h3>
-        <p class="card-brand">{{ shoe.Brand.Name }}</p>
-        <p class="card-creation">{{ ConvertDate(shoe.CreationTime) }}</p>
-        <ul class="card-options">
-          <li>
+        <h4 class="card-name">{{ shoe.Name }}</h4>
+        <h3 class="card-brand">{{ shoe.Brand.Name }}</h3>
+        <ul class="card-options d-flex justify-content-center">
+          <li class="option">
             <button class="btn btn-light" v-on:click="SwitchSelectedShoe(shoe)" data-toggle="modal"
                     data-target="#InfoShoeModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -22,7 +23,7 @@
               </svg>
             </button>
           </li>
-          <li>
+          <li class="option">
             <button type="button" class="btn btn-light mr-1"
                     v-on:click="SwitchSelectedShoe(shoe)" data-toggle="modal"
                     data-target="#UpdateBrandModal">
@@ -35,7 +36,7 @@
               </svg>
             </button>
           </li>
-          <li>
+          <li class="option">
             <button type="button" class="btn btn-light" v-on:click="SwitchSelectedShoe(shoe)" data-toggle="modal"
                     data-target="#DeleteShoeModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
@@ -49,9 +50,6 @@
           </li>
         </ul>
       </article>
-      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#CreateShoeModal">
-        Create new Shoe
-      </button>
     </section>
 
     <div class="modal fade" id="UpdateBrandModal" tabindex="-1" role="dialog" aria-labelledby="UpdateBrandModalLabel"
@@ -59,7 +57,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="UpdateBrandModalLabel">Change Brand</h5>
+            <h5 class="modal-title" id="UpdateBrandModalLabel">Update Shoe</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body row">
@@ -158,7 +156,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="CreateShoeModalLabel">Change Brand</h5>
+            <h5 class="modal-title" id="CreateShoeModalLabel">Create New Shoe</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -272,6 +270,15 @@
 
 .card-image {
   object-fit: cover;
+}
+
+.card-options{
+  list-style: none;
+  padding-left: 0;
+}
+
+.option{
+  margin-right: 15px;
 }
 </style>
 
