@@ -17,7 +17,6 @@ export class Shoe{
   Id
   Name
   Brand
-  BrandId
   CreationTime
   PhotoFileName
 
@@ -27,7 +26,7 @@ export class Shoe{
       this.Name = "";
       this.Brand = new Brand();
       this.CreationTime = Date.now();
-      this.PhotoFileName = "anonimous.png"
+      this.PhotoFileName = "undefined.png"
     }
     else{
       this.Id = shoe.Id;
@@ -42,7 +41,7 @@ export class Shoe{
     return {
       Id: this.Id,
       Name: this.Name,
-      BrandId: this.BrandId,
+      BrandId: this.Brand.Id,
       CreationTime: this.CreationTime,
       PhotoFileName: this.PhotoFileName
     }

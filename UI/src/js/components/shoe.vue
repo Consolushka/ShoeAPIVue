@@ -24,7 +24,7 @@
           </li>
           <li>
             <button type="button" class="btn btn-light mr-1"
-                    v-on:click="SwitchSelectedShoe(brand)" data-toggle="modal"
+                    v-on:click="SwitchSelectedShoe(shoe)" data-toggle="modal"
                     data-target="#UpdateBrandModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                    class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -62,13 +62,33 @@
             <h5 class="modal-title" id="UpdateBrandModalLabel">Change Brand</h5>
             <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <div class="input-group input-group-md mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="ChangeBrandName">Name</span>
+          <div class="modal-body row">
+            <div class="col-6">
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="UpdateShoeName">Name</span>
+                </div>
+                <input type="text" v-model="selectedShoe.Name" class="form-control js-cn" aria-label="Small"
+                       aria-describedby="UpdateShoeName" >
               </div>
-              <input type="text" v-model="selectedShoe.Name" class="form-control js-cn" aria-label="Small"
-                     aria-describedby="ChangeBrandName" :placeholder=selectedShoe.Name>
+
+              <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" v-model="selectedShoe.Brand.Id">
+                <option value="null">Open this select menu</option>
+                <option v-for="brand in brands" :value="brand.Id">{{brand.Name}}</option>
+              </select>
+
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="UpdateShoeCreation">Creation Time</span>
+                </div>
+                <input type="date" v-model="selectedShoe.CreationTime" class="form-control js-cn" aria-label="Small"
+                       aria-describedby="UpdateShoeCreation">
+              </div>
+            </div>
+            <div class="col-6 d-flex justify-content-center flex-column">
+              <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
+                   style="object-fit: contain" alt="">
+              <input type="file" v-on:change="ImageUpload">
             </div>
           </div>
           <div class="modal-footer">
@@ -152,7 +172,7 @@
                          aria-describedby="CreateShoeName">
                 </div>
 
-                <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" v-model="selectedShoe.BrandId">
+                <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" v-model="selectedShoe.Brand.Id">
                   <option value="null" selected>Open this select menu</option>
                   <option v-for="brand in brands" :value="brand.Id">{{brand.Name}}</option>
                 </select>
@@ -166,8 +186,8 @@
                 </div>
               </div>
               <div class="col-6 d-flex justify-content-center flex-column">
-                <img :src="`${photoUrl}undefined.jpg`" height="200px"
-                     style="object-fit: contain; text-align: center" alt="" id="UploadImage">
+                <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
+                     style="object-fit: contain; text-align: center" alt="">
                   <input type="file" v-on:change="ImageUpload">
               </div>
               <div class="modal-footer">
@@ -289,7 +309,7 @@ export default {
         });
     },
     UpdateShoe() {
-      axios.put(utils.API.SHOES + this.selectedShoe.Id, this.selectedShoe).then((response) => {
+      axios.put(utils.API.SHOES + this.selectedShoe.Id, this.selectedShoe.ToModel()).then((response) => {
         if (response.status === 204) {
           this.RefreshShoes();
         }
@@ -305,7 +325,6 @@ export default {
         });
     },
     CreateShoe() {
-      console.log(this.selectedShoe);
       axios.post(utils.API.SHOES, this.selectedShoe.ToModel())
         .then((response) => {
           if (response.status === 201) {
@@ -333,8 +352,6 @@ export default {
       axios.post(`${utils.API.SHOES}SaveFile`, form)
         .then((response)=>{
           this.selectedShoe.PhotoFileName = response.data;
-          document.querySelector("#UploadImage").setAttribute("src", `${this.photoUrl}${this.selectedShoe.PhotoFileName}`);
-          console.log(this.selectedShoe);
         });
     }
   },
