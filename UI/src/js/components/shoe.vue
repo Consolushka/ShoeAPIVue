@@ -2,7 +2,27 @@
   <section>
     <h1>This is Shoes Page</h1>
     <h2>Here you can change shoes</h2>
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#CreateShoeModal">
+    <article class="d-flex">
+      <div class="input-group input-group-lg mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="FilterName">Shoe Name</span>
+        </div>
+        <input type="text" class="form-control" placeholder="Name" aria-label="FilterName" aria-describedby="FilterName">
+      </div>
+      <select class="form-select" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="FilterDate">Release Date</span>
+        </div>
+        <input type="date" class="form-control" aria-label="FilterDate" aria-describedby="FilterDate">
+      </div>
+    </article>
+    <button type="button" class="btn btn-primary mb-3" @click="SwitchSelectedShoe()" data-toggle="modal" data-target="#CreateShoeModal">
       Create new Shoe
     </button>
     <section class="cards-collection">
@@ -269,7 +289,7 @@
 }
 
 .card-image {
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .card-options{
