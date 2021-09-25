@@ -2,27 +2,25 @@
   <section>
     <h1>This is Shoes Page</h1>
     <h2>Here you can change shoes</h2>
-    <article class="d-flex">
-      <div class="input-group input-group-lg mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="FilterName">Shoe Name</span>
+    <div class="accordion" id="accordionExample">
+      <div class="card w-100">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              Collapsible Group Item #1
+            </button>
+          </h2>
         </div>
-        <input type="text" class="form-control" placeholder="Name" aria-label="FilterName" aria-describedby="FilterName">
-      </div>
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="FilterDate">Release Date</span>
+
+        <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body">
+            Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
+          </div>
         </div>
-        <input type="date" class="form-control" aria-label="FilterDate" aria-describedby="FilterDate">
       </div>
-    </article>
-    <button type="button" class="btn btn-primary mb-3" @click="SwitchSelectedShoe()" data-toggle="modal" data-target="#CreateShoeModal">
+    </div>
+    <button type="button" class="btn btn-primary mb-3" @click="SwitchSelectedShoe()" data-toggle="modal"
+            data-target="#CreateShoeModal">
       Create new Shoe
     </button>
     <section class="cards-collection">
@@ -87,12 +85,13 @@
                   <span class="input-group-text" id="UpdateShoeName">Name</span>
                 </div>
                 <input type="text" v-model="selectedShoe.Name" class="form-control js-cn" aria-label="Small"
-                       aria-describedby="UpdateShoeName" >
+                       aria-describedby="UpdateShoeName">
               </div>
 
-              <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" v-model="selectedShoe.Brand.Id">
+              <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example"
+                      v-model="selectedShoe.Brand.Id">
                 <option value="null">Open this select menu</option>
-                <option v-for="brand in brands" :value="brand.Id">{{brand.Name}}</option>
+                <option v-for="brand in brands" :value="brand.Id">{{ brand.Name }}</option>
               </select>
 
               <div class="input-group input-group-sm mb-3">
@@ -155,7 +154,8 @@
                   <span class="input-group-text" id="DeleteShoeCreation">Creation Time</span>
                 </div>
                 <input type="text" class="form-control js-cn" aria-label="Small"
-                       aria-describedby="DeleteShoeCreation" :placeholder=ConvertDate(selectedShoe.CreationTime) disabled>
+                       aria-describedby="DeleteShoeCreation" :placeholder=ConvertDate(selectedShoe.CreationTime)
+                       disabled>
               </div>
             </div>
             <div class="col-6 d-flex justify-content-center">
@@ -190,9 +190,10 @@
                          aria-describedby="CreateShoeName">
                 </div>
 
-                <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" v-model="selectedShoe.Brand.Id">
+                <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example"
+                        v-model="selectedShoe.Brand.Id">
                   <option value="null" selected>Open this select menu</option>
-                  <option v-for="brand in brands" :value="brand.Id">{{brand.Name}}</option>
+                  <option v-for="brand in brands" :value="brand.Id">{{ brand.Name }}</option>
                 </select>
 
                 <div class="input-group input-group-sm mb-3">
@@ -206,7 +207,7 @@
               <div class="col-6 d-flex justify-content-center flex-column">
                 <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
                      style="object-fit: contain; text-align: center" alt="">
-                  <input type="file" v-on:change="ImageUpload">
+                <input type="file" v-on:change="ImageUpload">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -292,12 +293,12 @@
   object-fit: contain;
 }
 
-.card-options{
+.card-options {
   list-style: none;
   padding-left: 0;
 }
 
-.option{
+.option {
   margin-right: 15px;
 }
 </style>
@@ -373,11 +374,11 @@ export default {
     SwitchSelectedShoe(shoe) {
       this.selectedShoe = new Shoe(shoe);
     },
-    ImageUpload(e){
+    ImageUpload(e) {
       let form = new FormData();
       form.append("file", e.target.files[0]);
       axios.post(`${utils.API.SHOES}SaveFile`, form)
-        .then((response)=>{
+        .then((response) => {
           this.selectedShoe.PhotoFileName = response.data;
         });
     }

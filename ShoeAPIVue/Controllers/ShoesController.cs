@@ -25,10 +25,10 @@ namespace ShoeAPIVue.Controllers
 
         // GET: api/Shoes
         [HttpGet]
-        public IEnumerable<Shoe> GetShoe()
+        public async Task<IEnumerable<Shoe>> GetShoe()
         {
             List<Shoe> shoes = new List<Shoe>();
-            foreach (var shoe in _context.Shoe.ToList())
+            foreach (var shoe in await _context.Shoe.ToListAsync())
             {
                 shoes.Add(shoe.FillBrand(_context));
             }
@@ -67,7 +67,7 @@ namespace ShoeAPIVue.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ShoeExists(id))
+                if (!ShoeExists(id).Result)
                 {
                     return NotFound();
                 }
@@ -120,7 +120,7 @@ namespace ShoeAPIVue.Controllers
 
                 using (var stream = new FileStream(PhysicalPath, FileMode.Create))
                 {
-                    requestFile.CopyTo(stream);
+                    requestFile.CopyToAsync(stream);
 
                 }
 
@@ -132,9 +132,9 @@ namespace ShoeAPIVue.Controllers
             }
         }
 
-        private bool ShoeExists(int id)
+        private async Task<bool> ShoeExists(int id)
         {
-            return _context.Shoe.Any(e => e.Id == id);
+            return await _context.Shoe.AnyAsync(e => e.Id == id);
         }
     }
 }
