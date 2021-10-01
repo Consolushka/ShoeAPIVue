@@ -6,15 +6,36 @@
       <div class="card w-100">
         <div class="card-header" id="headingOne">
           <h2 class="mb-0">
-            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-              Collapsible Group Item #1
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#Filters"
+                    aria-expanded="false" aria-controls="collapseOne">
+              Filters
             </button>
           </h2>
         </div>
 
-        <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="Filters" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body">
-            Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
+            <div class="form-group d-flex">
+              <select class="filter__select filter__param" v-model="filterParam.BrandId">
+                <option selected :value="null">Choose brand you need</option>
+                <option v-for="brand in brands" :value="brand.Id">{{brand.Name}}</option>
+              </select>
+              <div class="input-group mb-3 filter__param">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="FilterName">Name</span>
+                </div>
+                <input v-model="filterParam.Name" type="text" class="form-control" placeholder="Name" aria-label="Brand"
+                       aria-describedby="FilterName">
+              </div>
+              <div class="input-group mb-3 filter__param">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="FilterCreationDate">CreationDate</span>
+                </div>
+                <input @change="SetFilterDate" type="date" class="form-control" placeholder="CreationDate" aria-label="CreationDate"
+                       aria-describedby="CreationDate">
+              </div>
+            </div>
+            <button class="btn btn-primary" @click="RenderFilters">Filter</button>
           </div>
         </div>
       </div>
@@ -24,7 +45,7 @@
       Create new Shoe
     </button>
     <section class="cards-collection">
-      <article v-for="shoe in shoes" class="card">
+      <article v-for="shoe in RenderedShoes" class="card" v-if="shoe.matched">
         <img height="350" :src="`${photoUrl}${shoe.PhotoFileName}`" :alt="shoe.Name" class="card-image">
         <h4 class="card-name">{{ shoe.Name }}</h4>
         <h3 class="card-brand">{{ shoe.Brand.Name }}</h3>
@@ -154,7 +175,7 @@
                   <span class="input-group-text" id="DeleteShoeCreation">Creation Time</span>
                 </div>
                 <input type="text" class="form-control js-cn" aria-label="Small"
-                       aria-describedby="DeleteShoeCreation" :placeholder=ConvertDate(selectedShoe.CreationTime)
+                       aria-describedby="DeleteShoeCreation" :placeholder=selectedShoe.CreationTime
                        disabled>
               </div>
             </div>
@@ -257,7 +278,7 @@
                   <span class="input-group-text" id="InfoShoeCreation">Creation Time</span>
                 </div>
                 <input type="text" class="form-control js-cn" aria-label="Small"
-                       aria-describedby="InfoShoeCreation" :placeholder=ConvertDate(selectedShoe.CreationTime) disabled>
+                       aria-describedby="InfoShoeCreation" :placeholder=selectedShoe.CreationTime disabled>
               </div>
             </div>
             <div class="col-6 d-flex justify-content-center">
@@ -301,20 +322,38 @@
 .option {
   margin-right: 15px;
 }
+
+.filter__param{
+  margin-right: 15px;
+  width: 33%;
+}
+
+.filter__select{
+  max-height: 36px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 0 12px;
+}
 </style>
 
 <script>
 import {utils} from "../utils.js"
-import {Shoe} from "../classes.js";
+import {Shoe, FilteredShoe} from "../classes.js";
 
 export default {
   name: "shoe",
   data() {
     return {
-      shoes: [],
+      starterShoes: [],
+      RenderedShoes: [],
       selectedShoe: new Shoe(),
       photoUrl: utils.PHOTO_URL,
-      brands: []
+      brands: [],
+      filterParam: {
+        BrandId: null,
+        Name: null,
+        CreationDate: null
+      }
     }
   },
   methods: {
@@ -329,11 +368,15 @@ export default {
         }
       })
         .then((response) => {
-          this.shoes = [];
+          this.starterShoes = [];
           // console.log("100");
           response.data.forEach((shoe) => {
-            this.shoes.push(new Shoe(shoe));
+            let curr = new Shoe(shoe);
+            curr.CreationTime = this.ConvertDate(curr.CreationTime);
+            this.starterShoes.push(curr);
+            this.RenderedShoes.push(new FilteredShoe(curr));
           });
+          console.log(this.RenderedShoes);
         });
     },
     UpdateShoe() {
@@ -369,7 +412,7 @@ export default {
       }
 
       let d = new Date(date)
-      return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('.')
+      return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('-')
     },
     SwitchSelectedShoe(shoe) {
       this.selectedShoe = new Shoe(shoe);
@@ -381,6 +424,23 @@ export default {
         .then((response) => {
           this.selectedShoe.PhotoFileName = response.data;
         });
+    },
+    RenderFilters(){
+      console.log(this.filterParam);
+      this.RenderedShoes.forEach((shoe)=>{
+        shoe.MatchFilter(this.filterParam);
+      });
+      console.log(this.RenderedShoes);
+    },
+    SetFilterDate(e){
+      let date = e.target.value.toString();
+      let splited = date.split('-');
+      let res = "";
+      for(let i=splited.length-1;i>=0;i--){
+        res+=splited[i]+"-";
+      }
+      res = res.slice(0,res.length-1);
+      this.filterParam.CreationDate = res;
     }
   },
   mounted() {

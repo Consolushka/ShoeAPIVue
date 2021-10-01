@@ -47,3 +47,37 @@ export class Shoe{
     }
   }
 }
+
+export class FilteredShoe extends Shoe{
+  matched
+
+  constructor(shoe) {
+    super(shoe);
+    this.matched = true;
+  }
+
+  MatchFilter(filterParam){
+    if(filterParam.BrandId !== null){
+      if (this.Brand.Id !== filterParam.BrandId){
+        this.matched = false;
+        return;
+      }
+    }
+
+    if (filterParam.Name !== null){
+      if (!this.Name.toLowerCase().includes(filterParam.Name.toLowerCase())){
+        this.matched = false;
+        return;
+      }
+    }
+
+    if(filterParam.CreationDate !== null){
+      if (this.CreationTime !== filterParam.CreationDate){
+        this.matched = false;
+        return;
+      }
+    }
+    this.matched = true;
+    console.log(this, filterParam);
+  }
+}
