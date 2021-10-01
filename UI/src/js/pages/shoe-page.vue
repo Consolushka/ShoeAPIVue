@@ -341,7 +341,7 @@ import {utils} from "../utils.js"
 import {Shoe, FilteredShoe} from "../classes.js";
 
 export default {
-  name: "shoe",
+  name: "shoe-page",
   data() {
     return {
       starterShoes: [],
