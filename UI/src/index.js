@@ -8,6 +8,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.component("brand", require("./js/components/brand.vue").default)
+Vue.component("shoe", require("./js/components/shoe.vue").default)
 
 Vue.use(VueRouter);
 
