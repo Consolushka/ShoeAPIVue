@@ -13,5 +13,13 @@ export const utils = {
     document.querySelector(".modal-backdrop").remove();
     document.querySelector("body").classList.remove("modal-open");
     document.querySelector("body").removeAttribute("style");
+  },
+  ConvertDate(date) {
+    function pad(s) {
+      return (s < 10) ? '0' + s : s;
+    }
+
+    let d = new Date(date)
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('-')
   }
 }

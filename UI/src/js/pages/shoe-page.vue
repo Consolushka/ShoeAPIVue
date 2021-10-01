@@ -330,7 +330,7 @@ export default {
           // console.log("100");
           response.data.forEach((shoe) => {
             let curr = new Shoe(shoe);
-            curr.CreationTime = this.ConvertDate(curr.CreationTime);
+            curr.CreationTime = utils.ConvertDate(curr.CreationTime);
             this.starterShoes.push(curr);
             this.RenderedShoes.push(new FilteredShoe(curr));
           });
@@ -363,14 +363,6 @@ export default {
             console.log(response);
           }
         });
-    },
-    ConvertDate(date) {
-      function pad(s) {
-        return (s < 10) ? '0' + s : s;
-      }
-
-      let d = new Date(date)
-      return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('-')
     },
     SwitchSelectedShoe(shoe) {
       this.selectedShoe = new Shoe(shoe);
