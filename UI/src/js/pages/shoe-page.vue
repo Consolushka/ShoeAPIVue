@@ -34,9 +34,9 @@
                 <input @change="SetFilterDate" type="date" class="form-control" placeholder="CreationDate" aria-label="CreationDate"
                        aria-describedby="CreationDate">
               </div>
-              <button class="btn btn-warn" @click="ClearFilters">Clear Filters</button>
             </div>
             <button class="btn btn-primary" @click="RenderFilters">Filter</button>
+            <button class="btn btn-secondary" type="button" @click="ClearFilters">Clear</button>
           </div>
         </div>
       </div>
@@ -283,7 +283,7 @@
 
 .filter__param{
   margin-right: 15px;
-  width: 33%;
+  width: 30%;
 }
 
 .filter__select{
