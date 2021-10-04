@@ -6,6 +6,7 @@ const routes = [
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import vuetify from '../src/plugins/vuetify.js' // path to vuetify export
 
 Vue.component("brand", require("./js/components/brand.vue").default)
 Vue.component("shoe", require("./js/components/shoe.vue").default)
@@ -19,6 +20,7 @@ const router = new VueRouter({
 const app = new Vue({
     el: "#app",
   router,
+  vuetify,
   data(){
       return {
         variables: require("./js/utils.js").default
