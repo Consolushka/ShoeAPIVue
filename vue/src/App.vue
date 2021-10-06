@@ -10,11 +10,11 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="src/assets/logo.png"
           transition="scale-transition"
           width="40"
         />
-
+        
         <v-img
           alt="Vuetify Name"
           class="shrink mt-1 hidden-sm-and-down"
@@ -25,16 +25,22 @@
         />
       </div>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+      <v-tabs
+          v-model="tab"
+          align-with-title
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+
+        <v-tab to="/home">
+          Home
+        </v-tab>
+        <v-tab to="/brand">
+          Brands
+        </v-tab>
+        <v-tab to="/shoe">
+          Shoes
+        </v-tab>
+      </v-tabs>
     </v-app-bar>
 
     <v-main>
