@@ -9,29 +9,20 @@
 
       <dialog-update :brand="brand"></dialog-update>
 
-      <v-btn
-          icon
-          plain
-          tile
-          color="red"
-          v-on:click="$emit('SwitchSelectedBrand',brand)"
-          data-toggle="modal"
-          data-target="#DeleteBrandModal"
-      >
-       <v-icon>mdi-delete</v-icon>
-      </v-btn>
+      <dialog-delete :brand="brand"></dialog-delete>
     </td>
   </tr>
 </template>
 
 <script>
 import {Brand} from "../utils/classes.js";
-import DialogInfo from "./dialog-info";
-import DialogUpdate from "./dialog-update";
+import DialogInfo from "./dialogs/dialog-info";
+import DialogUpdate from "./dialogs/dialog-update";
+import DialogDelete from "./dialogs/dialog-delete";
 
 export default {
   name: "brand",
-  components: {DialogUpdate, DialogInfo},
+  components: {DialogDelete, DialogUpdate, DialogInfo},
   props: {
     brand: Brand
   },

@@ -26,7 +26,6 @@
       </div>
 
       <v-tabs
-          v-model="tab"
           align-with-title
       >
         <v-tabs-slider color="yellow"></v-tabs-slider>

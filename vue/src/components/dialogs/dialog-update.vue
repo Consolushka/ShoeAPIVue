@@ -55,25 +55,48 @@
           <v-btn
               color="blue darken-1"
               text
-              @click="dialog = false"
+              @click="Update"
           >
             Save
           </v-btn>
+          <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="snackBar=false"></alert>
         </v-card-actions>
       </v-card>
     </v-dialog>
 </template>
 
 <script>
-import {Brand} from "../utils/classes";
+import {Brand} from "../../utils/classes";
+import {eventBus} from "../../main";
+import axios from "axios";
+import {utils} from "../../utils/utils";
+import Alert from "../alert";
 
 export default {
   name: "dialog-update",
+  components: {Alert},
   props:{
     brand: Brand
   },
   data: () => ({
     dialog: false,
+    snackBar: false,
+    responseFine: true
   }),
+  methods:{
+    Update(){
+      axios.put(utils.API.BRANDS + this.brand.Id, this.brand).then((response) => {
+        if (response.status === 204) {
+          this.responseFine = true;
+          this.snackBar = true;
+          console.log(this.responseFine);
+          eventBus.$emit('refreshBrands');
+        }
+        else{
+          this.responseFine = false;
+        }
+      });
+    }
+  }
 }
 </script>

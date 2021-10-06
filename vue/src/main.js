@@ -4,6 +4,8 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 
+export const eventBus = new Vue()
+
 Vue.config.productionTip = false
 
 new Vue({

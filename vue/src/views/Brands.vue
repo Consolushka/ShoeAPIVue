@@ -1,5 +1,5 @@
 <template>
-  <section class="d-flex justify-center flex-column">
+  <section>
     <h1>This is Brand Page</h1>
     <h2>Here you can change brands</h2>
 
@@ -23,74 +23,7 @@
         </tbody>
       </template>
     </v-simple-table>
-
-    <div class="modal fade" id="UpdateBrandModal" tabindex="-1" role="dialog" aria-labelledby="UpdateBrandModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="UpdateBrandModalLabel">Update Brand</h5>
-            <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group input-group-md mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="ChangeBrandName">Name</span>
-              </div>
-              <input type="text" v-model="selectedBrand.Name" class="form-control js-cn" aria-label="Small"
-                     aria-describedby="ChangeBrandName" :placeholder=selectedBrand.Name>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" v-on:click="UpdateBrand">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="DeleteBrandModal" tabindex="-1" role="dialog" aria-labelledby="DeleteBrandModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="DeleteBrandModalLabel">Delete Brand</h5>
-            <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" v-on:click="DeleteBrand">Delete Brand</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="CreateBrandModal" tabindex="-1" role="dialog" aria-labelledby="CreateNewModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="CreateNewModalLabel">Create New Brand</h5>
-            <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group input-group-md mb-3">
-              <div class="input-group input-group-md mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="NewBrandName">Name</span>
-                </div>
-                <input type="text" v-model="selectedBrand.Name" class="form-control js-cn" aria-label="Small"
-                       aria-describedby="NewBrandName">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="CreateBrand">Create new</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <dialog-create @refreshBrands="refreshBrands"></dialog-create>
   </section>
 </template>
 
@@ -99,6 +32,8 @@ import {utils} from "../utils/utils.js"
 import {Brand} from "../utils/classes.js";
 import axios from 'axios'
 import brand from '../components/brand.vue'
+import {eventBus} from "../main";
+import DialogCreate from "../components/dialogs/dialog-create";
 
 export default {
   name: "brand-page",
@@ -114,6 +49,7 @@ export default {
     }
   },
   components:{
+    DialogCreate,
     brand
   },
   methods: {
@@ -134,13 +70,6 @@ export default {
           });
         });
     },
-    UpdateBrand() {
-      axios.put(utils.API.BRANDS + this.selectedBrand.Id, this.selectedBrand).then((response) => {
-        if (response.status === 204) {
-          this.refreshBrands();
-        }
-      });
-    },
     DeleteBrand() {
       axios.delete(utils.API.BRANDS + this.selectedBrand.Id)
         .then((response) => {
@@ -151,18 +80,6 @@ export default {
         });
     },
     CreateBrand(){
-      axios.post(utils.API.BRANDS, {
-        Name: this.selectedBrand.Name
-      })
-        .then((response) => {
-          if (response.status === 201) {
-            this.refreshBrands();
-            utils.CloseModal("Create", "Brand");
-          }
-          else{
-            console.log(response);
-          }
-        });
     },
     SwitchSelectedBrand(brand){
       this.selectedBrand = new Brand(brand);
@@ -170,6 +87,11 @@ export default {
   },
   mounted() {
     this.refreshBrands();
+  },
+  created() {
+    eventBus.$on('refreshBrands', ()=>{
+      this.refreshBrands();
+    })
   }
 }
 </script>
