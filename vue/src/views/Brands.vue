@@ -1,26 +1,28 @@
 <template>
-  <section>
+  <section class="d-flex justify-center flex-column">
     <h1>This is Brand Page</h1>
     <h2>Here you can change brands</h2>
-    <table class="table table-stripped">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Options</th>
-      </tr>
-      </thead>
-      <tbody>
-        <brand v-for="brand in brands" :key="brand.Id" v-bind:brand="brand" @SwitchSelectedBrand="SwitchSelectedBrand"></brand>
+
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
         <tr>
-          <td>
-            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#CreateBrandModal">
-              Create new Brand
-            </button>
-          </td>
+          <th class="text-left">
+            Id
+          </th>
+          <th class="text-left">
+            Name
+          </th>
+          <th>
+            Options
+          </th>
         </tr>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <brand v-for="brand in brands" :key="brand.Id" :brand="brand"></brand>
+        </tbody>
+      </template>
+    </v-simple-table>
 
     <div class="modal fade" id="UpdateBrandModal" tabindex="-1" role="dialog" aria-labelledby="UpdateBrandModalLabel"
          aria-hidden="true">
@@ -89,37 +91,6 @@
         </div>
       </div>
     </div>
-
-    <div class="modal fade" id="InfoBrandModal" tabindex="-1" role="dialog" aria-labelledby="InfoBrandModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="InfoBrandModalLabel">More information of Brand</h5>
-            <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group input-group-md mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="InfoBrandId">Id</span>
-              </div>
-              <input type="text" v-model="selectedBrand.Id" class="form-control js-cn" aria-label="Small"
-                     aria-describedby="InfoBrandId" :placeholder=selectedBrand.Id readonly>
-            </div>
-            <div class="input-group input-group-md mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="InfoBrandName">Name</span>
-              </div>
-              <input type="text" v-model="selectedBrand.Name" class="form-control js-cn" aria-label="Small"
-                     aria-describedby="InfoBrandName" :placeholder=selectedBrand.Name readonly>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 </template>
 
@@ -134,7 +105,12 @@ export default {
   data() {
     return {
       brands: [],
-      selectedBrand: new Brand()
+      selectedBrand: new Brand(),
+      headers: [
+        { text: 'Id', value: 'Id' },
+        { text: 'Name', value: 'Name' },
+        { text: 'Options', value: 'Options' }
+      ]
     }
   },
   components:{
