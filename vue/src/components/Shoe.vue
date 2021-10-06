@@ -49,7 +49,7 @@
 import {utils} from "../utils/utils.js"
 import {FilteredShoe} from "../utils/classes.js";
 export default {
-  name: "shoe",
+  name: "Shoe",
   props: {
     shoe: FilteredShoe
   },

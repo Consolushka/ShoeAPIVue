@@ -1,9 +1,10 @@
 <template>
   <section>
-    <h1>This is Brand Page</h1>
-    <h2>Here you can change brands</h2>
 
-    <v-simple-table>
+    <v-container style="width: 60%">
+      <h1 class="text-center text-h3">This is Brand Page</h1>
+      <h2 class="text-center text-h4">Here you can change brands</h2>
+      <v-simple-table class="mb-10">
       <template v-slot:default>
         <thead>
         <tr>
@@ -13,17 +14,19 @@
           <th class="text-left">
             Name
           </th>
-          <th>
+          <th class="text-left">
             Options
           </th>
         </tr>
         </thead>
         <tbody>
-          <brand v-for="brand in brands" :key="brand.Id" :brand="brand"></brand>
+        <brand v-for="brand in brands" :key="brand.Id" :brand="brand"></brand>
         </tbody>
       </template>
     </v-simple-table>
-    <dialog-create @refreshBrands="refreshBrands"></dialog-create>
+      <dialog-create @refreshBrands="refreshBrands"></dialog-create>
+    </v-container>
+
   </section>
 </template>
 
@@ -31,7 +34,7 @@
 import {utils} from "../utils/utils.js"
 import {Brand} from "../utils/classes.js";
 import axios from 'axios'
-import brand from '../components/brand.vue'
+import brand from '../components/Brand.vue'
 import {eventBus} from "../main";
 import DialogCreate from "../components/dialogs/dialog-create";
 
@@ -40,12 +43,7 @@ export default {
   data() {
     return {
       brands: [],
-      selectedBrand: new Brand(),
-      headers: [
-        { text: 'Id', value: 'Id' },
-        { text: 'Name', value: 'Name' },
-        { text: 'Options', value: 'Options' }
-      ]
+      selectedBrand: new Brand()
     }
   },
   components:{
@@ -69,20 +67,6 @@ export default {
             this.brands.push(new Brand(brand));
           });
         });
-    },
-    DeleteBrand() {
-      axios.delete(utils.API.BRANDS + this.selectedBrand.Id)
-        .then((response) => {
-          if (response.status === 204) {
-            this.refreshBrands();
-            utils.CloseModal("Delete", "Brand");
-          }
-        });
-    },
-    CreateBrand(){
-    },
-    SwitchSelectedBrand(brand){
-      this.selectedBrand = new Brand(brand);
     }
   },
   mounted() {
