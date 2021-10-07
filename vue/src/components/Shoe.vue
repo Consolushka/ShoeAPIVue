@@ -1,5 +1,41 @@
 <template>
-  <article class="card" v-if="shoe.matched">
+  <v-card
+      :loading="loading"
+      class=""
+  >
+    <template slot="progress">
+      <v-progress-linear
+          color="deep-purple"
+          height="10"
+          indeterminate
+      ></v-progress-linear>
+    </template>
+
+    <v-img
+        cover
+        width="100%"
+        height="350px"
+        :src="`${photoUrl}${shoe.PhotoFileName}`"
+        :alt="shoe.Name"
+    ></v-img>
+
+    <v-card-title>{{shoe.Name}}</v-card-title>
+
+    <v-card-text>
+
+      <div class="my-4 text-subtitle-1">
+        {{shoe.Brand.Name}}
+      </div>
+
+      <div>{{shoe.CreationTime}}</div>
+    </v-card-text>
+
+    <v-divider class="mx-4"></v-divider>
+
+    <v-card-actions>
+    </v-card-actions>
+  </v-card>
+  <!--<article class="card" v-if="shoe.matched">
     <img height="350" :src="`${photoUrl}${shoe.PhotoFileName}`" :alt="shoe.Name" class="card-image">
     <h4 class="card-name">{{ shoe.Name }}</h4>
     <h3 class="card-brand">{{ shoe.Brand.Name }}</h3>
@@ -42,7 +78,7 @@
         </button>
       </li>
     </ul>
-  </article>
+  </article>-->
 </template>
 
 <script>
@@ -55,7 +91,9 @@ export default {
   },
   data(){
     return{
-      photoUrl: utils.PHOTO_URL
+      photoUrl: utils.PHOTO_URL,
+      loading: false,
+      selection: 1,
     }
   },
   methods:{

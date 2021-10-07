@@ -69,9 +69,11 @@
               data-target="#CreateShoeModal">
         Create new Shoe
       </button>
-      <section class="cards-collection">
-        <shoe v-for="shoe in RenderedShoes" :key="shoe.Id" v-bind:shoe="shoe" @switchShoe="SwitchSelectedShoe"></shoe>
-      </section>
+      <v-row>
+        <v-col v-for="shoe in RenderedShoes" :key="shoe.Id" cols="3">
+          <shoe v-bind:shoe="shoe" @switchShoe="SwitchSelectedShoe"></shoe>
+        </v-col>
+      </v-row>
 
       <div class="modal fade" id="UpdateBrandModal" tabindex="-1" role="dialog" aria-labelledby="UpdateBrandModalLabel"
            aria-hidden="true">
@@ -294,7 +296,7 @@
 }
 
 .card-image {
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .card-options {
