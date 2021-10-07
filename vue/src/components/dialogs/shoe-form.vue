@@ -1,6 +1,5 @@
 <template>
-  <v-form v-model="valid">
-    <v-container>
+  <v-form v-model="valid" :disabled="disabled">
       <v-row align="center">
         <v-col cols="7">
           <v-row align="end">
@@ -67,11 +66,13 @@
          >
 
          </v-img>
-          <input type="file" v-on:change="UploadImage">
+          <v-file-input
+              v-model="files"
+              truncate-length="15"
+          ></v-file-input>
+          <v-btn @click="UploadImage" v-if="disabled === false">Load Image</v-btn>
         </v-col>
       </v-row>
-
-    </v-container>
   </v-form>
 </template>
 
@@ -84,7 +85,11 @@ import axios from "axios";
 export default {
   props: {
     shoe: Shoe,
-    brands: Array
+    brands: Array,
+    disabled:{
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -94,21 +99,18 @@ export default {
       menu: false,
       valid: true,
       photoUrl: utils.PHOTO_URL,
+      files: null
     }
   },
   methods: {
     save(date) {
       this.$refs.menu.save(date)
     },
-    UploadImage(e) {
+    UploadImage() {
       let form = new FormData();
-      console.log(e.target.files);
-      form.append("file", e.target.files[0]);
-      console.log(form);
-      console.log(`${utils.API.SHOES}SaveFile`);
+      form.append("file", this.files);
       axios.post(`${utils.API.SHOES}SaveFile`, form)
           .then((response) => {
-            console.log(response);
             this.shoe.PhotoFileName = response.data;
           });
     },

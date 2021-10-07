@@ -1,7 +1,7 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="500"
+      width="600"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -18,7 +18,7 @@
 
     <v-card>
       <v-card-title>
-        <span class="text-h5">More information of Brand</span>
+        <span class="text-h5">More information of {{ model.ModelName }}</span>
 
         <v-spacer></v-spacer>
 
@@ -32,42 +32,45 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container>
-          <v-form disabled>
-            <v-row>
-              <v-col col="12">
-                <v-text-field
-                    label="Id"
-                    :value="brand.Id"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col col="12">
-                <v-text-field
-                    label="Name"
-                    :value="brand.Name"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-container>
+        <brand-form v-if="model.ModelName === `Brand`" :brand="model" :disabled="true"></brand-form>
+        <shoe-form v-if="model.ModelName === 'Shoe'" :shoe="model" :brands="brands" :disabled="true"></shoe-form>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import {Brand} from "../../utils/classes";
+import {Brand, Shoe, FilteredShoe} from "../../utils/classes";
+import ShoeForm from "./shoe-form";
+import BrandForm from "./brand-form";
+
 
 export default {
   name: "dialog-info",
+  components: {ShoeForm, BrandForm},
   props: {
-    brand: Brand
+    model: Object,
+    brands: {
+      required: false,
+      type: Array
+    }
   },
-  data() {
+  data(){
     return {
-      dialog: false
+      dialog: false,
+      responseFine: true,
+      snackBar: false,
+    }
+  },
+  created() {
+    if (this.model instanceof Brand){
+      this.model.ModelName = "Brand";
+    }
+    else{
+      if (this.model instanceof Shoe || this.model instanceof FilteredShoe){
+        console.log(this.model);
+        this.model.ModelName = "Shoe";
+      }
     }
   }
 }

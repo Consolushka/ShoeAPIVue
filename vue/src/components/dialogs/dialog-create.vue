@@ -1,7 +1,7 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="500"
+      width="600"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -12,13 +12,13 @@
           v-on="on"
           class="mb-10"
       >
-        Create New {{ models.ModelName }}
+        Create New {{ model.ModelName }}
       </v-btn>
     </template>
 
     <v-card>
       <v-card-title>
-        <span class="text-h5">{{ models.ModelName }} Creation</span>
+        <span class="text-h5">{{ model.ModelName }} Creation</span>
 
         <v-spacer></v-spacer>
 
@@ -30,8 +30,10 @@
         </v-btn>
       </v-card-title>
 
-      <brand-form v-if="model.ModelName === `Brand`" :brand="model"></brand-form>
-      <shoe-form v-if="model.ModelName === 'Shoe'" :shoe="model" :brands="brands"></shoe-form>
+      <v-card-text>
+        <brand-form v-if="model.ModelName === `Brand`" :brand="model"></brand-form>
+        <shoe-form v-if="model.ModelName === 'Shoe'" :shoe="model" :brands="brands"></shoe-form>
+      </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>

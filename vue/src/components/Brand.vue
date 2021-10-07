@@ -5,7 +5,7 @@
     </td>
     <td> {{ brand.Name }}</td>
     <td>
-      <dialog-info :brand="brand"></dialog-info>
+      <dialog-info :model="brand"></dialog-info>
 
       <dialog-update :brand="brand"></dialog-update>
 

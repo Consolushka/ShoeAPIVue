@@ -346,17 +346,6 @@ export default {
             }
           });
     },
-    CreateShoe() {
-      axios.post(utils.API.SHOES, this.selectedShoe.ToModel())
-          .then((response) => {
-            if (response.status === 201) {
-              this.Refresh();
-              utils.CloseModal("Create", "Shoe");
-            } else {
-              console.log(response);
-            }
-          });
-    },
     SwitchSelectedShoe(shoe) {
       this.selectedShoe = new Shoe(shoe);
     },

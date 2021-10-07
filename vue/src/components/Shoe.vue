@@ -33,6 +33,9 @@
     <v-divider class="mx-4"></v-divider>
 
     <v-card-actions>
+
+      <dialog-info :model="shoe"></dialog-info>
+
     </v-card-actions>
   </v-card>
   <!--<article class="card" v-if="shoe.matched">
@@ -84,8 +87,10 @@
 <script>
 import {utils} from "../utils/utils.js"
 import {FilteredShoe} from "../utils/classes.js";
+import DialogInfo from "./dialogs/dialog-info";
 export default {
   name: "Shoe",
+  components: {DialogInfo},
   props: {
     shoe: FilteredShoe
   },
