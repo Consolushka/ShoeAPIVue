@@ -38,11 +38,12 @@ export class Shoe{
   }
 
   ToModel(){
+    console.log(this.CreationTime);
     return {
       Id: this.Id,
       Name: this.Name,
       BrandId: this.Brand.Id,
-      CreationTime: this.CreationTime,
+      CreationTime: Date.parse(this.CreationTime),
       PhotoFileName: this.PhotoFileName
     }
   }

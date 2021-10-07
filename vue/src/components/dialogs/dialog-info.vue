@@ -68,7 +68,6 @@ export default {
     }
     else{
       if (this.model instanceof Shoe || this.model instanceof FilteredShoe){
-        console.log(this.model);
         this.model.ModelName = "Shoe";
       }
     }

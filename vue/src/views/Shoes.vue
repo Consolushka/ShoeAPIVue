@@ -68,7 +68,7 @@
       <dialog-create :model="selectedShoe" :brands="brands"></dialog-create>
       <v-row>
         <v-col v-for="shoe in RenderedShoes" :key="shoe.Id" cols="3">
-          <shoe v-bind:shoe="shoe" @switchShoe="SwitchSelectedShoe"></shoe>
+          <shoe v-bind:shoe="shoe" :brands="brands" @switchShoe="SwitchSelectedShoe"></shoe>
         </v-col>
       </v-row>
 
@@ -172,59 +172,6 @@
           </div>
         </div>
       </div>
-
-      <div class="modal fade" id="InfoShoeModal" tabindex="-1" role="dialog" aria-labelledby="InfoShoeModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="InfoShoeModalLabel">More Information Of Shoe</h5>
-              <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body row">
-              <div class="col-6">
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="InfoShoeId">Id</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="InfoShoeId" :placeholder=selectedShoe.Id disabled>
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="InfoShoeName">Name</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="InfoShoeName" :placeholder=selectedShoe.Name disabled>
-                </div>
-
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="InfoShoeBrand">Brand</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="InfoShoeBrand" :placeholder=selectedShoe.Brand.Name disabled>
-                </div>
-
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="InfoShoeCreation">Creation Time</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="InfoShoeCreation" :placeholder=selectedShoe.CreationTime disabled>
-                </div>
-              </div>
-              <div class="col-6 d-flex justify-content-center">
-                <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
-                     style="object-fit: cover;  max-width: 100%;" alt="">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </v-container>
   </section>
 </template>
@@ -324,18 +271,12 @@ export default {
               this.starterShoes.push(curr);
               this.RenderedShoes.push(new FilteredShoe(curr));
             });
-            console.log(this.RenderedShoes);
           });
     },
     save (date) {
       this.$refs.menu.save(date)
     },
     UpdateShoe() {
-      axios.put(utils.API.SHOES + this.selectedShoe.Id, this.selectedShoe.ToModel()).then((response) => {
-        if (response.status === 204) {
-          this.Refresh();
-        }
-      });
     },
     DeleteShoe() {
       axios.delete(utils.API.SHOES + this.selectedShoe.Id)
