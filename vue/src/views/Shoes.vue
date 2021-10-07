@@ -65,10 +65,7 @@
           </v-row>
         </v-container>
       </v-form>
-      <button type="button" class="btn btn-primary mb-3" @click="SwitchSelectedShoe()" data-toggle="modal"
-              data-target="#CreateShoeModal">
-        Create new Shoe
-      </button>
+      <dialog-create :model="selectedShoe" :brands="brands"></dialog-create>
       <v-row>
         <v-col v-for="shoe in RenderedShoes" :key="shoe.Id" cols="3">
           <shoe v-bind:shoe="shoe" @switchShoe="SwitchSelectedShoe"></shoe>
@@ -176,54 +173,6 @@
         </div>
       </div>
 
-      <div class="modal fade" id="CreateShoeModal" tabindex="-1" role="dialog" aria-labelledby="CreateShoeModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="CreateShoeModalLabel">Create New Shoe</h5>
-              <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="modal-body row">
-                <div class="col-6">
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="CreateShoeName">Name</span>
-                    </div>
-                    <input type="text" v-model="selectedShoe.Name" class="form-control js-cn" aria-label="Small"
-                           aria-describedby="CreateShoeName">
-                  </div>
-
-                  <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example"
-                          v-model="selectedShoe.Brand.Id">
-                    <option value="null" selected>Open this select menu</option>
-                    <option v-for="brand in brands" :key="brand.Id" :value="brand.Id">{{ brand.Name }}</option>
-                  </select>
-
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="CreateShoeCreation">Creation Time</span>
-                    </div>
-                    <input type="date" v-model="selectedShoe.CreationTime" class="form-control js-cn" aria-label="Small"
-                           aria-describedby="CreateShoeCreation">
-                  </div>
-                </div>
-                <div class="col-6 d-flex justify-content-center flex-column">
-                  <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
-                       style="object-fit: contain; text-align: center" alt="">
-                  <input type="file" v-on:change="ImageUpload">
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" v-on:click="CreateShoe">Create new</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="modal fade" id="InfoShoeModal" tabindex="-1" role="dialog" aria-labelledby="InfoShoeModalLabel"
            aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -326,6 +275,8 @@ import {utils} from "../utils/utils.js"
 import {Shoe, FilteredShoe} from "../utils/classes.js";
 import axios from 'axios'
 import shoe from "../components/Shoe.vue"
+import DialogCreate from "../components/dialogs/dialog-create";
+import {eventBus} from "../main";
 
 export default {
   name: "shoe-page",
@@ -349,10 +300,11 @@ export default {
     }
   },
   components: {
+    DialogCreate,
     shoe
   },
   methods: {
-    RefreshShoes() {
+    Refresh() {
       axios.get(utils.API.SHOES, {
         onDownloadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
@@ -364,6 +316,7 @@ export default {
       })
           .then((response) => {
             this.starterShoes = [];
+            this.RenderedShoes = [];
             // console.log("100");
             response.data.forEach((shoe) => {
               let curr = new Shoe(shoe);
@@ -380,7 +333,7 @@ export default {
     UpdateShoe() {
       axios.put(utils.API.SHOES + this.selectedShoe.Id, this.selectedShoe.ToModel()).then((response) => {
         if (response.status === 204) {
-          this.RefreshShoes();
+          this.Refresh();
         }
       });
     },
@@ -388,7 +341,7 @@ export default {
       axios.delete(utils.API.SHOES + this.selectedShoe.Id)
           .then((response) => {
             if (response.status === 204) {
-              this.RefreshShoes();
+              this.Refresh();
               utils.CloseModal("Delete", "Shoe");
             }
           });
@@ -397,7 +350,7 @@ export default {
       axios.post(utils.API.SHOES, this.selectedShoe.ToModel())
           .then((response) => {
             if (response.status === 201) {
-              this.RefreshShoes();
+              this.Refresh();
               utils.CloseModal("Create", "Shoe");
             } else {
               console.log(response);
@@ -442,7 +395,7 @@ export default {
     }
   },
   mounted() {
-    this.RefreshShoes();
+    this.Refresh();
     axios.get(utils.API.BRANDS)
         .then((response) => {
           this.brands = [];
@@ -451,6 +404,11 @@ export default {
             this.brands.push(new Shoe(brand));
           });
         });
+  },
+  created(){
+    eventBus.$on('refresh', ()=>{
+      this.Refresh();
+    })
   }
 }
 </script>

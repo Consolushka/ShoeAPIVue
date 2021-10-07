@@ -30,18 +30,7 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col
-                  cols="12"
-              >
-                <v-text-field
-                    label="Brand Name"
-                    v-model="brand.Name"
-                >{{brand.Name}}</v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
+          <brand-form :brand="brand"></brand-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -71,10 +60,11 @@ import {eventBus} from "../../main";
 import axios from "axios";
 import {utils} from "../../utils/utils";
 import Alert from "../alert";
+import BrandForm from "./brand-form";
 
 export default {
   name: "dialog-update",
-  components: {Alert},
+  components: {BrandForm, Alert},
   props:{
     brand: Brand
   },

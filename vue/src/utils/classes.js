@@ -25,7 +25,7 @@ export class Shoe{
       this.Id = 0;
       this.Name = "";
       this.Brand = new Brand();
-      this.CreationTime = Date.now();
+      this.CreationTime = null;
       this.PhotoFileName = "undefined.jpg"
     }
     else{

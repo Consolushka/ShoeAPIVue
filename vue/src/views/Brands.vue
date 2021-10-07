@@ -24,7 +24,7 @@
         </tbody>
       </template>
     </v-simple-table>
-      <dialog-create @refreshBrands="refreshBrands"></dialog-create>
+      <dialog-create @refresh="refreshBrands" :model="selectedBrand"></dialog-create>
     </v-container>
 
   </section>
@@ -73,6 +73,9 @@ export default {
     this.refreshBrands();
   },
   created() {
+    eventBus.$on('refresh', ()=>{
+      this.refreshBrands();
+    })
     eventBus.$on('refreshBrands', ()=>{
       this.refreshBrands();
     })
