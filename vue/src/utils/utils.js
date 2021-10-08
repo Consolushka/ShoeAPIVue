@@ -18,8 +18,13 @@ export const utils = {
     function pad(s) {
       return (s < 10) ? '0' + s : s;
     }
-
     let d = new Date(date)
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('-')
+  },
+  ToValidDate(date){
+    let day = date.substring(0,2);
+    let month = date.substring(3,5);
+    let year = date.substring(6, date.length);
+    return `${month}-${day}-${year}`;
   }
 }

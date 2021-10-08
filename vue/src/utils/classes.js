@@ -1,3 +1,5 @@
+import {utils} from "./utils";
+
 export class Brand{
   Id
   Name
@@ -38,12 +40,11 @@ export class Shoe{
   }
 
   ToModel(){
-    console.log(this.CreationTime);
     return {
       Id: this.Id,
       Name: this.Name,
       BrandId: this.Brand.Id,
-      CreationTime: Date.parse(this.CreationTime),
+      CreationTime: utils.ToValidDate(this.CreationTime),
       PhotoFileName: this.PhotoFileName
     }
   }
