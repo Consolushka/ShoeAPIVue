@@ -1,4 +1,5 @@
 import {utils} from "./utils";
+import axios from "axios";
 
 export class Brand{
   Id
@@ -12,6 +13,10 @@ export class Brand{
     }
     this.Id = brand.Id;
     this.Name = brand.Name;
+  }
+
+  POST(){
+    return  axios.post(utils.API.BRANDS, {Name: this.Name}).then(response => response.status);
   }
 }
 
@@ -44,9 +49,14 @@ export class Shoe{
       Id: this.Id,
       Name: this.Name,
       BrandId: this.Brand.Id,
-      CreationTime: utils.ToValidDate(this.CreationTime),
+      CreationTime: this.CreationTime,
       PhotoFileName: this.PhotoFileName
     }
+  }
+
+  POST(){
+    console.log(this.ToModel());
+    return axios.post(utils.API.SHOES, this.ToModel()).then(response => response.status);
   }
 }
 

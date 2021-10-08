@@ -21,7 +21,7 @@
                 md="4"
             >
               <v-select
-                  :hint="`${selectBrand.Id}, ${selectBrand.Name}`"
+                  :hint="`${mockBrand.Id}, ${mockBrand.Name}`"
                   :items="brands"
                   item-text="Name"
                   item-value="Id"
@@ -65,7 +65,7 @@
           </v-row>
         </v-container>
       </v-form>
-      <dialog-create :model="selectedShoe" :brands="brands"></dialog-create>
+      <dialog-create :model="mockShoe" :brands="brands"></dialog-create>
       <v-row>
         <v-col v-for="shoe in RenderedShoes" :key="shoe.Id" cols="3">
           <shoe v-bind:shoe="shoe" :brands="brands"></shoe>
@@ -130,9 +130,8 @@ export default {
     return {
       starterShoes: [],
       RenderedShoes: [],
-      selectedShoe: new Shoe(),
-      photoUrl: utils.PHOTO_URL,
-      selectBrand: {Id: 0, Name: ""},
+      mockShoe: new Shoe(),
+      mockBrand: {Id: 0, Name: ""},
       activePicker: null,
       date: null,
       menu: false,
@@ -166,7 +165,6 @@ export default {
             // console.log("100");
             response.data.forEach((shoe) => {
               let curr = new Shoe(shoe);
-              curr.CreationTime = utils.ConvertDate(curr.CreationTime);
               this.starterShoes.push(curr);
               this.RenderedShoes.push(new FilteredShoe(curr));
             });

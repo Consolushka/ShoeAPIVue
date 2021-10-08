@@ -61,8 +61,6 @@ import Alert from "../alert";
 import {eventBus} from "../../main";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form";
-import axios from "axios";
-import {utils} from "../../utils/utils";
 
 export default {
   components: {ShoeForm, BrandForm, Alert},
@@ -86,44 +84,26 @@ export default {
   },
   methods:{
     Create(){
-      console.log(this.model);
-      this.model.POST();
-    },
-    POSTBrand(){
-      axios.post(utils.API.BRANDS, {Name: this.model.Name})
-          .then((response) => {
-            console.log(response.status);
-            if (response.status>200 && response.status<300) {
-              eventBus.$emit('refresh');
-              this.responseFine = true;
-              this.snackBar = true;
-            } else {
-              this.responseFine = false;
-            }
-          });
-    },
-    POSTShoe(){
-      axios.post(utils.API.SHOES, this.model.ToModel())
-          .then((response) => {
-            if (response.status === 201) {
-              eventBus.$emit('refresh');
-              this.responseFine = true;
-              this.snackBar = true;
-            } else {
-              this.responseFine = false;
-            }
-          });
+      this.model.POST().then(status=>{
+        if(status>200 && status<300){
+          eventBus.$emit(`refresh${this.model.ModelName}s`);
+          this.responseFine = true;
+          this.snackBar = true;
+        }
+        else{
+          this.responseFine = false;
+        }
+      });
+
     }
   },
   created() {
     if (this.model instanceof Brand){
       this.model.ModelName = "Brand";
-      this.model.POST = this.POSTBrand;
     }
     else{
       if (this.model instanceof Shoe){
         this.model.ModelName = "Shoe";
-        this.model.POST = this.POSTShoe;
       }
     }
   }
