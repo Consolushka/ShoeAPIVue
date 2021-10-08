@@ -34,9 +34,11 @@
 
     <v-card-actions>
 
-      <dialog-info :model="shoe"></dialog-info>
+      <dialog-info :model="shoe" :brands="brands"></dialog-info>
 
       <dialog-update :model="shoe" :brands="brands"></dialog-update>
+
+      <dialog-delete :model="shoe" :brands="brands"></dialog-delete>
 
     </v-card-actions>
   </v-card>
@@ -47,9 +49,11 @@ import {utils} from "../utils/utils.js"
 import {FilteredShoe} from "../utils/classes.js";
 import DialogInfo from "./dialogs/dialog-info";
 import DialogUpdate from "./dialogs/dialog-update";
+import DialogDelete from "./dialogs/dialog-delete"
+
 export default {
   name: "Shoe",
-  components: {DialogUpdate, DialogInfo},
+  components: {DialogUpdate, DialogInfo, DialogDelete},
   props: {
     shoe: FilteredShoe,
     brands: Array

@@ -68,110 +68,9 @@
       <dialog-create :model="selectedShoe" :brands="brands"></dialog-create>
       <v-row>
         <v-col v-for="shoe in RenderedShoes" :key="shoe.Id" cols="3">
-          <shoe v-bind:shoe="shoe" :brands="brands" @switchShoe="SwitchSelectedShoe"></shoe>
+          <shoe v-bind:shoe="shoe" :brands="brands"></shoe>
         </v-col>
       </v-row>
-
-      <div class="modal fade" id="UpdateBrandModal" tabindex="-1" role="dialog" aria-labelledby="UpdateBrandModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="UpdateBrandModalLabel">Update Shoe</h5>
-              <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body row">
-              <div class="col-6">
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="UpdateShoeName">Name</span>
-                  </div>
-                  <input type="text" v-model="selectedShoe.Name" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="UpdateShoeName">
-                </div>
-
-                <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example"
-                        v-model="selectedShoe.Brand.Id">
-                  <option value="null">Open this select menu</option>
-                  <option v-for="brand in brands" :key="brand.Id" :value="brand.Id">{{ brand.Name }}</option>
-                </select>
-
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="UpdateShoeCreation">Creation Time</span>
-                  </div>
-                  <input type="date" v-model="selectedShoe.CreationTime" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="UpdateShoeCreation">
-                </div>
-              </div>
-              <div class="col-6 d-flex justify-content-center flex-column">
-                <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
-                     style="object-fit: contain" alt="">
-                <input type="file" v-on:change="ImageUpload">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="UpdateShoe">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="DeleteShoeModal" tabindex="-1" role="dialog" aria-labelledby="DeleteShoeModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="DeleteShoeModalLabel">Delete Shoe</h5>
-              <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body row">
-              <div class="col-6">
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="DeleteShoeId">Id</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="DeleteShoeId" :placeholder=selectedShoe.Id disabled>
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="DeleteShoeName">Name</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="DeleteShoeName" :placeholder=selectedShoe.Name disabled>
-                </div>
-
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="DeleteShoeBrand">Brand</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="DeleteShoeBrand" :placeholder=selectedShoe.Brand.Name disabled>
-                </div>
-
-                <div class="input-group input-group-sm mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="DeleteShoeCreation">Creation Time</span>
-                  </div>
-                  <input type="text" class="form-control js-cn" aria-label="Small"
-                         aria-describedby="DeleteShoeCreation" :placeholder=selectedShoe.CreationTime
-                         disabled>
-                </div>
-              </div>
-              <div class="col-6 d-flex justify-content-center">
-                <img :src="`${photoUrl}${selectedShoe.PhotoFileName}`" height="200px"
-                     style="object-fit: cover; max-width: 100%;" alt="">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="DeleteShoe">Delete Shoe</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </v-container>
   </section>
 </template>
@@ -276,52 +175,12 @@ export default {
     save (date) {
       this.$refs.menu.save(date)
     },
-    UpdateShoe() {
-    },
-    DeleteShoe() {
-      axios.delete(utils.API.SHOES + this.selectedShoe.Id)
-          .then((response) => {
-            if (response.status === 204) {
-              this.Refresh();
-              utils.CloseModal("Delete", "Shoe");
-            }
-          });
-    },
-    SwitchSelectedShoe(shoe) {
-      this.selectedShoe = new Shoe(shoe);
-    },
-    ImageUpload(e) {
-      let form = new FormData();
-      form.append("file", e.target.files[0]);
-      axios.post(`${utils.API.SHOES}SaveFile`, form)
-          .then((response) => {
-            this.selectedShoe.PhotoFileName = response.data;
-          });
-    },
     RenderFilters() {
       console.log(this.filterParam);
       this.RenderedShoes.forEach((shoe) => {
         shoe.MatchFilter(this.filterParam);
       });
       console.log(this.RenderedShoes);
-    },
-    SetFilterDate(e) {
-      let date = e.target.value.toString();
-      let splited = date.split('-');
-      let res = "";
-      for (let i = splited.length - 1; i >= 0; i--) {
-        res += splited[i] + "-";
-      }
-      res = res.slice(0, res.length - 1);
-      this.filterParam.CreationDate = res;
-    },
-    ClearFilters() {
-      this.filterParam = {
-        BrandId: null,
-        Name: null,
-        CreationDate: null
-      };
-      this.RenderFilters();
     }
   },
   mounted() {
@@ -336,7 +195,7 @@ export default {
         });
   },
   created(){
-    eventBus.$on('refresh', ()=>{
+    eventBus.$on('refreshShoes', ()=>{
       this.Refresh();
     })
   }

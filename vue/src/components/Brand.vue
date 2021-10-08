@@ -9,7 +9,7 @@
 
       <dialog-update :model="brand"></dialog-update>
 
-      <dialog-delete :brand="brand"></dialog-delete>
+      <dialog-delete :model="brand"></dialog-delete>
     </td>
   </tr>
 </template>

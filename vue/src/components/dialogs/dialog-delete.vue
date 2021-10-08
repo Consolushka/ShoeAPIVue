@@ -1,7 +1,7 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="500"
+      width="600"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -18,41 +18,24 @@
 
     <v-card>
       <v-card-title>
-        <span class="text-h5">Delete Brand</span>
+        <span class="text-h5">Delete {{ model.ModelName }}</span>
 
         <v-spacer></v-spacer>
 
         <v-btn
             color="black"
             icon
-            @click="dialog = false"
-        >
+            @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
 
       <v-card-text>
-        <v-container>
-          <v-form disabled>
-            <v-row>
-              <v-col col="12">
-                <v-text-field
-                    label="Id"
-                    :value="brand.Id"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col col="12">
-                <v-text-field
-                    label="Name"
-                    :value="brand.Name"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-container>
+        <brand-form v-if="model.ModelName === `Brand`" :brand="model" :disabled="true"></brand-form>
+        <shoe-form v-if="model.ModelName === 'Shoe'" :shoe="model" :brands="brands" :disabled="true"></shoe-form>
       </v-card-text>
+
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
@@ -76,31 +59,44 @@
 </template>
 
 <script>
-import {Brand} from "../../utils/classes";
+import {Brand, Shoe, FilteredShoe} from "../../utils/classes";
+import {eventBus} from "../../main";
 import axios from "axios";
 import {utils} from "../../utils/utils";
-import {eventBus} from "../../main";
 import Alert from "../alert";
+import BrandForm from "./brand-form";
+import ShoeForm from "./shoe-form"
 
 export default {
-  name: "dialog-delete",
-  components: {Alert},
+  name: "dialog-update",
+  components: {ShoeForm, BrandForm, Alert},
   props: {
-    brand: Brand
+    model: Object,
+    brands: {
+      required: false,
+      type: Array
+    }
   },
   data() {
     return {
       dialog: false,
+      responseFine: true,
       snackBar: false,
-      responseFine: true
+      models: {
+        Name: "",
+        POST: null
+      }
     }
   },
   methods: {
-    SendRefresh(){
-      eventBus.$emit('refreshBrands');
-    },
     Delete() {
-      axios.delete(utils.API.BRANDS + this.brand.Id)
+      this.model.DELETE();
+    },
+    SendRefresh() {
+      eventBus.$emit(`refresh${this.model.ModelName}s`);
+    },
+    DELETEBrand() {
+      axios.delete(utils.API.BRANDS + this.model.Id)
           .then((response) => {
             if (response.status === 204) {
               this.responseFine = true;
@@ -111,6 +107,30 @@ export default {
               this.responseFine = false;
             }
           });
+    },
+    DELETEShoe() {
+      axios.delete(utils.API.SHOES + this.model.Id)
+          .then((response) => {
+            if (response.status === 204) {
+              this.responseFine = true;
+              this.snackBar = true;
+              setTimeout(this.SendRefresh, 2000);
+              console.log(this.responseFine);
+            } else {
+              this.responseFine = false;
+            }
+          });
+    }
+  },
+  created() {
+    if (this.model instanceof Brand) {
+      this.model.ModelName = "Brand";
+      this.model.DELETE = this.DELETEBrand;
+    } else {
+      if (this.model instanceof Shoe || this.model instanceof FilteredShoe) {
+        this.model.ModelName = "Shoe";
+        this.model.DELETE = this.DELETEShoe;
+      }
     }
   }
 }
