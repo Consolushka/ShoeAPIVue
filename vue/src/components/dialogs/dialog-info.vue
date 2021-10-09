@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import {Brand, Shoe, FilteredShoe} from "../../utils/classes";
 import ShoeForm from "./shoe-form";
 import BrandForm from "./brand-form";
 
@@ -60,16 +59,6 @@ export default {
       dialog: false,
       responseFine: true,
       snackBar: false,
-    }
-  },
-  created() {
-    if (this.model instanceof Brand){
-      this.model.ModelName = "Brand";
-    }
-    else{
-      if (this.model instanceof Shoe || this.model instanceof FilteredShoe){
-        this.model.ModelName = "Shoe";
-      }
     }
   }
 }

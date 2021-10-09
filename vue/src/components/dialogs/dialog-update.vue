@@ -56,10 +56,6 @@
 </template>
 
 <script>
-import {Brand, Shoe, FilteredShoe} from "../../utils/classes";
-// import {eventBus} from "../../main";
-import axios from "axios";
-import {utils} from "../../utils/utils";
 import Alert from "../alert";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form"
@@ -87,43 +83,15 @@ export default {
   },
   methods:{
     Update(){
-      this.model.PUT();
-    },
-    PUTBrand(){
-      axios.put(utils.API.BRANDS + this.model.Id, this.model).then((response) => {
-        if (response.status === 204) {
+      this.model.PUT().then(status =>{
+        if (status < 300 && status>200) {
           this.responseFine = true;
           this.snackBar = true;
         }
         else{
           this.responseFine = false;
         }
-      });
-    },
-    PUTShoe(){
-      console.log(this.model.ToModel());
-      axios.put(utils.API.SHOES + this.model.Id, this.model.ToModel()).then((response) => {
-        if (response.status === 204) {
-          this.responseFine = true;
-          this.snackBar = true;
-          console.log(this.responseFine);
-        }
-        else{
-          this.responseFine = false;
-        }
-      });
-    }
-  },
-  created() {
-    if (this.model instanceof Brand){
-      this.model.ModelName = "Brand";
-      this.model.PUT = this.PUTBrand;
-    }
-    else{
-      if (this.model instanceof Shoe || this.model instanceof FilteredShoe){
-        this.model.ModelName = "Shoe";
-        this.model.PUT = this.PUTShoe;
-      }
+      })
     }
   }
 }

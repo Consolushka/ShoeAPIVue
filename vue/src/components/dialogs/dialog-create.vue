@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import {Brand, Shoe} from "../../utils/classes";
 import Alert from "../alert";
 import {eventBus} from "../../main";
 import BrandForm from "./brand-form";
@@ -95,16 +94,6 @@ export default {
         }
       });
 
-    }
-  },
-  created() {
-    if (this.model instanceof Brand){
-      this.model.ModelName = "Brand";
-    }
-    else{
-      if (this.model instanceof Shoe){
-        this.model.ModelName = "Shoe";
-      }
     }
   }
 }

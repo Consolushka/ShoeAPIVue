@@ -4,6 +4,7 @@ import axios from "axios";
 export class Brand{
   Id
   Name
+  ModelName = "Brand"
 
   constructor(brand) {
     if (brand === undefined){
@@ -18,6 +19,14 @@ export class Brand{
   POST(){
     return  axios.post(utils.API.BRANDS, {Name: this.Name}).then(response => response.status);
   }
+
+  PUT(){
+    return axios.put(utils.API.BRANDS + this.Id, this).then(response => response.status);
+  }
+
+  DELETE(){
+    return  axios.delete(utils.API.BRANDS + this.Id).then(response => response.status);
+  }
 }
 
 export class Shoe{
@@ -26,6 +35,7 @@ export class Shoe{
   Brand
   CreationTime
   PhotoFileName
+  ModelName = "Shoe"
 
   constructor(shoe) {
     if(shoe === undefined){
@@ -55,8 +65,15 @@ export class Shoe{
   }
 
   POST(){
-    console.log(this.ToModel());
     return axios.post(utils.API.SHOES, this.ToModel()).then(response => response.status);
+  }
+
+  PUT(){
+    return axios.put(utils.API.SHOES + this.Id, this.ToModel()).then(response => response.status);
+  }
+
+  DELETE(){
+    return axios.delete(utils.API.SHOES + this.Id).then(response => response.status);
   }
 }
 
