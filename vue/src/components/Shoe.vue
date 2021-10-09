@@ -2,6 +2,7 @@
   <v-card
       :loading="loading"
       class=""
+      v-if="shoe.matched"
   >
     <template slot="progress">
       <v-progress-linear
@@ -46,7 +47,7 @@
 
 <script>
 import {utils} from "../utils/utils.js"
-import {FilteredShoe} from "../utils/classes.js";
+import {Shoe} from "../utils/classes.js";
 import DialogInfo from "./dialogs/dialog-info";
 import DialogUpdate from "./dialogs/dialog-update";
 import DialogDelete from "./dialogs/dialog-delete"
@@ -55,7 +56,7 @@ export default {
   name: "Shoe",
   components: {DialogUpdate, DialogInfo, DialogDelete},
   props: {
-    shoe: FilteredShoe,
+    shoe: Shoe,
     brands: Array
   },
   data(){

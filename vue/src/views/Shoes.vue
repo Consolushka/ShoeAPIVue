@@ -9,20 +9,22 @@
             <v-col col="12" md="12" class="text-left text-h5">Filters</v-col>
             <v-col
                 cols="12"
-                md="4"
+                md="3"
             >
               <v-text-field
+                  v-model="filterParam.Name"
                   label="Name"
               ></v-text-field>
             </v-col>
 
             <v-col
                 cols="12"
-                md="4"
+                md="3"
             >
               <v-select
                   :hint="`${mockBrand.Id}, ${mockBrand.Name}`"
                   :items="brands"
+                  v-model="filterParam.BrandId"
                   item-text="Name"
                   item-value="Id"
                   label="Standard"
@@ -31,7 +33,7 @@
 
             <v-col
                 cols="12"
-                md="4"
+                md="3"
             >
               <div>
                 <v-menu
@@ -44,8 +46,8 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                        v-model="date"
-                        label="Birthday date"
+                        v-model="filterParam.CreationDate"
+                        label="Creation Date"
                         prepend-icon="mdi-calendar"
                         readonly
                         v-bind="attrs"
@@ -53,7 +55,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                      v-model="date"
+                      v-model="filterParam.CreationDate"
                       :active-picker.sync="activePicker"
                       :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
                       min="1950-01-01"
@@ -62,12 +64,16 @@
                 </v-menu>
               </div>
             </v-col>
+
+            <v-col cols="3">
+              <v-btn @click="RenderFilters">Filter</v-btn>
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
       <dialog-create :model="mockShoe" :brands="brands"></dialog-create>
       <v-row>
-        <v-col v-for="shoe in RenderedShoes" :key="shoe.Id" cols="3">
+        <v-col v-for="shoe in Shoes" :key="shoe.Id" cols="3">
           <shoe v-bind:shoe="shoe" :brands="brands"></shoe>
         </v-col>
       </v-row>
@@ -75,50 +81,9 @@
   </section>
 </template>
 
-<style>
-.card {
-  width: 23.5%;
-  padding: 5px;
-  border: 1px solid black;
-  margin-right: 15px;
-  margin-bottom: 30px;
-}
-
-.cards-collection {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
-.card-image {
-  object-fit: cover;
-}
-
-.card-options {
-  list-style: none;
-  padding-left: 0;
-}
-
-.option {
-  margin-right: 15px;
-}
-
-.filter__param {
-  margin-right: 15px;
-  width: 30%;
-}
-
-.filter__select {
-  max-height: 36px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  padding: 0 12px;
-}
-</style>
-
 <script>
 import {utils} from "../utils/utils.js"
-import {Shoe, FilteredShoe} from "../utils/classes.js";
+import {Shoe} from "../utils/classes.js";
 import axios from 'axios'
 import shoe from "../components/Shoe.vue"
 import DialogCreate from "../components/dialogs/dialog-create";
@@ -128,8 +93,7 @@ export default {
   name: "shoe-page",
   data() {
     return {
-      starterShoes: [],
-      RenderedShoes: [],
+      Shoes: [],
       mockShoe: new Shoe(),
       mockBrand: {Id: 0, Name: ""},
       activePicker: null,
@@ -160,13 +124,11 @@ export default {
         }
       })
           .then((response) => {
-            this.starterShoes = [];
-            this.RenderedShoes = [];
+            this.Shoes = [];
             // console.log("100");
             response.data.forEach((shoe) => {
               let curr = new Shoe(shoe);
-              this.starterShoes.push(curr);
-              this.RenderedShoes.push(new FilteredShoe(curr));
+              this.Shoes.push(curr);
             });
           });
     },
@@ -175,10 +137,10 @@ export default {
     },
     RenderFilters() {
       console.log(this.filterParam);
-      this.RenderedShoes.forEach((shoe) => {
+      this.Shoes.forEach((shoe) => {
         shoe.MatchFilter(this.filterParam);
       });
-      console.log(this.RenderedShoes);
+      console.log(this.Shoes);
     }
   },
   mounted() {

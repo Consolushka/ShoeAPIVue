@@ -36,6 +36,7 @@ export class Shoe{
   CreationTime
   PhotoFileName
   ModelName = "Shoe"
+  matched = true;
 
   constructor(shoe) {
     if(shoe === undefined){
@@ -64,27 +65,6 @@ export class Shoe{
     }
   }
 
-  POST(){
-    return axios.post(utils.API.SHOES, this.ToModel()).then(response => response.status);
-  }
-
-  PUT(){
-    return axios.put(utils.API.SHOES + this.Id, this.ToModel()).then(response => response.status);
-  }
-
-  DELETE(){
-    return axios.delete(utils.API.SHOES + this.Id).then(response => response.status);
-  }
-}
-
-export class FilteredShoe extends Shoe{
-  matched
-
-  constructor(shoe) {
-    super(shoe);
-    this.matched = true;
-  }
-
   MatchFilter(filterParam){
     if(filterParam.BrandId !== null){
       if (this.Brand.Id !== filterParam.BrandId){
@@ -108,5 +88,17 @@ export class FilteredShoe extends Shoe{
     }
     this.matched = true;
     console.log(this, filterParam);
+  }
+
+  POST(){
+    return axios.post(utils.API.SHOES, this.ToModel()).then(response => response.status);
+  }
+
+  PUT(){
+    return axios.put(utils.API.SHOES + this.Id, this.ToModel()).then(response => response.status);
+  }
+
+  DELETE(){
+    return axios.delete(utils.API.SHOES + this.Id).then(response => response.status);
   }
 }
