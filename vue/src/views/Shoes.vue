@@ -5,7 +5,7 @@
       <h2 class="text-center text-h4">Here you can change shoes</h2>
       <v-form v-model="valid">
         <v-container>
-          <v-row align="end">
+          <v-row align="center">
             <v-col col="12" md="12" class="text-left text-h5">Filters</v-col>
             <v-col
                 cols="12"
@@ -66,16 +66,21 @@
             </v-col>
 
             <v-col cols="3">
-              <v-btn @click="RenderFilters">Filter</v-btn>
+              <v-row>
+                <v-col cols="6">
+                  <v-btn block color="primary" @click="RenderFilters">Filter</v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn block color="grey lighten-1" @click="RefreshFilters">Clear</v-btn>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-container>
       </v-form>
       <dialog-create :model="mockShoe" :brands="brands"></dialog-create>
       <v-row>
-        <v-col v-for="shoe in Shoes" :key="shoe.Id" cols="3">
-          <shoe v-bind:shoe="shoe" :brands="brands"></shoe>
-        </v-col>
+          <shoe v-for="shoe in Shoes" :key="shoe.Id" v-bind:shoe="shoe" :brands="brands"></shoe>
       </v-row>
     </v-container>
   </section>
@@ -136,11 +141,17 @@ export default {
       this.$refs.menu.save(date)
     },
     RenderFilters() {
-      console.log(this.filterParam);
       this.Shoes.forEach((shoe) => {
         shoe.MatchFilter(this.filterParam);
       });
-      console.log(this.Shoes);
+    },
+    RefreshFilters(){
+      this.filterParam = {
+        BrandId: null,
+        Name: null,
+        CreationDate: null
+      };
+      this.RenderFilters();
     }
   },
   mounted() {

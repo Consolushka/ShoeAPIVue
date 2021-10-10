@@ -40,7 +40,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                         v-model="shoe.CreationTime"
-                        label="Birthday date"
+                        label="Creation Date"
                         prepend-icon="mdi-calendar"
                         readonly
                         v-bind="attrs"

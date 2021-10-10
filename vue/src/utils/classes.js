@@ -85,7 +85,7 @@ export class Shoe{
     }
 
     if(filterParam.CreationDate !== null){
-      if (this.CreationTime !== filterParam.CreationDate){
+      if (Date.parse(this.CreationTime) !== Date.parse(filterParam.CreationDate+"T00:00:00")){
         this.matched = false;
         return;
       }

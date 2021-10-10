@@ -1,48 +1,50 @@
 <template>
-  <v-card
-      :loading="loading"
-      class=""
-      v-if="shoe.matched"
-  >
-    <template slot="progress">
-      <v-progress-linear
-          color="deep-purple"
-          height="10"
-          indeterminate
-      ></v-progress-linear>
-    </template>
+  <v-col
+      cols="3"
+      v-if="shoe.matched">
+    <v-card
+        :loading="loading"
+    >
+      <template slot="progress">
+        <v-progress-linear
+            color="deep-purple"
+            height="10"
+            indeterminate
+        ></v-progress-linear>
+      </template>
 
-    <v-img
-        cover
-        width="100%"
-        height="350px"
-        :src="`${photoUrl}${shoe.PhotoFileName}`"
-        :alt="shoe.Name"
-    ></v-img>
+      <v-img
+          cover
+          width="100%"
+          height="350px"
+          :src="`${photoUrl}${shoe.PhotoFileName}`"
+          :alt="shoe.Name"
+      ></v-img>
 
-    <v-card-title>{{shoe.Name}}</v-card-title>
+      <v-card-title>{{shoe.Name}}</v-card-title>
 
-    <v-card-text>
+      <v-card-text>
 
-      <div class="my-4 text-subtitle-1">
-        {{shoe.Brand.Name}}
-      </div>
+        <div class="my-4 text-subtitle-1">
+          {{shoe.Brand.Name}}
+        </div>
 
-      <div>{{shoe.CreationTime}}</div>
-    </v-card-text>
+        <div>{{shoe.CreationTime}}</div>
+      </v-card-text>
 
-    <v-divider class="mx-4"></v-divider>
+      <v-divider class="mx-4"></v-divider>
 
-    <v-card-actions>
+      <v-card-actions>
 
-      <dialog-info :model="shoe" :brands="brands"></dialog-info>
+        <dialog-info :model="shoe" :brands="brands"></dialog-info>
 
-      <dialog-update :model="shoe" :brands="brands"></dialog-update>
+        <dialog-update :model="shoe" :brands="brands"></dialog-update>
 
-      <dialog-delete :model="shoe" :brands="brands"></dialog-delete>
+        <dialog-delete :model="shoe" :brands="brands"></dialog-delete>
 
-    </v-card-actions>
-  </v-card>
+      </v-card-actions>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
