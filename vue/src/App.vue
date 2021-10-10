@@ -10,19 +10,12 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="src/assets/logo.png"
+          :src="require('../src/assets/logo-white.svg')"
           transition="scale-transition"
-          width="40"
+          width="80"
         />
-        
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+
+        <p class="text text-h4 mb-0">ShopApiVue</p>
       </div>
 
       <v-tabs
