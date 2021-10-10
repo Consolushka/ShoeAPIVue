@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -85,8 +87,8 @@ namespace ShoeAPIVue.Controllers
         }
 
         // DELETE: api/Brands/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBrand(int id)
+        [HttpDelete("{id}/{force:bool?}")]
+        public async Task<IActionResult> DeleteBrand(int id, bool? force = false)
         {
             var brand = await _context.Brand.FindAsync(id);
             if (brand == null)
@@ -94,10 +96,34 @@ namespace ShoeAPIVue.Controllers
                 return NotFound();
             }
 
-            _context.Brand.Remove(brand);
-            await _context.SaveChangesAsync();
+            if (force == false)
+            {
+                try
+                {
+                    _context.Brand.Remove(brand);
+                    await _context.SaveChangesAsync();
 
-            return NoContent();
+                    return Ok();
+                }
+                catch
+                {
+                    return Conflict();
+                }   
+            }
+            else
+            {
+                foreach (var shoe in await _context.Shoe.ToListAsync())
+                {
+                    if (shoe.BrandId == brand.Id)
+                    {
+                        _context.Shoe.Remove(shoe);
+                    }
+                }
+                _context.Brand.Remove(brand);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
         }
 
         private bool BrandExists(int id)

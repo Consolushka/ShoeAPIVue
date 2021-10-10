@@ -84,13 +84,13 @@ export default {
   methods:{
     Create(){
       this.model.POST().then(status=>{
-        if(status>200 && status<300){
+        if(status>=200 && status<300){
           eventBus.$emit(`refresh${this.model.ModelName}s`);
-          this.responseFine = true;
+          this.responseFine = status;
           this.snackBar = true;
         }
         else{
-          this.responseFine = false;
+          this.responseFine = status;
         }
       });
 

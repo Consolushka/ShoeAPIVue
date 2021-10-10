@@ -25,7 +25,7 @@
         <v-btn
             color="black"
             icon
-            @click="dialog = false">
+            @click="Close">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -41,7 +41,7 @@
         <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="Close"
         >
           Close
         </v-btn>
@@ -52,7 +52,7 @@
         >
           Delete
         </v-btn>
-        <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="snackBar=false"></alert>
+        <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="Close" @force="ForcedDeletion"></alert>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -87,19 +87,38 @@ export default {
   },
   methods: {
     Delete() {
-      this.model.DELETE().then(status =>{
-        if (status<300 && status>200){
-          this.responseFine = true;
-          this.snackBar = true;
-          setTimeout(this.SendRefresh, 2000);
-          console.log(this.responseFine);
-        } else {
-          this.responseFine = false;
-        }
+      this.model.DELETE().then(status => {
+        this.responseFine = status;
+        this.snackBar = true;
+        setTimeout(this.SendRefresh, 2000);
+        console.log(this.responseFine);
       })
+          .catch((err) => {
+            console.log(err.response.status);
+            this.snackBar = true;
+            this.responseFine = err.response.status;
+          })
     },
     SendRefresh() {
       eventBus.$emit(`refresh${this.model.ModelName}s`);
+    },
+    ForcedDeletion(){
+      this.snackBar = false;
+      this.model.DELETEForce().then(status => {
+        this.responseFine = status;
+        this.snackBar = true;
+        setTimeout(this.SendRefresh, 2000);
+        console.log(this.responseFine);
+      })
+          .catch((err) => {
+            console.log(err.response.status);
+            this.snackBar = true;
+            this.responseFine = err.response.status;
+          })
+    },
+    Close(){
+      this.dialog = false;
+      this.snackBar = false;
     }
   }
 }

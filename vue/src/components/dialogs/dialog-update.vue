@@ -84,8 +84,8 @@ export default {
   methods:{
     Update(){
       this.model.PUT().then(status =>{
-        if (status < 300 && status>200) {
-          this.responseFine = true;
+        if (status < 300 && status>=200) {
+          this.responseFine = status;
           this.snackBar = true;
         }
         else{

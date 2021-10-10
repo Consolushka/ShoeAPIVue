@@ -27,6 +27,10 @@ export class Brand{
   DELETE(){
     return  axios.delete(utils.API.BRANDS + this.Id).then(response => response.status);
   }
+
+  DELETEForce(){
+    return  axios.delete(utils.API.BRANDS + this.Id+"/"+"true").then(response => response.status);
+  }
 }
 
 export class Shoe{
