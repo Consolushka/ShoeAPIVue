@@ -120,8 +120,7 @@ namespace ShoeAPIVue.Controllers
 
                 using (var stream = new FileStream(PhysicalPath, FileMode.Create))
                 {
-                    requestFile.CopyToAsync(stream);
-
+                    requestFile.CopyTo(stream);
                 }
 
                 return new JsonResult(fileName);

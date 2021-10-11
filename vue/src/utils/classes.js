@@ -1,6 +1,10 @@
+import {utils} from "./utils";
+import axios from "axios";
+
 export class Brand{
   Id
   Name
+  ModelName = "Brand"
 
   constructor(brand) {
     if (brand === undefined){
@@ -11,6 +15,22 @@ export class Brand{
     this.Id = brand.Id;
     this.Name = brand.Name;
   }
+
+  POST(){
+    return  axios.post(utils.API.BRANDS, {Name: this.Name}).then(response => response.status);
+  }
+
+  PUT(){
+    return axios.put(utils.API.BRANDS + this.Id, this).then(response => response.status);
+  }
+
+  DELETE(){
+    return  axios.delete(utils.API.BRANDS + this.Id).then(response => response.status);
+  }
+
+  DELETEForce(){
+    return  axios.delete(utils.API.BRANDS + this.Id+"/"+"true").then(response => response.status);
+  }
 }
 
 export class Shoe{
@@ -19,13 +39,15 @@ export class Shoe{
   Brand
   CreationTime
   PhotoFileName
+  ModelName = "Shoe"
+  matched = true;
 
   constructor(shoe) {
     if(shoe === undefined){
       this.Id = 0;
       this.Name = "";
       this.Brand = new Brand();
-      this.CreationTime = Date.now();
+      this.CreationTime = null;
       this.PhotoFileName = "undefined.jpg"
     }
     else{
@@ -46,15 +68,6 @@ export class Shoe{
       PhotoFileName: this.PhotoFileName
     }
   }
-}
-
-export class FilteredShoe extends Shoe{
-  matched
-
-  constructor(shoe) {
-    super(shoe);
-    this.matched = true;
-  }
 
   MatchFilter(filterParam){
     if(filterParam.BrandId !== null){
@@ -72,12 +85,24 @@ export class FilteredShoe extends Shoe{
     }
 
     if(filterParam.CreationDate !== null){
-      if (this.CreationTime !== filterParam.CreationDate){
+      if (Date.parse(this.CreationTime) !== Date.parse(filterParam.CreationDate+"T00:00:00")){
         this.matched = false;
         return;
       }
     }
     this.matched = true;
     console.log(this, filterParam);
+  }
+
+  POST(){
+    return axios.post(utils.API.SHOES, this.ToModel()).then(response => response.status);
+  }
+
+  PUT(){
+    return axios.put(utils.API.SHOES + this.Id, this.ToModel()).then(response => response.status);
+  }
+
+  DELETE(){
+    return axios.delete(utils.API.SHOES + this.Id).then(response => response.status);
   }
 }

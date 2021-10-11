@@ -10,31 +10,29 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          :src="require('../src/assets/logo-white.svg')"
           transition="scale-transition"
-          width="40"
+          width="80"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <p class="text text-h4 mb-0">ShopApiVue</p>
       </div>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+      <v-tabs
+          align-with-title
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+
+        <v-tab to="/home">
+          Home
+        </v-tab>
+        <v-tab to="/brand">
+          Brands
+        </v-tab>
+        <v-tab to="/shoe">
+          Shoes
+        </v-tab>
+      </v-tabs>
     </v-app-bar>
 
     <v-main>
