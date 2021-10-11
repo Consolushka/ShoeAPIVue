@@ -17,11 +17,13 @@ namespace ShoeAPIVue.Data
 
         public DbSet<Shoe> Shoe { get; set; }
         public DbSet<Brand> Brand { get; set; }
+        public DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Shoe>().ToTable("Shoe");
             modelBuilder.Entity<Brand>().ToTable("Brand");
+            modelBuilder.Entity<Brand>().ToTable("User");
         }
     }
 }

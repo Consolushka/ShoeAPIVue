@@ -32,6 +32,12 @@
         <v-tab to="/shoe">
           Shoes
         </v-tab>
+        <v-tab to="/login">
+          Log In
+        </v-tab>
+        <v-tab to="/signup">
+          Sing in
+        </v-tab>
       </v-tabs>
     </v-app-bar>
 
