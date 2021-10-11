@@ -32,10 +32,10 @@
         <v-tab to="/shoe">
           Shoes
         </v-tab>
-        <v-tab to="/login">
+        <v-tab to="/User/login">
           Log In
         </v-tab>
-        <v-tab to="/signup">
+        <v-tab to="/User/signup">
           Sing in
         </v-tab>
       </v-tabs>

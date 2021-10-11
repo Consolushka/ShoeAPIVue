@@ -43,6 +43,7 @@ namespace ShoeAPIVue.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Account/Register")]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)

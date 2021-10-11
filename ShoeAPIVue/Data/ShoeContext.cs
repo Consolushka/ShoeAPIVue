@@ -23,7 +23,7 @@ namespace ShoeAPIVue.Data
         {
             modelBuilder.Entity<Shoe>().ToTable("Shoe");
             modelBuilder.Entity<Brand>().ToTable("Brand");
-            modelBuilder.Entity<Brand>().ToTable("User");
+            modelBuilder.Entity<User>().ToTable("User");
         }
     }
 }
