@@ -12,7 +12,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace ShoeAPIVue.Controllers
 {
-    public class AccountController : Controller
+    [Route("[controller]")]
+    [ApiController]
+    public class AccountController : ControllerBase
     {
         private ShoeContext _context;
 
@@ -23,6 +25,7 @@ namespace ShoeAPIVue.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Login")]
         public async Task<IActionResult> Login(LoginModel login)
         {
             if (ModelState.IsValid)
@@ -43,22 +46,22 @@ namespace ShoeAPIVue.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Account/Register")]
-        public async Task<IActionResult> Register(RegisterModel model)
+        [Route("Register")]
+        public async Task<IActionResult> Register()
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.User.FirstOrDefaultAsync(u =>
-                    u.Email == model.Email);
-                if (user == null)
-                {
-                    await _context.User.AddAsync(new User(model));
-                    await Authenticate(model.Email);
-
-                    return Ok();
-                }
-                ModelState.AddModelError("", "User with this Email already exists");
-                return NotFound();
+                // User user = await _context.User.FirstOrDefaultAsync(u =>
+                //     u.Email == model.Email);
+                // if (user == null)
+                // {
+                //     await _context.User.AddAsync(new User(model));
+                //     await Authenticate(model.Email);
+                //
+                //     return Ok();
+                // }
+                // ModelState.AddModelError("", "User with this Email already exists");
+                // return NotFound();
             }
             return StatusCode(400);
         }
@@ -74,6 +77,8 @@ namespace ShoeAPIVue.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
         
+        [HttpPost]
+        [Route("Logout")]
         // GET
         public async Task<IActionResult> Logout()
         {
