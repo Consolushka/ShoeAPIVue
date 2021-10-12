@@ -1,21 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeAPIVue.Data;
 using ShoeAPIVue.Models;
-using System.Net.Http.Formatting;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ShoeAPIVue.Controllers
 {

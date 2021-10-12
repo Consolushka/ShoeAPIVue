@@ -67,13 +67,14 @@ export default {
   }),
   methods: {
     LogIn() {
-      this.user.LogIn()
-          .then(response => {
-            console.log(response);
-          })
-          .catch((err) =>{
-            console.log(err.response.data);
-          });
+      this.$Auth.LogIn();
+      // this.user.LogIn()
+      //     .then(response => {
+      //       console.log(response);
+      //     })
+      //     .catch((err) =>{
+      //       console.log(err.response.data);
+      //     });
     },
     SignUp() {
       this.user.SingUp()
