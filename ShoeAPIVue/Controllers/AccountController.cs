@@ -6,6 +6,7 @@ using ShoeAPIVue.Data;
 using ShoeAPIVue.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
@@ -17,10 +18,12 @@ namespace ShoeAPIVue.Controllers
     public class AccountController : ControllerBase
     {
         private ShoeContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public AccountController(ShoeContext context)
+        public AccountController(ShoeContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         [HttpPost]
@@ -47,24 +50,24 @@ namespace ShoeAPIVue.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Register")]
-        public async Task<IActionResult> Register()
-        {
-            if (ModelState.IsValid)
-            {
-                // User user = await _context.User.FirstOrDefaultAsync(u =>
-                //     u.Email == model.Email);
-                // if (user == null)
-                // {
-                //     await _context.User.AddAsync(new User(model));
-                //     await Authenticate(model.Email);
-                //
-                //     return Ok();
-                // }
-                // ModelState.AddModelError("", "User with this Email already exists");
-                // return NotFound();
-            }
-            return StatusCode(400);
-        }
+        // public async Task<IActionResult> Register()
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+        //         User user = await _context.User.FirstOrDefaultAsync(u =>
+        //             u.Email == model.Email);
+        //         if (user == null)
+        //         {
+        //             await _context.User.AddAsync(new User(model));
+        //             await Authenticate(model.Email);
+        //         
+        //             return Ok();
+        //         }
+        //         ModelState.AddModelError("", "User with this Email already exists");
+        //         return NotFound();
+        //     }
+        //     return StatusCode(400);
+        // }
 
         private async Task Authenticate(string userName)
         {

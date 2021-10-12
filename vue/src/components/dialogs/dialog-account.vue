@@ -33,7 +33,9 @@
               required
           ></v-text-field>
         </v-col>
+        <p class="text text-h6 red--text" v-if="err!==null">{{err}}</p>
       </v-row>
+      <div></div>
       <v-btn @click="LogIn" v-if="isLogin">Log In</v-btn>
       <v-btn @click="SignUp" v-else>Sign Up</v-btn>
     </v-container>
@@ -43,14 +45,16 @@
 <script>
 
 import {User} from "../../utils/classes";
+import router from "../../router";
 
 export default {
   name: "dialog-account",
-  props:{
+  props: {
     isLogin: Boolean
   },
   data: () => ({
     valid: false,
+    err: null,
     user: new User(),
     nameRules: [
       v => !!v || 'Name is required',
@@ -61,12 +65,24 @@ export default {
       v => /.+@.+/.test(v) || 'E-mail must be valid',
     ],
   }),
-  methods:{
-    LogIn(){
-        this.user.LogIn();
+  methods: {
+    LogIn() {
+      this.user.LogIn()
+          .then(response => {
+            console.log(response);
+          })
+          .catch((err) =>{
+            console.log(err.response.data);
+          });
     },
-    SignUp(){
-      this.user.SingUp();
+    SignUp() {
+      this.user.SingUp()
+          .then(() => {
+            router.push({name: "login"});
+          })
+          .catch((err) =>{
+            this.err=err.response.data;
+          });
     }
   }
 

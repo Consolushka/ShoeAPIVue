@@ -126,11 +126,11 @@ export class User {
 
     LogIn(){
         console.log(this);
-        return axios.post(utils.API.ACCOUNT, this).then(response => response.status);
+        return axios.post(utils.API.USER + "Login", this).then(response => response.status);
     }
 
     SingUp(){
         console.log(this);
-        return axios.post(utils.API.ACCOUNT + "Register", this).then(response => response.status);
+        return axios.post(utils.API.USER + "Register", this).then(response => response.status);
     }
 }

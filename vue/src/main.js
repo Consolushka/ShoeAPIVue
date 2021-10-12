@@ -14,5 +14,8 @@ new Vue({
   icons: {
     iconfont: 'mdi', // default - only for display purposes
   },
+  data:{
+    isAuth: false
+  },
   render: h => h(App)
 }).$mount('#app')
