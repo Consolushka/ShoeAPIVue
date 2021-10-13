@@ -15,6 +15,7 @@ using ShoeAPIVue.Data;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ShoeAPIVue
 {
@@ -50,6 +51,19 @@ namespace ShoeAPIVue
 
             services.AddDbContext<ShoeContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/User/Login");
+                });
+            services.ConfigureApplicationCookie(option => {
+                option.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +81,8 @@ namespace ShoeAPIVue
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization(); 
 
             app.UseEndpoints(endpoints =>
             {
