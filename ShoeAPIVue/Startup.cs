@@ -66,7 +66,6 @@ namespace ShoeAPIVue
             }
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
