@@ -2,10 +2,12 @@
 
 namespace ShoeAPIVue.Models
 {
-    public class LoginModel
+    public class AuthenticateRequest
     {
-        public long Id { get; set; }
+        [Required] 
         public string Email { get; set; }
+
+        [Required] 
         public string Password { get; set; }
     }
 }

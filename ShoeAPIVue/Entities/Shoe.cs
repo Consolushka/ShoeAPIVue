@@ -1,11 +1,10 @@
 ﻿using System;
 using ShoeAPIVue.Data;
 
-namespace ShoeAPIVue.Models
+namespace ShoeAPIVue.Entities
 {
-    public class Shoe
+    public class Shoe: Base
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
