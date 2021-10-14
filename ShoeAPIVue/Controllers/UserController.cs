@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -25,8 +26,8 @@ namespace ShoeAPIVue.Controllers
             _context = context;
             _env = env;
         }
-
-        // GET: api/User/5
+        
+        
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login(LoginModel login)
@@ -37,9 +38,8 @@ namespace ShoeAPIVue.Controllers
                     u.Email == login.Email && u.Password == login.Password);
                 if (user != null)
                 {
-                    await Authenticate(login.Email);
-
-                    return Ok();
+                    Authenticate(login.Email);
+                    return Ok("Fine");
                 }
                 return BadRequest("Incorrect User email or password");
             }
@@ -69,18 +69,35 @@ namespace ShoeAPIVue.Controllers
 
         [HttpGet]
         [Route("IsAuth")]
-        public Boolean IsAuth()
+        public bool IsAuth()
         {
             string n = User.Identity.Name;
-            if (User.Identity.Name != null)
+            if (n != null)
             {
                 return true;
             }
+
             return false;
+        }
+
+        [HttpGet]
+        [Route("GetUser")]
+        public IActionResult GetUser()
+        {
+            try
+            {
+                User u = _context.User.First(u => u.Email == User.Identity.Name);
+                return Ok(u);
+            }
+            catch
+            {
+                User u = new User();
+                return BadRequest("canot find");
+            }
         }
         
 
-        private async Task Authenticate(string userName)
+        private async Task<string> Authenticate(string userName)
         {
             var claims = new List<Claim>
             {
@@ -89,6 +106,8 @@ namespace ShoeAPIVue.Controllers
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+
+            return User.Identity.Name;
         }
         
         [HttpPost]

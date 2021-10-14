@@ -32,12 +32,16 @@
         <v-tab to="/shoe">
           Shoes
         </v-tab>
-        <v-tab to="/User/login">
+        <v-tab to="/User/login" v-if="!$store.getters.ISAUTH">
           Log In
         </v-tab>
-        <v-tab to="/User/signup">
+        <v-tab to="/User/signup" v-if="!$store.getters.ISAUTH">
           Sing in
         </v-tab>
+        <v-tab to="/User/Index" v-if="$store.getters.ISAUTH">
+          User
+        </v-tab>
+        <v-btn @click="isAut1h()">Is Auth</v-btn>
       </v-tabs>
     </v-app-bar>
 
@@ -48,13 +52,22 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+
+import axios from "axios";
+import {utils} from "./utils/utils";
 
 export default {
   name: 'App',
-  computed: mapGetters(["GetAuth"]),
   data: () => ({
     //
   }),
+  methods:{
+    isAut1h(){
+      axios.get(utils.API.USER+"IsAuth").then((response)=>{
+        console.log("asdasfas");
+        console.log(response);
+      })
+    }
+  }
 };
 </script>

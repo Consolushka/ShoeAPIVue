@@ -126,11 +126,26 @@ export class User {
 
     LogIn(){
         console.log(this);
-        return axios.post(utils.API.USER + "Login", this).then(response => response.status);
+        axios.post(utils.API.USER + "Login", this).then((response) => {
+            console.log(response);
+        });
     }
 
     SingUp(){
         console.log(this);
         return axios.post(utils.API.USER + "Register", this).then(response => response.status);
+    }
+
+    LogOut(){
+        return axios.post(utils.API.USER + "Logout").then(response => response.status);
+    }
+
+    GET(){
+        axios.get(utils.API.USER + "GetUser").then((response) =>{
+            console.log(response);
+        })
+            .catch((err)=>{
+                console.log(err.response.data);
+            });
     }
 }
