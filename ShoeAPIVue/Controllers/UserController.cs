@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoeAPIVue.Data;
 using ShoeAPIVue.Models;
 using ShoeAPIVue.Entities;
+using ShoeAPIVue.Services;
 
 namespace ShoeAPIVue.Controllers
 {
@@ -19,13 +20,39 @@ namespace ShoeAPIVue.Controllers
     public class UserController : ControllerBase
     {
 
+        private readonly IUserService _userService;
         private ShoeContext _context;
         private readonly IWebHostEnvironment _env;
 
-        public UserController(ShoeContext context, IWebHostEnvironment env)
+        public UserController(IUserService userService)
         {
-            _context = context;
-            _env = env;
+            _userService = userService;
+        }
+
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+            {
+                return BadRequest("Cannot find user with this email and password");
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserModel model)
+        {
+            var response = await _userService.Register(model);
+
+            if (response == null)
+            {
+                return BadRequest("Error");
+            }
+
+            return Ok(response);
         }
     }
 }

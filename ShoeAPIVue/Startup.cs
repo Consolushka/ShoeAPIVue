@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ShoeAPIVue.Helpers;
+using ShoeAPIVue.Services;
 
 namespace ShoeAPIVue
 {
@@ -32,16 +35,20 @@ namespace ShoeAPIVue
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddScoped(typeof(IEfRepository<>), typeof(UserRepository<>));
+            
+            services.AddAutoMapper(typeof(UserProfile));
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShoeAPIVue", Version = "v1" });
             });
 
-            //Enable CORS
-            services.AddCors(c => {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
-            });
+            // //Enable CORS
+            // services.AddCors(c => {
+            //     c.AddPolicy("AllowOrigin", options => options.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+            // });
 
             //JSON as a Default
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
@@ -52,18 +59,7 @@ namespace ShoeAPIVue
             services.AddDbContext<ShoeContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
             
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => //CookieAuthenticationOptions
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/User/Login");
-                });
-            services.ConfigureApplicationCookie(option => {
-                option.Events.OnRedirectToLogin = context =>
-                {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-            });
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,13 +77,12 @@ namespace ShoeAPIVue
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization(); 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseStaticFiles(new StaticFileOptions
             {

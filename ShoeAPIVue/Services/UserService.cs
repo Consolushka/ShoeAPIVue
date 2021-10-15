@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using ShoeAPIVue.Entities;
+using ShoeAPIVue.Helpers;
 using ShoeAPIVue.Models;
 
 namespace ShoeAPIVue.Services
@@ -30,9 +31,9 @@ namespace ShoeAPIVue.Services
                 return null;
             }
 
-            // var token = _configuration.GenerateJwtToken(user);
+            var token = _configuration.GenerateJwtToken(user);
 
-            return new AuthenticateResponse(user,"asdasd"/*, token*/);
+            return new AuthenticateResponse(user, token);
         }
 
         public async Task<AuthenticateResponse> Register(UserModel userModel)
