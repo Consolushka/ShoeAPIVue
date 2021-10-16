@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ShoeAPIVue.Data;
 
-namespace ShoeAPIVue.Models
+namespace ShoeAPIVue.Entities
 {
-    public class Shoe
+    public class Shoe: Base
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
@@ -13,10 +15,9 @@ namespace ShoeAPIVue.Models
         public string PhotoFileName { get; set; }
         
         
-        public Shoe FillBrand(ShoeContext context)
+        public async Task FillBrand(ShoeContext context)
         {
-            Brand = context.Brand.Find(BrandId);
-            return this;
+            Brand = await context.Brand.FirstOrDefaultAsync(b=>b.Id == BrandId);
         }
     }
 }

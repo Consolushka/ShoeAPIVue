@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeAPIVue.Data;
 using ShoeAPIVue.Models;
+using ShoeAPIVue.Entities;
+using ShoeAPIVue.Services;
 
 namespace ShoeAPIVue.Controllers
 {
@@ -18,105 +20,39 @@ namespace ShoeAPIVue.Controllers
     public class UserController : ControllerBase
     {
 
+        private readonly IUserService _userService;
         private ShoeContext _context;
         private readonly IWebHostEnvironment _env;
 
-        public UserController(ShoeContext context, IWebHostEnvironment env)
+        public UserController(IUserService userService)
         {
-            _context = context;
-            _env = env;
-        }
-        
-        
-        [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login(LoginModel login)
-        {
-            if (ModelState.IsValid)
-            {
-                User user = await _context.User.FirstOrDefaultAsync(u =>
-                    u.Email == login.Email && u.Password == login.Password);
-                if (user != null)
-                {
-                    Authenticate(login.Email);
-                    return Ok("Fine");
-                }
-                return BadRequest("Incorrect User email or password");
-            }
-            return BadRequest("Invalid Data");
+            _userService = userService;
         }
 
-        // POST: api/User
-        [Route("Register")]
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model)
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
         {
-            if (ModelState.IsValid)
-            {
-                User user = await _context.User.FirstOrDefaultAsync(u =>
-                    u.Email == model.Email);
-                if (user == null)
-                {
-                    await _context.User.AddAsync(new User(model));
-                    _context.SaveChanges();
-                
-                    return Ok();
-                }
-                return BadRequest("User with this Email already exists");
-            }
-            return BadRequest("Invalid Data");
-        }
+            var response = _userService.Authenticate(model);
 
-        [HttpGet]
-        [Route("IsAuth")]
-        public bool IsAuth()
-        {
-            string n = User.Identity.Name;
-            if (n != null)
+            if (response == null)
             {
-                return true;
+                return BadRequest("Cannot find user with this email and password");
             }
 
-            return false;
+            return Ok(response);
         }
 
-        [HttpGet]
-        [Route("GetUser")]
-        public IActionResult GetUser()
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserModel model)
         {
-            try
+            var response = await _userService.Register(model);
+
+            if (response == null)
             {
-                User u = _context.User.First(u => u.Email == User.Identity.Name);
-                return Ok(u);
+                return BadRequest("Error");
             }
-            catch
-            {
-                User u = new User();
-                return BadRequest("canot find");
-            }
-        }
-        
 
-        private async Task<string> Authenticate(string userName)
-        {
-            var claims = new List<Claim>
-            {
-                new (ClaimsIdentity.DefaultNameClaimType, userName)
-            };
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-
-            return User.Identity.Name;
-        }
-        
-        [HttpPost]
-        [Route("Logout")]
-        // GET
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return StatusCode(200);
+            return Ok(response);
         }
     }
 }

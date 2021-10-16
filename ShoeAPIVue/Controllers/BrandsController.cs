@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeAPIVue.Data;
-using ShoeAPIVue.Models;
+using ShoeAPIVue.Entities;
 
 namespace ShoeAPIVue.Controllers
 {
