@@ -107,6 +107,7 @@ export class Shoe {
 }
 
 export class User {
+    Id
     Email
     Password
     ConfirmPassword
@@ -126,14 +127,14 @@ export class User {
 
     LogIn(){
         console.log(this);
-        axios.post(utils.API.USER + "Login", this).then((response) => {
+        axios.post(utils.API.USER + "Authenticate", this).then((response) => {
             console.log(response);
         });
     }
 
     SingUp(){
         console.log(this);
-        return axios.post(utils.API.USER + "Register", this).then(response => response.status);
+        return axios.post(utils.API.USER + "Register", this).then(response => response);
     }
 
     LogOut(){

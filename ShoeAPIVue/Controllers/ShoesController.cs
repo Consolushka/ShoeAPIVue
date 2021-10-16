@@ -27,10 +27,18 @@ namespace ShoeAPIVue.Controllers
         [HttpGet]
         public async Task<IEnumerable<Shoe>> GetShoe()
         {
-            List<Shoe> shoes = new List<Shoe>();
-            foreach (var shoe in await _context.Shoe.ToListAsync())
+            List<Shoe> shoes;
+            try
             {
-                shoes.Add(shoe.FillBrand(_context));
+                shoes = await _context.Shoe.ToListAsync();
+                foreach (var shoe in shoes)
+                {
+                    shoe.Brand = await _context.Brand.FirstOrDefaultAsync(b => b.Id == shoe.BrandId);
+                }
+            }
+            catch
+            {
+                shoes = new List<Shoe>();
             }
             return shoes;
         }

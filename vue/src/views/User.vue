@@ -16,9 +16,6 @@ export default {
       router.push('login');
       this.$store.dispatch('LOGOUT', new User());
     }
-  },
-  created() {
-    console.log(new User().GET());
   }
 }
 </script>

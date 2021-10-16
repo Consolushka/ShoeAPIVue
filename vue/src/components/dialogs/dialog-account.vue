@@ -71,7 +71,8 @@ export default {
     },
     SignUp() {
       this.user.SingUp()
-          .then(() => {
+          .then((response) => {
+            console.log(response);
             router.push({name: "login"});
           })
           .catch((err) =>{
