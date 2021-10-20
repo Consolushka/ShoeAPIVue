@@ -33,7 +33,7 @@
               required
           ></v-text-field>
         </v-col>
-        <p class="text text-h6 red--text" v-if="err!==null">{{err}}</p>
+        <p class="text text-h6 red--text" v-if="err!==null">{{ err }}</p>
       </v-row>
       <div></div>
       <v-btn @click="LogIn" v-if="isLogin">Log In</v-btn>
@@ -45,7 +45,7 @@
 <script>
 
 import {User} from "../../utils/classes";
-import router from "../../router";
+// import router from "../../router";
 
 export default {
   name: "dialog-account",
@@ -67,17 +67,22 @@ export default {
   }),
   methods: {
     LogIn() {
-      this.user.LogIn();
+      this.user.Authenticate()
+          .then(data => {
+            this.$store.commit('LOGIN', new User(data));
+          })
+          .finally(() => {
+            console.log(this.$store.getters.GET_USER);
+          });
+
     },
     SignUp() {
-      this.user.SingUp()
-          .then((response) => {
-            console.log(response);
-            router.push({name: "login"});
-          })
-          .catch((err) =>{
-            this.err=err.response.data;
+      this.user.Register()
+          .then(data => {
+            this.$store.commit('LOGIN', new User(data));
           });
+
+      console.log(this.$store.getters.GET_USER);
     }
   }
 

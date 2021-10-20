@@ -18,16 +18,18 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        LOGIN: (state) => {
+        LOGIN: (state, user) => {
             state.IsAuth = true;
+            console.log(user);
+            state.user = user;
         },
         LOGOUT: (state) => {
             state.IsAuth = false
         }
     },
     actions: {
-        LOGIN: (context) => {
-            context.commit('LOGIN');
+        LOGIN: (context, user) => {
+            context.commit('LOGIN', user);
         },
         LOGOUT: (context, user) => {
             user.LogOut();

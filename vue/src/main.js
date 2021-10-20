@@ -12,7 +12,7 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   vuetify,
-  store,
+  store: store,
   // Auth,
   icons: {
     iconfont: 'mdi', // default - only for display purposes

@@ -24,6 +24,7 @@ namespace Middleware
 
         public async Task Invoke(HttpContext context, IUserService userService)
         {
+            var heads = context.Request.Headers["Authorization"];
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)

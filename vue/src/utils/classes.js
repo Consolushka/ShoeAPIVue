@@ -17,7 +17,12 @@ export class Brand {
     }
 
     POST() {
-        return axios.post(utils.API.BRANDS, {Name: this.Name}).then(response => response.status);
+        // let config = {
+        //     headers:{
+        //         "Authorization":
+        //     }
+        // }
+        return axios.post(utils.API.BRANDS+"Add", this).then(response => response.status);
     }
 
     PUT() {
@@ -110,43 +115,28 @@ export class User {
     Id
     Email
     Password
-    ConfirmPassword
+    token
 
     constructor(user) {
         if (user === undefined) {
             user = {
                 Email: "",
                 Password: "",
-                ConfirmPassword: ""
+                token: ""
             }
         }
-        this.Email = user.Email;
+        this.Email = user.email;
         this.Password = user.Password;
-        this.ConfirmPassword = user.ConfirmPassword
+        this.token = user.token;
     }
 
-    LogIn(){
-        console.log(this);
-        axios.post(utils.API.USER + "Authenticate", this).then((response) => {
-            console.log(response);
-        });
+    Register(){
+        return axios.post(utils.API.USER+"register", this)
+            .then(response => response.data);
     }
 
-    SingUp(){
-        console.log(this);
-        return axios.post(utils.API.USER + "Register", this).then(response => response);
-    }
-
-    LogOut(){
-        return axios.post(utils.API.USER + "Logout").then(response => response.status);
-    }
-
-    GET(){
-        axios.get(utils.API.USER + "GetUser").then((response) =>{
-            console.log(response);
-        })
-            .catch((err)=>{
-                console.log(err.response.data);
-            });
+    Authenticate(){
+        return axios.post(utils.API.USER+"authenticate", this)
+            .then(response => response.data);
     }
 }

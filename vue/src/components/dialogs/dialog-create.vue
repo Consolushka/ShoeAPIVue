@@ -57,7 +57,7 @@
 
 <script>
 import Alert from "../alert";
-import {eventBus} from "../../main";
+// import {eventBus} from "../../main";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form";
 
@@ -83,16 +83,17 @@ export default {
   },
   methods:{
     Create(){
-      this.model.POST().then(status=>{
-        if(status>=200 && status<300){
-          eventBus.$emit(`refresh${this.model.ModelName}s`);
-          this.responseFine = status;
-          this.snackBar = true;
-        }
-        else{
-          this.responseFine = status;
-        }
-      });
+      this.model.POST();
+      // this.model.POST().then(status=>{
+      //   if(status>=200 && status<300){
+      //     eventBus.$emit(`refresh${this.model.ModelName}s`);
+      //     this.responseFine = status;
+      //     this.snackBar = true;
+      //   }
+      //   else{
+      //     this.responseFine = status;
+      //   }
+      // });
 
     }
   }

@@ -4,7 +4,7 @@ export const utils = {
   API: {
     BRANDS: `${ROOT}Brand/`,
     SHOES:`${ROOT}shoes/`,
-    USER: `${ROOT}user/`
+    USER: `${ROOT}users/`
   },
   PHOTO_URL: `${ROOT}photos/`,
 }
