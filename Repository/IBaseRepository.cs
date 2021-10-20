@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities;
 
 namespace Repository
@@ -7,6 +8,6 @@ namespace Repository
     {
         List<T> GetAll();
         T GetById(long Id);
-        long Add(T entity);
+        Task<long> Add(T entity);
     }
 }

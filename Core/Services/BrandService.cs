@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.Models;
 using Repository;
 using Repository.EntityRepository;
@@ -26,7 +27,7 @@ namespace Core
 
         public long Add(Brand brand)
         {
-            return _brandRepository.Add(brand);
+            return _brandRepository.Add(brand).Result;
         }
 
         public Brand Update(Brand brand)

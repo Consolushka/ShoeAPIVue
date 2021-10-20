@@ -2,6 +2,7 @@
 using Core;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Middleware;
 
 namespace WebApplication.Controllers
 {
@@ -30,18 +31,21 @@ namespace WebApplication.Controllers
             return _brandService.GetById(id);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public long Add(Brand brand)
         {
             return _brandService.Add(brand);
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public Brand Update(Brand brand)
         {
             return _brandService.Update(brand);
         }
 
+        [Authorize]
         [HttpDelete("Delete")]
         public IActionResult Delete(long id)
         {

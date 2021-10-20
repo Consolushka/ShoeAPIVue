@@ -1,8 +1,8 @@
-const ROOT = "http://localhost:5000/";
+const ROOT = "http://localhost:5001/";
 
 export const utils = {
   API: {
-    BRANDS: `${ROOT}api/brands/`,
+    BRANDS: `${ROOT}api/Brand/`,
     SHOES:`${ROOT}api/shoes/`,
     USER: `${ROOT}user/`
   },

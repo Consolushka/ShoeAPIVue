@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Entities.Models;
 
 namespace Repository.EntityRepository
@@ -23,9 +24,9 @@ namespace Repository.EntityRepository
             return _context.Brand.FirstOrDefault(b => b.Id == Id);
         }
 
-        public long Add(Brand brand)
+        public async Task<long> Add(Brand brand)
         {
-            var res = _context.Add(brand);
+            var res = await _context.AddAsync(brand);
             _context.SaveChanges();
             return res.Entity.Id;
         }
