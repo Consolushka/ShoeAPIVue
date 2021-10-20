@@ -61,11 +61,14 @@ export default {
           }
         }})
         .then((response) => {
+          console.log(response);
           this.brands = [];
           // console.log("100");
           response.data.forEach((brand)=>{
+            console.log(brand);
             this.brands.push(new Brand(brand));
           });
+          console.log(this.brands);
         });
     }
   },

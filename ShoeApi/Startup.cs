@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using Middleware;
 using Repository;
 using Repository.EntityRepository;
-using AutoMapper;
 
 namespace WebApplication
 {
@@ -34,6 +33,10 @@ namespace WebApplication
             services.AddDbContext<ShoeContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SchoolContext"), b=>b.MigrationsAssembly("ShoeApi")));
             
+            services.AddCors(c => {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+            });
+            
             services.AddAutoMapper(typeof(UserMapper));
             
             services.AddScoped<IUserRepository, UserRepository>();
@@ -46,6 +49,9 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Enable CORS
+            app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

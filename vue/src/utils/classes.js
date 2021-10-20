@@ -12,8 +12,8 @@ export class Brand {
             this.Name = "";
             return;
         }
-        this.Id = brand.Id;
-        this.Name = brand.Name;
+        this.Id = brand.id;
+        this.Name = brand.name;
     }
 
     POST() {
