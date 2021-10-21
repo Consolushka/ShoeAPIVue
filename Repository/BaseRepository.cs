@@ -19,9 +19,9 @@ namespace Repository
             return _context.Set<T>().ToList();
         }
 
-        public T GetById(long Id)
+        public T GetById(long id)
         {
-            return _context.Set<T>().FirstOrDefault(t => t.Id == Id);
+            return _context.Set<T>().FirstOrDefault(t => t.Id == id);
         }
 
         public async Task<long> Add(T entity)

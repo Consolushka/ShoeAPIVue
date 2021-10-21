@@ -20,9 +20,9 @@ namespace Repository.EntityRepository
             return _context.User.ToList();
         }
 
-        public User GetById(long Id)
+        public User GetById(long id)
         {
-            return _context.User.FirstOrDefault(t => t.Id == Id);
+            return _context.User.FirstOrDefault(t => t.Id == id);
         }
 
         public async Task<long> Add(User entity)

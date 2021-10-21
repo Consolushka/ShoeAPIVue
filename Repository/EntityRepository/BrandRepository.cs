@@ -19,9 +19,9 @@ namespace Repository.EntityRepository
             return _context.Brand.ToList();
         }
 
-        public Brand GetById(long Id)
+        public Brand GetById(long id)
         {
-            return _context.Brand.FirstOrDefault(b => b.Id == Id);
+            return _context.Brand.FirstOrDefault(b => b.Id == id);
         }
 
         public async Task<long> Add(Brand brand)

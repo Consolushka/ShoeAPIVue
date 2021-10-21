@@ -7,7 +7,7 @@ namespace Repository
     public interface IBaseRepository<T> where T:Base
     {
         List<T> GetAll();
-        T GetById(long Id);
+        T GetById(long id);
         Task<long> Add(T entity);
     }
 }
