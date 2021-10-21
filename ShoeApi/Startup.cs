@@ -41,9 +41,11 @@ namespace WebApplication
             
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IShoeRepository, ShoeRepository>();
             
             services.AddScoped<IUserService, UserService>();
-            services.AddTransient<IBrandService, BrandService>();
+            services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IShoeService, ShoeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
