@@ -1,30 +1,29 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {User} from "../utils/classes";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        IsAuth: false,
-        user: new User()
+        IsAuth: localStorage.getItem('IsAuth'),
+        Token: localStorage.getItem('token')
     },
     getters: {
         ISAUTH: state => {
             return state.IsAuth;
         },
-        GET_USER: state =>{
-            return state.user;
+        TOKEN: state =>{
+            return state.Token;
         }
     },
     mutations: {
-        LOGIN: (state, user) => {
-            state.IsAuth = true;
-            console.log(user);
-            state.user = user;
+        LOGIN: (state) => {
+            state.IsAuth = 'true';
+            state.Token = localStorage.getItem('token');
         },
         LOGOUT: (state) => {
-            state.IsAuth = false
+            state.IsAuth = 'false';
+            state.Token = localStorage.getItem('token');
         }
     },
     actions: {

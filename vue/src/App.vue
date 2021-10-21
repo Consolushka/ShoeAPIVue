@@ -32,16 +32,15 @@
         <v-tab to="/shoe">
           Shoes
         </v-tab>
-        <v-tab to="/User/login" v-if="!$store.getters.ISAUTH">
+        <v-tab to="/User/login" v-if="$store.getters.ISAUTH !== 'true'">
           Log In
         </v-tab>
-        <v-tab to="/User/signup" v-if="!$store.getters.ISAUTH">
+        <v-tab to="/User/signup" v-if="$store.getters.ISAUTH !== 'true'">
           Sing in
         </v-tab>
-        <v-tab to="/User/Index" v-if="$store.getters.ISAUTH">
-          User
-        </v-tab>
-        <v-btn @click="isAut1h()">Is Auth</v-btn>
+        <v-btn color="red" style="margin: auto 0" @click="LogOut" v-if="$store.getters.ISAUTH === 'true'">
+          Log Out
+        </v-btn>
       </v-tabs>
     </v-app-bar>
 
@@ -53,21 +52,20 @@
 
 <script>
 
-import axios from "axios";
-import {utils} from "./utils/utils";
-
 export default {
   name: 'App',
   data: () => ({
     //
   }),
   methods:{
-    isAut1h(){
-      axios.get(utils.API.USER+"IsAuth").then((response)=>{
-        console.log("asdasfas");
-        console.log(response);
-      })
+    LogOut(){
+      localStorage.setItem('IsAuth', "false");
+      localStorage.setItem('token', "");
+      this.$store.commit('LOGOUT');
     }
+  },
+  mounted() {
+    this.$store.commit('LOGIN');
   }
 };
 </script>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +47,7 @@ namespace WebApplication.Controllers
         }
 
         [Authorize]
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete/{id}")]
         public IActionResult Delete(long id)
         {
             _brandService.Delete(id);

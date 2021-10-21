@@ -17,20 +17,31 @@ export class Brand {
     }
 
     POST() {
-        // let config = {
-        //     headers:{
-        //         "Authorization":
-        //     }
-        // }
-        return axios.post(utils.API.BRANDS+"Add", this).then(response => response.status);
+        let config = {
+            headers:{
+                "Authorization": localStorage.getItem('token')
+            }
+        };
+        return axios.post(utils.API.BRANDS+"Add", this, config).then(response => response.status);
     }
 
     PUT() {
-        return axios.put(utils.API.BRANDS + this.Id, this).then(response => response.status);
+        let config = {
+            headers:{
+                "Authorization": localStorage.getItem('token')
+            }
+        };
+        return axios.put(utils.API.BRANDS + "Update", this, config).then(response => response.status);
     }
 
     DELETE() {
-        return axios.delete(utils.API.BRANDS + this.Id).then(response => response.status);
+        let config = {
+            headers:{
+                "Authorization": localStorage.getItem('token')
+            }
+        };
+        console.log(this.Id);
+        return axios.delete(utils.API.BRANDS + "Delete/"+this.Id, config).then(response => response.status);
     }
 
     DELETEForce() {

@@ -45,7 +45,7 @@
 <script>
 
 import {User} from "../../utils/classes";
-// import router from "../../router";
+import router from "../../router";
 
 export default {
   name: "dialog-account",
@@ -69,20 +69,20 @@ export default {
     LogIn() {
       this.user.Authenticate()
           .then(data => {
-            this.$store.commit('LOGIN', new User(data));
-          })
-          .finally(() => {
-            console.log(this.$store.getters.GET_USER);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('isAuth', "true");
+            this.$store.commit('LOGIN');
+            router.push({name: 'brand'});
           });
-
     },
     SignUp() {
       this.user.Register()
           .then(data => {
-            this.$store.commit('LOGIN', new User(data));
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('isAuth', "true");
+            this.$store.commit('LOGIN');
+            router.push({name: 'brand'});
           });
-
-      console.log(this.$store.getters.GET_USER);
     }
   }
 
