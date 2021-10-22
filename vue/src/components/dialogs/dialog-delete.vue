@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     Delete() {
-      this.model.DELETE().then(status => {
+      this.model.DELETE(this.$store.getters.CONFIG_HEADER).then(status => {
         this.responseFine = status;
         this.snackBar = true;
         setTimeout(this.SendRefresh, 2000);

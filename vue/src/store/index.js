@@ -14,6 +14,13 @@ export const store = new Vuex.Store({
         },
         TOKEN: state =>{
             return state.Token;
+        },
+        CONFIG_HEADER: state => {
+            return {
+                headers:{
+                    "Authorization": state.Token
+                }
+            };
         }
     },
     mutations: {

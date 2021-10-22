@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Core;
 using Entities.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
 
@@ -11,10 +13,12 @@ namespace WebApplication.Controllers
     public class ShoeController: Controller
     {
         private readonly IShoeService _service;
+        private readonly IWebHostEnvironment _env;
 
-        public ShoeController(IShoeService service)
+        public ShoeController(IShoeService service, IWebHostEnvironment env)
         {
             _service = service;
+            _env = env;
         }
         
         [HttpGet("GetAll")]
@@ -51,6 +55,30 @@ namespace WebApplication.Controllers
         {
             _service.Delete(id);
             return Ok();
+        }
+        
+        [Authorize]
+        [HttpPost("SaveFile")]
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httprequest = Request.Form;
+                var requestFile = httprequest.Files[0];
+                string fileName = requestFile.FileName;
+                var PhysicalPath = _env.ContentRootPath + "/Photos/" + fileName;
+
+                using (var stream = new FileStream(PhysicalPath, FileMode.Create))
+                {
+                    requestFile.CopyTo(stream);
+                }
+
+                return new JsonResult(fileName);
+            }
+            catch
+            {
+                return new JsonResult("error.png");
+            }
         }
     }
 }

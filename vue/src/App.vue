@@ -15,7 +15,7 @@
           width="80"
         />
 
-        <p class="text text-h4 mb-0">ShopApiVue</p>
+        <p class="text text-h4 mb-0">ShoeApiVue</p>
       </div>
 
       <v-tabs

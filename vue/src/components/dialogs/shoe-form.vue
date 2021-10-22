@@ -109,7 +109,7 @@ export default {
     UploadImage() {
       let form = new FormData();
       form.append("file", this.files);
-      axios.post(`${utils.API.SHOES}SaveFile`, form)
+      axios.post(`${utils.API.SHOES}SaveFile`, form, this.$store.getters.CONFIG_HEADER)
           .then((response) => {
             this.shoe.PhotoFileName = response.data;
           });

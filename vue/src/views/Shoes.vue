@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     Refresh() {
-      axios.get(utils.API.SHOES, {
+      axios.get(utils.API.SHOES+"GetAll", {
         onDownloadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
           // console.log("onUploadProgress", totalLength);
@@ -156,7 +156,7 @@ export default {
   },
   mounted() {
     this.Refresh();
-    axios.get(utils.API.BRANDS)
+    axios.get(utils.API.BRANDS+"GetAll")
         .then((response) => {
           this.brands = [];
           // console.log("100");

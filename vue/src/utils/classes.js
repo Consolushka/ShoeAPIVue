@@ -16,30 +16,15 @@ export class Brand {
         this.Name = brand.name;
     }
 
-    POST() {
-        let config = {
-            headers:{
-                "Authorization": localStorage.getItem('token')
-            }
-        };
+    POST(config) {
         return axios.post(utils.API.BRANDS+"Add", this, config).then(response => response.status);
     }
 
-    PUT() {
-        let config = {
-            headers:{
-                "Authorization": localStorage.getItem('token')
-            }
-        };
+    PUT(config) {
         return axios.put(utils.API.BRANDS + "Update", this, config).then(response => response.status);
     }
 
-    DELETE() {
-        let config = {
-            headers:{
-                "Authorization": localStorage.getItem('token')
-            }
-        };
+    DELETE(config) {
         console.log(this.Id);
         return axios.delete(utils.API.BRANDS + "Delete/"+this.Id, config).then(response => response.status);
     }
@@ -66,11 +51,11 @@ export class Shoe {
             this.CreationTime = null;
             this.PhotoFileName = "undefined.jpg"
         } else {
-            this.Id = shoe.Id;
-            this.Name = shoe.Name;
-            this.Brand = shoe.Brand;
-            this.CreationTime = shoe.CreationTime;
-            this.PhotoFileName = shoe.PhotoFileName;
+            this.Id = shoe.id;
+            this.Name = shoe.name;
+            this.Brand = new Brand(shoe.brand);
+            this.CreationTime = shoe.creationTime;
+            this.PhotoFileName = shoe.photoFileName;
         }
     }
 
@@ -110,7 +95,7 @@ export class Shoe {
     }
 
     POST() {
-        return axios.post(utils.API.SHOES, this.ToModel()).then(response => response.status);
+        return axios.post(utils.API.SHOES, this).then(response => response.status);
     }
 
     PUT() {

@@ -83,7 +83,7 @@ export default {
   },
   methods:{
     Update(){
-      this.model.PUT().then(status =>{
+      this.model.PUT(this.$store.getters.CONFIG_HEADER).then(status =>{
         if (status < 300 && status>=200) {
           this.responseFine = status;
           this.snackBar = true;
