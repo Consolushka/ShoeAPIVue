@@ -94,16 +94,16 @@ export class Shoe {
         console.log(this, filterParam);
     }
 
-    POST() {
-        return axios.post(utils.API.SHOES, this).then(response => response.status);
+    POST(config) {
+        return axios.post(utils.API.SHOES+"Add", this.ToModel(), config).then(response => response.status);
     }
 
-    PUT() {
-        return axios.put(utils.API.SHOES + this.Id, this.ToModel()).then(response => response.status);
+    PUT(config) {
+        return axios.put(utils.API.SHOES + "Update", this, config).then(response => response.status);
     }
 
-    DELETE() {
-        return axios.delete(utils.API.SHOES + this.Id).then(response => response.status);
+    DELETE(config) {
+        return axios.delete(utils.API.SHOES +"Delete/" + this.Id, config).then(response => response.status);
     }
 }
 
