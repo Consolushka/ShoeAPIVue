@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.EntityRepository
 {
@@ -16,7 +17,8 @@ namespace Repository.EntityRepository
 
         public List<Shoe> GetAll()
         {
-            return _context.Shoe.ToList();
+            var res =_context.Shoe.Include(s=>s.Brand).ToList();
+            return res;
         }
 
         public Shoe GetById(long id)

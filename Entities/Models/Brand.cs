@@ -1,4 +1,6 @@
-﻿namespace Entities.Models
+﻿using System.Collections.Generic;
+
+namespace Entities.Models
 {
     public class Brand: Base
     {
