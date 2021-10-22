@@ -37,8 +37,7 @@ export const store = new Vuex.Store({
         LOGIN: (context, user) => {
             context.commit('LOGIN', user);
         },
-        LOGOUT: (context, user) => {
-            user.LogOut();
+        LOGOUT: (context) => {
             context.commit('LOGOUT');
         }
     },

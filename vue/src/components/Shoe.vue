@@ -38,9 +38,9 @@
 
         <dialog-info :model="shoe" :brands="brands"></dialog-info>
 
-        <dialog-update :model="shoe" :brands="brands"></dialog-update>
+        <dialog-update :model="shoe" :brands="brands" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-update>
 
-        <dialog-delete :model="shoe" :brands="brands"></dialog-delete>
+        <dialog-delete :model="shoe" :brands="brands" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-delete>
 
       </v-card-actions>
     </v-card>

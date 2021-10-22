@@ -78,7 +78,7 @@
           </v-row>
         </v-container>
       </v-form>
-      <dialog-create :model="mockShoe" :brands="brands"></dialog-create>
+      <dialog-create :model="mockShoe" :brands="brands" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-create>
       <v-row>
           <shoe v-for="shoe in Shoes" :key="shoe.Id" v-bind:shoe="shoe" :brands="brands"></shoe>
       </v-row>

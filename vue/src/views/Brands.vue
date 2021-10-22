@@ -24,7 +24,7 @@
         </tbody>
       </template>
     </v-simple-table>
-      <dialog-create @refresh="refreshBrands" :model="selectedBrand"></dialog-create>
+      <dialog-create @refresh="refreshBrands" :model="selectedBrand" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-create>
     </v-container>
 
   </section>
