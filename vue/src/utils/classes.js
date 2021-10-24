@@ -17,7 +17,7 @@ export class Brand {
     }
 
     POST(config) {
-        return axios.post(utils.API.BRANDS+"Add", this, config).then(response => response.status);
+        return axios.post(utils.API.BRANDS+"Add", this, config).then(response => response);
     }
 
     PUT(config) {
@@ -95,7 +95,7 @@ export class Shoe {
     }
 
     POST(config) {
-        return axios.post(utils.API.SHOES+"Add", this.ToModel(), config).then(response => response.status);
+        return axios.post(utils.API.SHOES+"Add", this.ToModel(), config).then(response => response);
     }
 
     PUT(config) {
@@ -111,19 +111,22 @@ export class User {
     Id
     Email
     Password
+    RoleId
     token
 
     constructor(user) {
         if (user === undefined) {
             user = {
-                Email: "",
-                Password: "",
-                token: ""
+                email: "",
+                password: "",
+                token: "",
+                roleId: 1
             }
         }
         this.Email = user.email;
         this.Password = user.Password;
         this.token = user.token;
+        this.RoleId = user.roleId;
     }
 
     Register(){

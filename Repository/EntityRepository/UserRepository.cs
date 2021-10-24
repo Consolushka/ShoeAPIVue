@@ -28,7 +28,7 @@ namespace Repository.EntityRepository
         public async Task<long> Add(User entity)
         {
             var res = await _context.AddAsync(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return res.Entity.Id;
         }
     }

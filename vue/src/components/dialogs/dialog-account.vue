@@ -17,7 +17,6 @@
         >
           <v-text-field
               v-model="user.Password"
-              :rules="nameRules"
               label="Password"
               required
           ></v-text-field>
@@ -28,7 +27,6 @@
         >
           <v-text-field
               v-model="user.ConfirmPassword"
-              :rules="nameRules"
               label="Confirm Password"
               required
           ></v-text-field>
@@ -56,10 +54,6 @@ export default {
     valid: false,
     err: null,
     user: new User(),
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => v.length <= 10 || 'Name must be less than 10 characters',
-    ],
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid',
@@ -69,9 +63,12 @@ export default {
     LogIn() {
       this.user.Authenticate()
           .then(data => {
+            console.log(data);
             localStorage.setItem('token', data.token);
-            localStorage.setItem('isAuth', "true");
-            this.$store.commit('LOGIN');
+            localStorage.setItem('IsAuth', "true");
+            console.log(localStorage.getItem('IsAuth'));
+            console.log(localStorage.getItem('token'));
+            this.$store.commit('LOGIN', data.id);
             router.push({name: 'brand'});
           });
     },

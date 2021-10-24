@@ -7,9 +7,9 @@
     <td>
       <dialog-info :model="brand"></dialog-info>
 
-      <dialog-update :model="brand" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-update>
+      <dialog-update :model="brand" v-if="this.$store.getters.IS_ADMIN"></dialog-update>
 
-      <dialog-delete :model="brand" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-delete>
+      <dialog-delete :model="brand" v-if="this.$store.getters.IS_ADMIN"></dialog-delete>
     </td>
   </tr>
 </template>

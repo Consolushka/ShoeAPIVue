@@ -65,7 +65,9 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('LOGIN');
+    if(localStorage.getItem("userId") !== '0' && localStorage.getItem("userId") !== null){
+      this.$store.commit('LOGIN', localStorage.getItem("userId"));
+    }
   }
 };
 </script>

@@ -45,7 +45,7 @@ namespace Core
         {
             var user = _mapper.Map<User>(userModel);
 
-            var addedUser = _userRepository.Add(user);
+            var addedUser = await _userRepository.Add(user);
 
             var response = Authenticate(new AuthenticateRequest
             {

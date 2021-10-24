@@ -11,6 +11,7 @@ namespace Middleware
             CreateMap<UserModel, User>()
                 .ForMember(dst => dst.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dst => dst.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dst => dst.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 ;
             

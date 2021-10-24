@@ -44,6 +44,14 @@ namespace WebApplication.Controllers
         }
 
         [Authorize]
+        [HttpPost("GetById")]
+        public UserResponse GetById(int id)
+        {
+            var u = new UserResponse(_userService.GetById(id));
+            return u;
+        }
+
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {

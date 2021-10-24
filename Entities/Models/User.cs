@@ -7,5 +7,8 @@ namespace Entities.Models
         public string Email { get; set; }
         [JsonIgnore]
         public string Password { get; set; }
+
+        public long RoleId { get; set; }
+        public Role Role { get; set;}
     }
 }

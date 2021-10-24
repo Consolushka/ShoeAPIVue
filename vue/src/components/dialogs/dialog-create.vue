@@ -83,7 +83,8 @@ export default {
   },
   methods:{
     Create(){
-      this.model.POST(this.$store.getters.CONFIG_HEADER).then(status=>{
+      this.model.POST(this.$store.getters.CONFIG_HEADER).then((response)=>{
+        let status = response.status;
         if(status>=200 && status<300){
           eventBus.$emit(`refresh${this.model.ModelName}s`);
           this.responseFine = status;
@@ -92,6 +93,8 @@ export default {
         else{
           this.responseFine = status;
         }
+      }).catch((response)=>{
+        console.log(response);
       });
 
     }

@@ -24,7 +24,7 @@
         </tbody>
       </template>
     </v-simple-table>
-      <dialog-create @refresh="refreshBrands" :model="selectedBrand" v-if="this.$store.getters.ISAUTH === 'true'"></dialog-create>
+      <dialog-create @refresh="refreshBrands" :model="selectedBrand" v-if="this.$store.getters.IS_ADMIN"></dialog-create>
     </v-container>
 
   </section>

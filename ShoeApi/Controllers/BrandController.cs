@@ -33,6 +33,7 @@ namespace WebApplication.Controllers
         }
 
         [Authorize]
+        [Admin]
         [HttpPost("Add")]
         public long Add(Brand brand)
         {
@@ -40,6 +41,7 @@ namespace WebApplication.Controllers
         }
 
         [Authorize]
+        [Admin]
         [HttpPut("Update")]
         public Brand Update(Brand brand)
         {
@@ -47,6 +49,7 @@ namespace WebApplication.Controllers
         }
 
         [Authorize]
+        [Admin]
         [HttpDelete("Delete/{id}")]
         public IActionResult Delete(long id)
         {
