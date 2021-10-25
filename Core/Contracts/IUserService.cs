@@ -8,7 +8,7 @@ namespace Core
     public interface IUserService
     {
         AuthenticateResponse Authenticate(AuthenticateRequest model);
-        Task<AuthenticateResponse> Register(UserModel userModel);
+        Task<string> Register(UserModel userModel);
         List<User> GetAll();
         User GetById(long Id);
     }

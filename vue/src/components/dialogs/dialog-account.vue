@@ -17,6 +17,7 @@
         >
           <v-text-field
               v-model="user.Password"
+              type="password"
               label="Password"
               required
           ></v-text-field>
@@ -27,6 +28,7 @@
         >
           <v-text-field
               v-model="user.ConfirmPassword"
+              type="password"
               label="Confirm Password"
               required
           ></v-text-field>

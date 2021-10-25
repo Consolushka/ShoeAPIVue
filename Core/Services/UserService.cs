@@ -28,7 +28,7 @@ namespace Core
         {
             var user = _userRepository
                 .GetAll()
-                .FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+                .FirstOrDefault(x => x.Email == model.Email && _configuration.Decode(x.Password) == model.Password);
 
             if (user == null)
             {
@@ -41,19 +41,21 @@ namespace Core
             return new AuthenticateResponse(user, token);
         }
 
-        public async Task<AuthenticateResponse> Register(UserModel userModel)
+        public async Task<string> Register(UserModel userModel)
         {
+            userModel.Password = _configuration.Encode(userModel.Password);
+            userModel.RoleId = 1;
             var user = _mapper.Map<User>(userModel);
 
             var addedUser = await _userRepository.Add(user);
 
-            var response = Authenticate(new AuthenticateRequest
-            {
-                Email = user.Email,
-                Password = user.Password
-            });
+            // var response = Authenticate(new AuthenticateRequest
+            // {
+            //     Email = user.Email,
+            //     Password = user.Password
+            // });
             
-            return response;
+            return "Fine";
         }
         public List<User> GetAll()
         {
