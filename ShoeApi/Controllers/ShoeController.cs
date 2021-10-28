@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Core;
+using Core.Contracts;
 using Entities.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

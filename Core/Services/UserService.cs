@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Models;
 using Entities.Support;
 using Microsoft.Extensions.Configuration;
-using Middleware;
-using Repository;
-using Repository.EntityRepository;
+using Repository.Contracts;
+using Core.Contracts;
 
-namespace Core
+namespace Core.Services
 {
     public class UserService: IUserService
     {

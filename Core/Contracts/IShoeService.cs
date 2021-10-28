@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Entities.Models;
 
-namespace Core
+namespace Core.Contracts
 {
     public interface IShoeService
     {

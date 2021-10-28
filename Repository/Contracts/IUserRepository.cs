@@ -1,6 +1,6 @@
 ﻿using Entities.Models;
 
-namespace Repository
+namespace Repository.Contracts
 {
     public interface IUserRepository: IBaseRepository<User>
     {

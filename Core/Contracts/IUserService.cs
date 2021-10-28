@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Entities.Models;
 using Entities.Support;
 
-namespace Core
+namespace Core.Contracts
 {
     public interface IUserService
     {

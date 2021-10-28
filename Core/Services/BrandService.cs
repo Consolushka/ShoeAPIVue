@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Entities.Models;
-using Repository;
-using Repository.EntityRepository;
+using Repository.Contracts;
+using Core.Contracts;
 
-namespace Core
+namespace Core.Services
 {
     public class BrandService: IBrandService
     {

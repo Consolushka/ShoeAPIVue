@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core;
-using Entities.Models;
+﻿using System.Threading.Tasks;
+using Core.Contracts;
 using Entities.Support;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;

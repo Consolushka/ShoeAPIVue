@@ -1,5 +1,6 @@
 using System.IO;
-using Core;
+using Core.Contracts;
+using Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
+using Repository.Contracts;
 using Middleware;
 using Repository;
 using Repository.EntityRepository;

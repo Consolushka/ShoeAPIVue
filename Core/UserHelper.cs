@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Formats.Asn1;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Security.Claims;
@@ -10,7 +9,7 @@ using Entities.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Middleware
+namespace Core
 {
     public static class UserHelper
     {

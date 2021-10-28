@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Contracts;
 
 namespace Repository.EntityRepository
 {

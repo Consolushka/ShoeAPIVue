@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Core;
+﻿using System.Collections.Generic;
+using Core.Contracts;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
