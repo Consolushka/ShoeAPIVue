@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.EntityRepository
 {
@@ -27,6 +28,13 @@ namespace Repository.EntityRepository
 
         public async Task<long> Add(User entity)
         {
+            foreach (var user in await _context.User.ToListAsync())
+            {
+                if (entity.Email == user.Email)
+                {
+                    return 0;
+                }
+            }
             var res = await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             return res.Entity.Id;

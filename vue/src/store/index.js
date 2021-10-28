@@ -27,10 +27,7 @@ export const store = new Vuex.Store({
             };
         },
         IS_ADMIN: state => {
-            if (state.User.RoleId === 2){
-                return true;
-            }
-            return false;
+            return state.User.RoleId === 2;
         }
     },
     mutations: {
@@ -53,13 +50,6 @@ export const store = new Vuex.Store({
             state.Token = localStorage.getItem('token');
             state.User = new User();
             localStorage.setItem('userId', "0");
-        },
-        GET_USER_BY_ID:(state)=>{
-            axios.post(utils.API.USER+"GetById", localStorage.getItem("userId"), state.getters("CONFIG_HEADER"))
-                .then((response)=>{
-                    console.log(response.data);
-                    state.User = new User(response.data);
-                })
         }
     },
     actions: {

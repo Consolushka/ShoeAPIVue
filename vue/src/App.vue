@@ -47,15 +47,21 @@
     <v-main>
       <router-view/>
     </v-main>
+    <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="snackBar=false" :text="text"></alert>
   </v-app>
 </template>
 
 <script>
 
+import Alert from "./components/alert";
+import {eventBus} from "./main";
 export default {
   name: 'App',
+  components: {Alert},
   data: () => ({
-    //
+    snackBar: false,
+    responseFine: true,
+    text: ""
   }),
   methods:{
     LogOut(){
@@ -68,6 +74,14 @@ export default {
     if(localStorage.getItem("userId") !== '0' && localStorage.getItem("userId") !== null){
       this.$store.commit('LOGIN', localStorage.getItem("userId"));
     }
+  },
+  created() {
+    eventBus.$on('showNotification', (params)=>{
+      console.log(params);
+      this.snackBar = params.snackBar;
+      this.responseFine = params.responseFine;
+      this.text = params.text;
+    })
   }
 };
 </script>

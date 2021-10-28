@@ -46,6 +46,7 @@
 
 import {User} from "../../utils/classes";
 import router from "../../router";
+import {eventBus} from "../../main";
 
 export default {
   name: "dialog-account",
@@ -64,23 +65,30 @@ export default {
   methods: {
     LogIn() {
       this.user.Authenticate()
-          .then(data => {
-            console.log(data);
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('IsAuth', "true");
-            console.log(localStorage.getItem('IsAuth'));
-            console.log(localStorage.getItem('token'));
-            this.$store.commit('LOGIN', data.id);
-            router.push({name: 'brand'});
+          .then(response => {
+            if(response.status>=200 && response.status<=300){
+              eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Logged in"});
+              localStorage.setItem('token', response.data.token);
+              localStorage.setItem('IsAuth', "true");
+              this.$store.commit('LOGIN', response.data.id);
+              router.push({name: 'brand'});
+            }
+            else{
+              eventBus.$emit('showNotification', {responseFine: "Error", snackBar: true, text: response.data});
+            }
           });
     },
     SignUp() {
       this.user.Register()
-          .then(data => {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('isAuth', "true");
-            this.$store.commit('LOGIN');
-            router.push({name: 'brand'});
+          .then((res) => {
+            if(res.status >=200 && res.status<=300){
+              eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Signed up successfully"})
+              router.push({name: 'login'});
+            }
+            else{
+              eventBus.$emit('showNotification', {responseFine: "Error", snackBar: true, text: res.data})
+              console.log(res.data);
+            }
           });
     }
   }

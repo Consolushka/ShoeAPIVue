@@ -131,11 +131,13 @@ export class User {
 
     Register(){
         return axios.post(utils.API.USER+"register", this)
-            .then(response => response.data);
+            .then(response => response)
+            .catch(err => err.response);
     }
 
     Authenticate(){
         return axios.post(utils.API.USER+"authenticate", this)
-            .then(response => response.data);
+            .then(response => response)
+            .catch(err=>err.response);
     }
 }

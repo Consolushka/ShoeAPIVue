@@ -49,20 +49,18 @@
             @click="Create">
           Create
         </v-btn>
-        <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="snackBar=false"></alert>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import Alert from "../alert";
 import {eventBus} from "../../main";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form";
 
 export default {
-  components: {ShoeForm, BrandForm, Alert},
+  components: {ShoeForm, BrandForm},
   props: {
     model: Object,
     brands: {
@@ -87,11 +85,10 @@ export default {
         let status = response.status;
         if(status>=200 && status<300){
           eventBus.$emit(`refresh${this.model.ModelName}s`);
-          this.responseFine = status;
-          this.snackBar = true;
+          eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
         }
         else{
-          this.responseFine = status;
+          eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
         }
       }).catch((response)=>{
         console.log(response);

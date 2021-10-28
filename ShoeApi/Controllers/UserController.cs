@@ -25,7 +25,7 @@ namespace WebApplication.Controllers
             var response = _userService.Authenticate(model);
 
             if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest("Username or password is incorrect");
 
             return Ok(response);
         }
@@ -35,12 +35,12 @@ namespace WebApplication.Controllers
         {
             var response = await _userService.Register(userModel);
 
-            if (response == null)
+            if (response)
             {
-                return BadRequest(new {message = "Didn't register!"});
+                return Ok();
             }
-
-            return Ok(response);
+            
+            return BadRequest("User with this Email already exists");
         }
 
         [Authorize]

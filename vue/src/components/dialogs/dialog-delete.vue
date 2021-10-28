@@ -52,7 +52,6 @@
         >
           Delete
         </v-btn>
-        <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="Close" @force="ForcedDeletion"></alert>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -60,13 +59,12 @@
 
 <script>
 import {eventBus} from "../../main";
-import Alert from "../alert";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form"
 
 export default {
   name: "dialog-update",
-  components: {ShoeForm, BrandForm, Alert},
+  components: {ShoeForm, BrandForm},
   props: {
     model: Object,
     brands: {
@@ -77,8 +75,6 @@ export default {
   data() {
     return {
       dialog: false,
-      responseFine: true,
-      snackBar: false,
       models: {
         Name: "",
         POST: null
@@ -87,12 +83,12 @@ export default {
   },
   methods: {
     Delete() {
-      this.model.DELETE(this.$store.getters.CONFIG_HEADER).then(status => {
-        this.responseFine = status;
-        this.snackBar = true;
-        setTimeout(this.SendRefresh, 2000);
-        console.log(this.responseFine);
-      })
+      this.model.DELETE(this.$store.getters.CONFIG_HEADER)
+          .then(() => {
+            eventBus.$emit(`refresh${this.model.ModelName}s`);
+            eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
+            console.log(this.responseFine);
+          })
           .catch((err) => {
             console.log(err.response.status);
             this.snackBar = true;
@@ -102,7 +98,7 @@ export default {
     SendRefresh() {
       eventBus.$emit(`refresh${this.model.ModelName}s`);
     },
-    ForcedDeletion(){
+    ForcedDeletion() {
       this.snackBar = false;
       this.model.DELETEForce().then(status => {
         this.responseFine = status;
@@ -116,7 +112,7 @@ export default {
             this.responseFine = err.response.status;
           })
     },
-    Close(){
+    Close() {
       this.dialog = false;
       this.snackBar = false;
     }

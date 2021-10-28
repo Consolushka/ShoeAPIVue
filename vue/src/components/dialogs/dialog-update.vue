@@ -49,20 +49,19 @@
             @click="Update">
           Update
         </v-btn>
-        <alert v-if="snackBar" :snackbar="snackBar" :status="responseFine" @close="snackBar=false"></alert>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import Alert from "../alert";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form"
+import {eventBus} from "../../main";
 
 export default {
   name: "dialog-update",
-  components: {ShoeForm, BrandForm, Alert},
+  components: {ShoeForm, BrandForm},
   props: {
     model: Object,
     brands: {
@@ -85,11 +84,10 @@ export default {
     Update(){
       this.model.PUT(this.$store.getters.CONFIG_HEADER).then(status =>{
         if (status < 300 && status>=200) {
-          this.responseFine = status;
-          this.snackBar = true;
+          eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
         }
         else{
-          this.responseFine = false;
+          eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
         }
       })
     }

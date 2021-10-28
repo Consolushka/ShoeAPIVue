@@ -41,7 +41,7 @@ namespace Core
             return new AuthenticateResponse(user, token);
         }
 
-        public async Task<string> Register(UserModel userModel)
+        public async Task<bool> Register(UserModel userModel)
         {
             userModel.Password = _configuration.Encode(userModel.Password);
             userModel.RoleId = 1;
@@ -49,13 +49,12 @@ namespace Core
 
             var addedUser = await _userRepository.Add(user);
 
-            // var response = Authenticate(new AuthenticateRequest
-            // {
-            //     Email = user.Email,
-            //     Password = user.Password
-            // });
+            if (addedUser == 0)
+            {
+                return false;
+            }
             
-            return "Fine";
+            return true;
         }
         public List<User> GetAll()
         {
