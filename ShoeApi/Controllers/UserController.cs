@@ -35,6 +35,7 @@ namespace WebApplication.Controllers
 
             if (response)
             {
+                // new MailSender(userModel.Email).ConfirmRegistration();
                 return Ok();
             }
             
