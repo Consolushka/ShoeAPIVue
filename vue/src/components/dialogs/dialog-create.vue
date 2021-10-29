@@ -84,7 +84,7 @@ export default {
       this.model.POST(this.$store.getters.CONFIG_HEADER).then((response)=>{
         let status = response.status;
         if(status>=200 && status<300){
-          eventBus.$emit(`refresh${this.model.ModelName}s`);
+          this.$store.dispatch(`UPDATE_${this.model.ModelName.toUpperCase()}S`);
           eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
         }
         else{

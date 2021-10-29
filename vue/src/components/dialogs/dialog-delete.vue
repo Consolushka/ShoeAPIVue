@@ -85,27 +85,10 @@ export default {
     Delete() {
       this.model.DELETE(this.$store.getters.CONFIG_HEADER)
           .then(() => {
-            eventBus.$emit(`refresh${this.model.ModelName}s`);
+            this.$store.dispatch(`UPDATE_${this.model.ModelName.toUpperCase()}S`);
             eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
             console.log(this.responseFine);
           })
-          .catch((err) => {
-            console.log(err.response.status);
-            this.snackBar = true;
-            this.responseFine = err.response.status;
-          })
-    },
-    SendRefresh() {
-      eventBus.$emit(`refresh${this.model.ModelName}s`);
-    },
-    ForcedDeletion() {
-      this.snackBar = false;
-      this.model.DELETEForce().then(status => {
-        this.responseFine = status;
-        this.snackBar = true;
-        setTimeout(this.SendRefresh, 2000);
-        console.log(this.responseFine);
-      })
           .catch((err) => {
             console.log(err.response.status);
             this.snackBar = true;

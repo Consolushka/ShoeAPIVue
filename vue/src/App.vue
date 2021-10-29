@@ -38,7 +38,7 @@
         <v-tab to="/User/signup" v-if="$store.getters.ISAUTH !== 'true'">
           Sing in
         </v-tab>
-        <v-btn color="red" style="margin: auto 0" @click="LogOut" v-if="$store.getters.ISAUTH === 'true'">
+        <v-btn color="red" style="margin: auto 0" @click="$store.dispatch('LOGOUT')" v-if="$store.getters.ISAUTH === 'true'">
           Log Out
         </v-btn>
       </v-tabs>
@@ -63,13 +63,6 @@ export default {
     responseFine: true,
     text: ""
   }),
-  methods:{
-    LogOut(){
-      localStorage.setItem('IsAuth', "false");
-      localStorage.setItem('token', "");
-      this.$store.commit('LOGOUT');
-    }
-  },
   mounted() {
     if(localStorage.getItem("userId") !== '0' && localStorage.getItem("userId") !== null){
       this.$store.commit('LOGIN', localStorage.getItem("userId"));

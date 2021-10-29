@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {User} from "../utils/classes";
+import {Brand, Shoe, User} from "../utils/classes";
 import axios from "axios";
 import {utils} from "../utils/utils";
 
@@ -10,7 +10,9 @@ export const store = new Vuex.Store({
     state: {
         IsAuth: localStorage.getItem('IsAuth'),
         Token: localStorage.getItem('token'),
-        User: new User()
+        User: new User(),
+        Brands: [],
+        Shoes: []
     },
     getters: {
         ISAUTH: state => {
@@ -28,6 +30,12 @@ export const store = new Vuex.Store({
         },
         IS_ADMIN: state => {
             return state.User.RoleId === 2;
+        },
+        BRANDS: state =>{
+            return state.Brands;
+        },
+        SHOES: state=>{
+            return state.Shoes;
         }
     },
     mutations: {
@@ -46,10 +54,30 @@ export const store = new Vuex.Store({
                 })
         },
         LOGOUT: (state) => {
+            localStorage.setItem('IsAuth', "false");
+            localStorage.setItem('token', "");
+            localStorage.setItem('userId', "0");
             state.IsAuth = 'false';
             state.Token = localStorage.getItem('token');
             state.User = new User();
-            localStorage.setItem('userId', "0");
+        },
+        UPDATE_BRANDS: (state)=>{
+            axios.get(utils.API.BRANDS+"GetAll")
+                .then((response)=>{
+                    state.Brands = [];
+                    response.data.forEach((brand)=>{
+                        state.Brands.push(new Brand(brand));
+                    })
+                })
+        },
+        UPDATE_SHOES: (state)=>{
+            axios.get(utils.API.SHOES+"GetAll")
+                .then((response)=>{
+                    state.Shoes = [];
+                    response.data.forEach((shoe)=>{
+                        state.Shoes.push(new Shoe(shoe));
+                    })
+                })
         }
     },
     actions: {
@@ -58,6 +86,12 @@ export const store = new Vuex.Store({
         },
         LOGOUT: (context) => {
             context.commit('LOGOUT');
+        },
+        UPDATE_BRANDS: (context)=>{
+            context.commit('UPDATE_BRANDS');
+        },
+        UPDATE_SHOES: (context)=>{
+            context.commit('UPDATE_SHOES');
         }
     },
 });

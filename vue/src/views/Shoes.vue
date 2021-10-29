@@ -80,7 +80,7 @@
       </v-form>
       <dialog-create :model="mockShoe" :brands="brands" v-if="this.$store.getters.IS_ADMIN"></dialog-create>
       <v-row>
-          <shoe v-for="shoe in Shoes" :key="shoe.Id" v-bind:shoe="shoe" :brands="brands"></shoe>
+          <shoe v-for="shoe in $store.getters.SHOES" :key="shoe.Id" v-bind:shoe="shoe" :brands="brands"></shoe>
       </v-row>
     </v-container>
   </section>
@@ -119,23 +119,24 @@ export default {
   },
   methods: {
     Refresh() {
-      axios.get(utils.API.SHOES+"GetAll", {
-        onDownloadProgress: (progressEvent) => {
-          const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-          // console.log("onUploadProgress", totalLength);
-          if (totalLength !== null) {
-            // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
-          }
-        }
-      })
-          .then((response) => {
-            this.Shoes = [];
-            // console.log("100");
-            response.data.forEach((shoe) => {
-              let curr = new Shoe(shoe);
-              this.Shoes.push(curr);
-            });
-          });
+      this.$store.dispatch('UPDATE_SHOES');
+      // axios.get(utils.API.SHOES+"GetAll", {
+      //   onDownloadProgress: (progressEvent) => {
+      //     const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+      //     // console.log("onUploadProgress", totalLength);
+      //     if (totalLength !== null) {
+      //       // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
+      //     }
+      //   }
+      // })
+      //     .then((response) => {
+      //       this.Shoes = [];
+      //       // console.log("100");
+      //       response.data.forEach((shoe) => {
+      //         let curr = new Shoe(shoe);
+      //         this.Shoes.push(curr);
+      //       });
+      //     });
     },
     save (date) {
       this.$refs.menu.save(date)

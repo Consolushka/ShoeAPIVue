@@ -20,20 +20,18 @@
         </tr>
         </thead>
         <tbody>
-        <brand v-for="brand in brands" :key="brand.Id" :brand="brand"></brand>
+        <brand v-for="brand in $store.getters.BRANDS" :key="brand.Id" :brand="brand"></brand>
         </tbody>
       </template>
     </v-simple-table>
-      <dialog-create @refresh="refreshBrands" :model="selectedBrand" v-if="this.$store.getters.IS_ADMIN"></dialog-create>
+      <dialog-create @refresh="Refresh" :model="selectedBrand" v-if="this.$store.getters.IS_ADMIN"></dialog-create>
     </v-container>
 
   </section>
 </template>
 
 <script>
-import {utils} from "../utils/utils.js"
 import {Brand} from "../utils/classes.js";
-import axios from 'axios'
 import brand from '../components/Brand.vue'
 import {eventBus} from "../main";
 import DialogCreate from "../components/dialogs/dialog-create";
@@ -51,33 +49,34 @@ export default {
     brand
   },
   methods: {
-    refreshBrands() {
-      axios.get(utils.API.BRANDS+"GetAll",{
-        onDownloadProgress: (progressEvent) => {
-          const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-          // console.log("onUploadProgress", totalLength);
-          if (totalLength !== null) {
-            // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
-          }
-        }})
-        .then((response) => {
-          this.brands = [];
-          // console.log("100");
-          response.data.forEach((brand)=>{
-            this.brands.push(new Brand(brand));
-          });
-        });
+    Refresh() {
+      this.$store.dispatch('UPDATE_BRANDS');
+    //   axios.get(utils.API.BRANDS+"GetAll",{
+    //     onDownloadProgress: (progressEvent) => {
+    //       const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+    //       // console.log("onUploadProgress", totalLength);
+    //       if (totalLength !== null) {
+    //         // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
+    //       }
+    //     }})
+    //     .then((response) => {
+    //       this.brands = [];
+    //       // console.log("100");
+    //       response.data.forEach((brand)=>{
+    //         this.brands.push(new Brand(brand));
+    //       });
+    //     });
     }
   },
   mounted() {
-    this.refreshBrands();
+    this.Refresh();
   },
   created() {
     eventBus.$on('refresh', ()=>{
-      this.refreshBrands();
+      this.Refresh();
     })
     eventBus.$on('refreshBrands', ()=>{
-      this.refreshBrands();
+      this.Refresh();
     })
   }
 }
