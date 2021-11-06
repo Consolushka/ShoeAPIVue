@@ -56,6 +56,7 @@
                   </template>
                   <v-date-picker
                       v-model="filterParam.CreationDate"
+                      range
                       :active-picker.sync="activePicker"
                       :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
                       min="1950-01-01"
@@ -88,7 +89,7 @@
 
 <script>
 import {utils} from "../utils/utils.js"
-import {Shoe} from "../utils/classes.js";
+import {Brand, Shoe} from "../utils/classes.js";
 import axios from 'axios'
 import shoe from "../components/Shoe.vue"
 import DialogCreate from "../components/dialogs/dialog-create";
@@ -120,29 +121,12 @@ export default {
   methods: {
     Refresh() {
       this.$store.dispatch('UPDATE_SHOES');
-      // axios.get(utils.API.SHOES+"GetAll", {
-      //   onDownloadProgress: (progressEvent) => {
-      //     const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-      //     // console.log("onUploadProgress", totalLength);
-      //     if (totalLength !== null) {
-      //       // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
-      //     }
-      //   }
-      // })
-      //     .then((response) => {
-      //       this.Shoes = [];
-      //       // console.log("100");
-      //       response.data.forEach((shoe) => {
-      //         let curr = new Shoe(shoe);
-      //         this.Shoes.push(curr);
-      //       });
-      //     });
     },
     save (date) {
       this.$refs.menu.save(date)
     },
     RenderFilters() {
-      this.Shoes.forEach((shoe) => {
+       this.$store.getters.SHOES.forEach((shoe) => {
         shoe.MatchFilter(this.filterParam);
       });
     },
@@ -160,10 +144,10 @@ export default {
     axios.get(utils.API.BRANDS+"GetAll")
         .then((response) => {
           this.brands = [];
-          // console.log("100");
           response.data.forEach((brand) => {
-            this.brands.push(new Shoe(brand));
+            this.brands.push(new Brand(brand));
           });
+          this.brands.push(new Brand());
         });
   },
   created(){

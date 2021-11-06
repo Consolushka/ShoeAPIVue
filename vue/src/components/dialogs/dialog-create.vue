@@ -90,8 +90,8 @@ export default {
         else{
           eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
         }
-      }).catch((response)=>{
-        console.log(response);
+      }).catch(()=>{
+        eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
       });
 
     }

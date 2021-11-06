@@ -51,21 +51,6 @@ export default {
   methods: {
     Refresh() {
       this.$store.dispatch('UPDATE_BRANDS');
-    //   axios.get(utils.API.BRANDS+"GetAll",{
-    //     onDownloadProgress: (progressEvent) => {
-    //       const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-    //       // console.log("onUploadProgress", totalLength);
-    //       if (totalLength !== null) {
-    //         // console.log(Math.round( (progressEvent.loaded * 100) / totalLength ));
-    //       }
-    //     }})
-    //     .then((response) => {
-    //       this.brands = [];
-    //       // console.log("100");
-    //       response.data.forEach((brand)=>{
-    //         this.brands.push(new Brand(brand));
-    //       });
-    //     });
     }
   },
   mounted() {

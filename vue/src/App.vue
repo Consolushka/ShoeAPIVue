@@ -70,7 +70,6 @@ export default {
   },
   created() {
     eventBus.$on('showNotification', (params)=>{
-      console.log(params);
       this.snackBar = params.snackBar;
       this.responseFine = params.responseFine;
       this.text = params.text;

@@ -87,7 +87,6 @@ export default {
             }
             else{
               eventBus.$emit('showNotification', {responseFine: "Error", snackBar: true, text: res.data})
-              console.log(res.data);
             }
           });
     }

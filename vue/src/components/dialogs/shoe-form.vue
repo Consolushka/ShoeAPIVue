@@ -114,9 +114,6 @@ export default {
             this.shoe.PhotoFileName = response.data;
           });
     },
-  },
-  created() {
-    console.log(this.shoe.PhotoFileName);
   }
 }
 </script>

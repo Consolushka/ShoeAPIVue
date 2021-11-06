@@ -9,7 +9,7 @@ export class Brand {
     constructor(brand) {
         if (brand === undefined) {
             this.Id = 0;
-            this.Name = "";
+            this.Name = "all";
             return;
         }
         this.Id = brand.id;
@@ -32,7 +32,6 @@ export class Brand {
     }
 
     DELETE(config) {
-        console.log(this.Id);
         return axios.delete(utils.API.BRANDS + "Delete/"+this.Id, config).then(response => response.status);
     }
 
@@ -77,7 +76,7 @@ export class Shoe {
     }
 
     MatchFilter(filterParam) {
-        if (filterParam.BrandId !== null) {
+        if (filterParam.BrandId !== null && filterParam.BrandId !== 0) {
             if (this.Brand.Id !== filterParam.BrandId) {
                 this.matched = false;
                 return;
@@ -92,13 +91,12 @@ export class Shoe {
         }
 
         if (filterParam.CreationDate !== null) {
-            if (Date.parse(this.CreationTime) !== Date.parse(filterParam.CreationDate + "T00:00:00")) {
+            if (!(Date.parse(this.CreationTime) >= Date.parse(filterParam.CreationDate[0] + "T00:00:00") && Date.parse(this.CreationTime) <= Date.parse(filterParam.CreationDate[1] + "T00:00:00"))) {
                 this.matched = false;
                 return;
             }
         }
         this.matched = true;
-        console.log(this, filterParam);
     }
 
     POST(config) {
@@ -147,7 +145,6 @@ export class User {
     }
 
     Register(){
-        console.log(this.ToModel());
         return axios.post(utils.API.USER+"register", this)
             .then(response => response)
             .catch(err => err.response);

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div>
       <h3 class="text-h3" v-if="isFine === null">Wait...</h3>
     </div>
@@ -27,7 +27,6 @@ export default {
     let url = window.location.href;
     let keyParam =url.split('?')[1];
     let stringKey = keyParam.substring(4,keyParam.length);
-    console.log(stringKey);
     axios.post(utils.API.USER+`ConfirmRegistration?key=${stringKey}`)
     .then(()=>{
       this.isFine = true;
