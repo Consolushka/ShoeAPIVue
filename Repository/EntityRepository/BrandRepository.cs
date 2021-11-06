@@ -1,49 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Entities.Models;
+﻿using Entities.Models;
 using Repository.Contracts;
 
 namespace Repository.EntityRepository
 {
-    public class BrandRepository: IBrandRepository
-    {
-        private readonly ShoeContext _context;
-
+    public class BrandRepository: BaseRepository<Brand>, IBrandRepository
+    {   
         public BrandRepository(ShoeContext context)
         {
-            _context = context;
-        }
-
-        public List<Brand> GetAll()
-        {
-            return _context.Brand.ToList();
-        }
-
-        public Brand GetById(long id)
-        {
-            return _context.Brand.FirstOrDefault(b => b.Id == id);
-        }
-
-        public async Task<Brand> Add(Brand brand)
-        {
-            var res = await _context.AddAsync(brand);
-            await _context.SaveChangesAsync();
-            return res.Entity;
+            Context = context;
         }
 
         public Brand Update(Brand brand)
         {
-            var res = _context.Brand.Update(brand);
-            _context.SaveChanges();
+            var res = Context.Brand.Update(brand);
+            Context.SaveChanges();
             return res.Entity;
         }
 
         public void Delete(long id)
         {
             var brand = GetById(id);
-            _context.Brand.Remove(brand);
-            _context.SaveChanges();
+            Context.Brand.Remove(brand);
+            Context.SaveChanges();
         }
     }
 }

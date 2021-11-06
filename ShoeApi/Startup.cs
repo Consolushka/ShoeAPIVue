@@ -1,6 +1,7 @@
 using System.IO;
 using Core.Contracts;
 using Core.Services;
+using Entities.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -44,8 +45,13 @@ namespace WebApplication
             
             services.AddAutoMapper(typeof(UserMapper));
             
+            services.AddScoped<BaseRepository<User>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            
+            services.AddScoped<BaseRepository<Brand>,BrandRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            
+            services.AddScoped<BaseRepository<Shoe>,ShoeRepository>();
             services.AddScoped<IShoeRepository, ShoeRepository>();
             
             services.AddScoped<IUserService, UserService>();

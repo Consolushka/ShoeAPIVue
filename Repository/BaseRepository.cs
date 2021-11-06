@@ -7,27 +7,22 @@ namespace Repository
 {
     public class BaseRepository<T>: IBaseRepository<T> where T:Base
     {
-        private readonly ShoeContext _context;
-
-        public BaseRepository(ShoeContext context)
-        {
-            _context = context;
-        }
+        protected ShoeContext Context;
 
         public List<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return Context.Set<T>().ToList();
         }
 
         public T GetById(long id)
         {
-            return _context.Set<T>().FirstOrDefault(t => t.Id == id);
+            return Context.Set<T>().FirstOrDefault(t => t.Id == id);
         }
 
         public async Task<T> Add(T entity)
         {
-            var res = await _context.AddAsync(entity);
-            _context.SaveChanges();
+            var res = await Context.AddAsync(entity);
+            await Context.SaveChangesAsync();
             return res.Entity;
         }
     }
