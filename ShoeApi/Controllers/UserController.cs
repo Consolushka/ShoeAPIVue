@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper.Configuration;
+using Core;
 using Core.Contracts;
+using Entities.Models;
 using Entities.Support;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
@@ -29,17 +33,30 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserModel userModel)
+        public async Task<IActionResult> Register(string email, string password)
         {
+            var encPass = Crypto.Encode(password);
+            UserModel userModel = new UserModel(email, encPass);
             var response = await _userService.Register(userModel);
-
+            
             if (response)
             {
-                // new MailSender(userModel.Email).ConfirmRegistration();
+                MailSender.ConfirmRegistration(userModel);
                 return Ok();
             }
             
             return BadRequest("User with this Email already exists");
+        }
+
+        [HttpPost("ConfirmRegistration")]
+        public IActionResult ConfirmRegistration(Guid key)
+        {
+            if (_userService.ConfirmRegistration(key).Result)
+            {
+                return Ok();   
+            }
+
+            return BadRequest();
         }
 
         [Authorize]

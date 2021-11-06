@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Models;
@@ -39,6 +40,18 @@ namespace Repository.EntityRepository
             var res = await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             return res.Entity.Id;
+        }
+
+        public async Task<User> GetByKey(Guid key)
+        {
+            return await _context.User.FirstOrDefaultAsync(u => u.ConfirmString == key);
+        }
+
+        public void ConfirmUser(User user)
+        {
+            user.IsConfirmed = true;
+            _context.User.Update(user);
+            _context.SaveChanges();
         }
     }
 }

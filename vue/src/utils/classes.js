@@ -16,6 +16,13 @@ export class Brand {
         this.Name = brand.name;
     }
 
+    ToModel(){
+        return {
+            id: this.Id,
+            name: this.Name
+        }
+    }
+
     POST(config) {
         return axios.post(utils.API.BRANDS+"Add", this, config).then(response => response);
     }
@@ -61,11 +68,11 @@ export class Shoe {
 
     ToModel() {
         return {
-            Id: this.Id,
-            Name: this.Name,
-            BrandId: this.Brand.Id,
-            CreationTime: this.CreationTime,
-            PhotoFileName: this.PhotoFileName
+            id: this.Id,
+            name: this.Name,
+            brandId: this.Brand.Id,
+            creationTime: this.CreationTime,
+            photoFileName: this.PhotoFileName
         }
     }
 

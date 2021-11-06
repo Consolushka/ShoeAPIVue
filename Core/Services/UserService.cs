@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -41,18 +42,28 @@ namespace Core.Services
 
         public async Task<bool> Register(UserModel userModel)
         {
-            userModel.Password = _configuration.Encode(userModel.Password);
-            userModel.RoleId = 1;
             var user = _mapper.Map<User>(userModel);
 
             var addedUser = await _userRepository.Add(user);
-
+            
             if (addedUser == 0)
             {
                 return false;
             }
             
             return true;
+        }
+
+        public async Task<bool> ConfirmRegistration(Guid key)
+        {
+            var user = await _userRepository.GetByKey(key); 
+            if (user != null)
+            {
+                _userRepository.ConfirmUser(user);
+                return true;
+            }
+
+            return false;
         }
         public List<User> GetAll()
         {

@@ -40,7 +40,7 @@
         <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false">
+            @click="dialog = false;">
           Close
         </v-btn>
         <v-btn
@@ -58,6 +58,7 @@
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form"
 import {eventBus} from "../../main";
+import {Brand, Shoe} from "../../utils/classes";
 
 export default {
   name: "dialog-update",
@@ -71,6 +72,7 @@ export default {
   },
   data(){
     return {
+      startedModel: "",
       dialog: false,
       responseFine: true,
       snackBar: false,
@@ -91,7 +93,20 @@ export default {
           eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
         }
       })
+    },
+    Close(){
+      this.$emit('rollback', this.startedModel);
+      console.log(this.$store.getters.BRANDS);
     }
+  },
+  mounted() {
+    if(this.model.ModelName === "Shoe"){
+      this.startedModel = new Shoe(this.model.ToModel());
+    }
+    else{
+      this.startedModel = new Brand(this.model.ToModel())
+    }
+    console.log(this.startedModel);
   }
 }
 </script>

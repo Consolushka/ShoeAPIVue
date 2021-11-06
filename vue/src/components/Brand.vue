@@ -7,7 +7,7 @@
     <td>
       <dialog-info :model="brand"></dialog-info>
 
-      <dialog-update :model="brand" v-if="this.$store.getters.IS_ADMIN"></dialog-update>
+      <dialog-update :model="CopyBrand()" v-if="this.$store.getters.IS_ADMIN"></dialog-update>
 
       <dialog-delete :model="brand" v-if="this.$store.getters.IS_ADMIN"></dialog-delete>
     </td>
@@ -29,7 +29,18 @@ export default {
   data() {
     return {
       dialog: false,
+      selectedBrand: this.CopyBrand()
     }
+  },
+  methods:{
+    CopyBrand(){
+      return new Brand(this.brand.ToModel());
+    }
+  },
+  created() {
+    this.$on('rollback',(brand)=>{
+      return new Brand(brand.ToModel());
+    })
   }
 }
 </script>
