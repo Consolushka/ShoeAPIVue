@@ -7,7 +7,7 @@ namespace Core.Contracts
     {
         List<Shoe> GetAll();
         Shoe GetById(long Id);
-        long Add(Shoe shoe);
+        Shoe Add(Shoe shoe);
         Shoe Update(Shoe shoe);
         void Delete(long id);
     }

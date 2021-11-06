@@ -7,7 +7,7 @@ namespace Core.Contracts
     {
         List<Brand> GetAll();
         Brand GetById(long Id);
-        long Add(Brand brand);
+        Brand Add(Brand brand);
         Brand Update(Brand brand);
         void Delete(long id);
     }

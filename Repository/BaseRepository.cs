@@ -24,11 +24,11 @@ namespace Repository
             return _context.Set<T>().FirstOrDefault(t => t.Id == id);
         }
 
-        public async Task<long> Add(T entity)
+        public async Task<T> Add(T entity)
         {
             var res = await _context.AddAsync(entity);
             _context.SaveChanges();
-            return res.Entity.Id;
+            return res.Entity;
         }
     }
 }

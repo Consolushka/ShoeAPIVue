@@ -8,6 +8,6 @@ namespace Repository
     {
         List<T> GetAll();
         T GetById(long id);
-        Task<long> Add(T entity);
+        Task<T> Add(T entity);
     }
 }

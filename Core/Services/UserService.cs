@@ -40,18 +40,13 @@ namespace Core.Services
             return new AuthenticateResponse(user, token);
         }
 
-        public async Task<bool> Register(UserModel userModel)
+        public async Task<User> Register(UserModel userModel)
         {
             var user = _mapper.Map<User>(userModel);
-
+            user.ConfirmString = Guid.NewGuid();
             var addedUser = await _userRepository.Add(user);
-            
-            if (addedUser == 0)
-            {
-                return false;
-            }
-            
-            return true;
+
+            return addedUser;
         }
 
         public async Task<bool> ConfirmRegistration(Guid key)

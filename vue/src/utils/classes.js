@@ -120,6 +120,7 @@ export class User {
     Password
     RoleId
     token
+    IsConfirmed
 
     constructor(user) {
         if (user === undefined) {
@@ -127,16 +128,26 @@ export class User {
                 email: "",
                 password: "",
                 token: "",
-                roleId: 1
+                roleId: 1,
+                isConfirmed: false
             }
         }
         this.Email = user.email;
         this.Password = user.Password;
         this.token = user.token;
         this.RoleId = user.roleId;
+        this.IsConfirmed = user.isConfirmed;
+    }
+
+    ToModel(){
+        return {
+            email: this.Email,
+            password: this.Password
+        };
     }
 
     Register(){
+        console.log(this.ToModel());
         return axios.post(utils.API.USER+"register", this)
             .then(response => response)
             .catch(err => err.response);

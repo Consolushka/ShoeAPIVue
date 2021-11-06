@@ -27,11 +27,11 @@ namespace Repository.EntityRepository
             return _context.Shoe.FirstOrDefault(s => s.Id == id);
         }
 
-        public async Task<long> Add(Shoe shoe)
+        public async Task<Shoe> Add(Shoe shoe)
         {
             var res = await _context.AddAsync(shoe);
             await _context.SaveChangesAsync();
-            return res.Entity.Id;
+            return res.Entity;
         }
 
         public Shoe Update(Shoe shoe)

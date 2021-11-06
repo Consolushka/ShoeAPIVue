@@ -24,7 +24,7 @@ namespace Core.Services
             return _brandRepository.GetById(Id);
         }
 
-        public long Add(Brand brand)
+        public Brand Add(Brand brand)
         {
             return _brandRepository.Add(brand).Result;
         }

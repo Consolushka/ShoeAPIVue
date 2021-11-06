@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using Entities.Models;
 using Entities.Support;
 
 namespace Middleware
@@ -13,7 +14,7 @@ namespace Middleware
         private static readonly SmtpClient SmtpClient = new ("smtp.gmail.com");
         private static readonly NetworkCredential Authentication= new ("consolushka@gmail.com", "jup5nkp2FUM.vat4cpd"); 
 
-        public static void ConfirmRegistration(UserModel user)
+        public static void ConfirmRegistration(User user)
         {
             try
             {
@@ -37,7 +38,7 @@ namespace Middleware
                 myMail.SubjectEncoding = Encoding.UTF8;
 
                 // set body-message and encoding
-                myMail.Body = $"<form method='post' action='https://localhost:5001/Users/ConfirmRegistration?key={user.ConfirmString}'><button type='submit'>Confirm Registration</button></form>";
+                myMail.Body = $"<a href='http://localhost:8080/#/user/confirm?key={user.ConfirmString}'>Confirm Registration</a>";
                 myMail.BodyEncoding = Encoding.UTF8;
                 // text or html
                 myMail.IsBodyHtml = true;

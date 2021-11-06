@@ -28,23 +28,23 @@ namespace Repository.EntityRepository
             return _context.User.FirstOrDefault(t => t.Id == id);
         }
 
-        public async Task<long> Add(User entity)
+        public async Task<User> Add(User entity)
         {
             foreach (var user in await _context.User.ToListAsync())
             {
                 if (entity.Email == user.Email)
                 {
-                    return 0;
+                    return null;
                 }
             }
             var res = await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return res.Entity.Id;
+            return res.Entity;
         }
 
         public async Task<User> GetByKey(Guid key)
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.ConfirmString == key);
+            return await _context.User.FirstOrDefaultAsync(u => u.ConfirmString == key && u.IsConfirmed == false);
         }
 
         public void ConfirmUser(User user)

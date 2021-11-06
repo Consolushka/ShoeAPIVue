@@ -9,7 +9,6 @@ namespace Entities.Support
         public string Password { get; set; }
         public long RoleId { get; set; }
         public bool IsConfirmed { get; set; }
-        public Guid ConfirmString { get; set; }
 
         public UserModel(string email, string password)
         {
@@ -18,7 +17,6 @@ namespace Entities.Support
             Password = password;
             RoleId = 1;
             IsConfirmed = false;
-            ConfirmString = Guid.NewGuid();
         }
     }
 }

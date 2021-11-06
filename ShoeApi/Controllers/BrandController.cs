@@ -34,7 +34,7 @@ namespace WebApplication.Controllers
         [Authorize]
         [Admin]
         [HttpPost("Add")]
-        public long Add(Brand brand)
+        public Brand Add(Brand brand)
         {
             return _brandService.Add(brand);
         }

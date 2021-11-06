@@ -37,7 +37,7 @@ namespace WebApplication.Controllers
 
         [Authorize]
         [HttpPost("Add")]
-        public long Add(Shoe shoe)
+        public Shoe Add(Shoe shoe)
         {
             return _service.Add(shoe);
         }

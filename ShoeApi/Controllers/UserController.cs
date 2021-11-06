@@ -33,15 +33,16 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string password)
+        public async Task<IActionResult> Register(UserModel userModel)
         {
-            var encPass = Crypto.Encode(password);
-            UserModel userModel = new UserModel(email, encPass);
+            userModel.Password = Crypto.Encode(userModel.Password);
+            userModel.RoleId = 1;
+            userModel.IsConfirmed = false;
             var response = await _userService.Register(userModel);
             
-            if (response)
+            if (response!=null)
             {
-                MailSender.ConfirmRegistration(userModel);
+                MailSender.ConfirmRegistration(response);
                 return Ok();
             }
             
@@ -49,13 +50,14 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("ConfirmRegistration")]
-        public IActionResult ConfirmRegistration(Guid key)
+        public IActionResult ConfirmRegistration(string key)
         {
-            if (_userService.ConfirmRegistration(key).Result)
+            var Gkey = Guid.Parse(key);
+            if (_userService.ConfirmRegistration(Gkey).Result)
             {
                 return Ok();   
             }
-
+            
             return BadRequest();
         }
 

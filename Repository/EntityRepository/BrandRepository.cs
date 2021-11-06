@@ -25,11 +25,11 @@ namespace Repository.EntityRepository
             return _context.Brand.FirstOrDefault(b => b.Id == id);
         }
 
-        public async Task<long> Add(Brand brand)
+        public async Task<Brand> Add(Brand brand)
         {
             var res = await _context.AddAsync(brand);
             _context.SaveChanges();
-            return res.Entity.Id;
+            return res.Entity;
         }
 
         public Brand Update(Brand brand)

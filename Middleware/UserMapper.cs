@@ -13,7 +13,6 @@ namespace Middleware
                 .ForMember(dst => dst.Password, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dst => dst.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dst => dst.IsConfirmed, opt => opt.MapFrom(src => src.IsConfirmed))
-                .ForMember(dst => dst.ConfirmString, opt => opt.MapFrom(src => src.ConfirmString))
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 ;
             

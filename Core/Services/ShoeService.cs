@@ -24,7 +24,7 @@ namespace Core.Services
             return _repository.GetById(id);
         }
 
-        public long Add(Shoe shoe)
+        public Shoe Add(Shoe shoe)
         {
             return _repository.Add(shoe).Result;
         }
