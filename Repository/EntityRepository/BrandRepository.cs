@@ -28,7 +28,7 @@ namespace Repository.EntityRepository
         public async Task<Brand> Add(Brand brand)
         {
             var res = await _context.AddAsync(brand);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return res.Entity;
         }
 

@@ -68,7 +68,7 @@ export default {
       type: Array
     }
   },
-  data(){
+  data() {
     return {
       dialog: false,
       responseFine: true,
@@ -79,20 +79,19 @@ export default {
       }
     }
   },
-  methods:{
-    Create(){
-      this.model.POST(this.$store.getters.CONFIG_HEADER).then((response)=>{
-        let status = response.status;
-        if(status>=200 && status<300){
-          this.$store.dispatch(`UPDATE_${this.model.ModelName.toUpperCase()}S`);
-          eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
-        }
-        else{
-          eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
-        }
-      }).catch(()=>{
-        eventBus.$emit('showNotification', {responseFine: "Error", snackBar: false, text: "Error"});
-      });
+  methods: {
+    Create() {
+      this.model.POST(this.$store.getters.CONFIG_HEADER)
+          .then((response) => {
+            let status = response.status;
+            if (status >= 200 && status < 300) {
+              this.$store.dispatch(`UPDATE_${this.model.ModelName.toUpperCase()}S`);
+              eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Fine"});
+            }
+            else{
+              eventBus.$emit('showNotification', {responseFine: "Error", snackBar: true, text: response.data})
+            }
+          });
 
     }
   }

@@ -24,19 +24,19 @@ export class Brand {
     }
 
     POST(config) {
-        return axios.post(utils.API.BRANDS+"Add", this, config).then(response => response);
+        return axios.post(utils.API.BRANDS+"Add", this, config)
+            .then(response => response)
+            .catch(err => err.response);
     }
 
     PUT(config) {
-        return axios.put(utils.API.BRANDS + "Update", this, config).then(response => response.status);
+        return axios.put(utils.API.BRANDS + "Update", this, config)
+            .then(response => response)
+            .catch(err=>err.response);
     }
 
     DELETE(config) {
         return axios.delete(utils.API.BRANDS + "Delete/"+this.Id, config).then(response => response.status);
-    }
-
-    DELETEForce() {
-        return axios.delete(utils.API.BRANDS + this.Id + "/" + "true").then(response => response.status);
     }
 }
 
@@ -100,11 +100,15 @@ export class Shoe {
     }
 
     POST(config) {
-        return axios.post(utils.API.SHOES+"Add", this.ToModel(), config).then(response => response);
+        return axios.post(utils.API.SHOES+"Add", this.ToModel(), config)
+            .then(response => response)
+            .catch(err=>err.response);
     }
 
     PUT(config) {
-        return axios.put(utils.API.SHOES + "Update", this, config).then(response => response.status);
+        return axios.put(utils.API.SHOES + "Update", this, config)
+            .then(response => response.status)
+            .catch(err=>err.response);
     }
 
     DELETE(config) {

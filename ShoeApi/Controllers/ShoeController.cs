@@ -37,16 +37,27 @@ namespace WebApplication.Controllers
 
         [Authorize]
         [HttpPost("Add")]
-        public Shoe Add(Shoe shoe)
+        public IActionResult Add(Shoe shoe)
         {
-            return _service.Add(shoe);
+            var res = _service.Add(shoe);
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
         }
 
         [Authorize]
         [HttpPut("Update")]
-        public Shoe Update(Shoe shoe)
+        public IActionResult Update(Shoe shoe)
         {
-            return _service.Update(shoe);
+            var res =  _service.Update(shoe);
+            
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
         }
 
         [Authorize]

@@ -34,17 +34,27 @@ namespace WebApplication.Controllers
         [Authorize]
         [Admin]
         [HttpPost("Add")]
-        public Brand Add(Brand brand)
+        public IActionResult Add(Brand brand)
         {
-            return _brandService.Add(brand);
+            var res =_brandService.Add(brand);
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
         }
 
         [Authorize]
         [Admin]
         [HttpPut("Update")]
-        public Brand Update(Brand brand)
+        public IActionResult Update(Brand brand)
         {
-            return _brandService.Update(brand);
+            var res =_brandService.Update(brand);
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
         }
 
         [Authorize]
