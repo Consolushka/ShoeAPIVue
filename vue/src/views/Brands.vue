@@ -40,7 +40,6 @@ export default {
   name: "brand-page",
   data() {
     return {
-      brands: [],
       selectedBrand: new Brand()
     }
   },
@@ -52,9 +51,6 @@ export default {
     Refresh() {
       this.$store.dispatch('UPDATE_BRANDS');
     }
-  },
-  mounted() {
-    this.Refresh();
   },
   created() {
     eventBus.$on('refresh', ()=>{

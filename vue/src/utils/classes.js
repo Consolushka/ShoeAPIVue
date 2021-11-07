@@ -8,9 +8,10 @@ export class Brand {
 
     constructor(brand) {
         if (brand === undefined) {
-            this.Id = 0;
-            this.Name = "all";
-            return;
+            brand = {
+                id: 0,
+                Name: "all",
+            }
         }
         this.Id = brand.id;
         this.Name = brand.name;
@@ -118,7 +119,9 @@ export class Shoe {
 
 export class User {
     Id
+    Login
     Email
+    UserName
     Password
     RoleId
     token
@@ -128,6 +131,7 @@ export class User {
         if (user === undefined) {
             user = {
                 email: "",
+                userName: "",
                 password: "",
                 token: "",
                 roleId: 1,
@@ -135,6 +139,7 @@ export class User {
             }
         }
         this.Email = user.email;
+        this.UserName = user.userName;
         this.Password = user.Password;
         this.token = user.token;
         this.RoleId = user.roleId;

@@ -97,7 +97,6 @@ export default {
     },
     Close(){
       this.$emit('rollback', this.startedModel);
-      console.log(this.$store.getters.BRANDS);
     }
   },
   mounted() {
@@ -107,7 +106,6 @@ export default {
     else{
       this.startedModel = new Brand(this.model.ToModel())
     }
-    console.log(this.startedModel);
   }
 }
 </script>

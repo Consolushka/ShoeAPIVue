@@ -88,9 +88,7 @@
 </template>
 
 <script>
-import {utils} from "../utils/utils.js"
 import {Brand, Shoe} from "../utils/classes.js";
-import axios from 'axios'
 import shoe from "../components/Shoe.vue"
 import DialogCreate from "../components/dialogs/dialog-create";
 import {eventBus} from "../main";
@@ -140,15 +138,11 @@ export default {
     }
   },
   mounted() {
-    this.Refresh();
-    axios.get(utils.API.BRANDS+"GetAll")
-        .then((response) => {
-          this.brands = [];
-          response.data.forEach((brand) => {
-            this.brands.push(new Brand(brand));
-          });
-          this.brands.push(new Brand());
-        });
+    this.brands = [];
+    this.$store.getters.BRANDS.forEach((brand)=>{
+      this.brands.push(new Brand(brand));
+    });
+    this.brands.push(new Brand());
   },
   created(){
     eventBus.$on('refreshShoes', ()=>{

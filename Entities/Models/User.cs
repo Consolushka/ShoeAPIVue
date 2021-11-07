@@ -6,6 +6,8 @@ namespace Entities.Models
     public class User: Base
     {
         public string Email { get; set; }
+        public string UserName { get; set; }
+
         [JsonIgnore]
         public string Password { get; set; }
 

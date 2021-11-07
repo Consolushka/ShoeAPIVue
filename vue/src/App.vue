@@ -67,6 +67,8 @@ export default {
     if(localStorage.getItem("userId") !== '0' && localStorage.getItem("userId") !== null){
       this.$store.commit('LOGIN', localStorage.getItem("userId"));
     }
+    this.$store.dispatch('UPDATE_SHOES');
+    this.$store.dispatch('UPDATE_BRANDS');
   },
   created() {
     eventBus.$on('showNotification', (params)=>{
