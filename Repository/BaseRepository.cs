@@ -25,5 +25,12 @@ namespace Repository
             await Context.SaveChangesAsync();
             return res.Entity;
         }
+
+        public async Task<T> Update(T entity)
+        {
+            var res = Context.Update(entity);
+            await Context.SaveChangesAsync();
+            return res.Entity;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.Models;
 using Repository.Contracts;
 using Core.Contracts;
@@ -29,9 +30,9 @@ namespace Core.Services
             return _brandRepository.Add(brand).Result;
         }
 
-        public Brand Update(Brand brand)
+        public async Task<Brand> Update(Brand brand)
         {
-            return _brandRepository.Update(brand);
+            return await _brandRepository.Update(brand);
         }
 
         public void Delete(long id)

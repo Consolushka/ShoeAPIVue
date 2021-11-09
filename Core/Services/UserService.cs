@@ -27,7 +27,13 @@ namespace Core.Services
         {
             var user = _userRepository
                 .GetAll()
-                .FirstOrDefault(x => (x.Email == model.Login || x.UserName==model.Login) && _configuration.Decode(x.Password) == model.Password);
+                .FirstOrDefault(
+                    x => 
+                        (x.Email == model.Login || x.UserName==model.Login)
+                        && 
+                        _configuration.Decode(x.Password) == model.Password
+                        &&
+                        x.IsConfirmed);
 
             if (user == null)
             {
@@ -68,6 +74,11 @@ namespace Core.Services
         public User GetById(long Id)
         {
             return _userRepository.GetById(Id);
+        }
+
+        public async Task<User> Update(UserModel userModel)
+        {
+            return await _userRepository.Update(_mapper.Map<User>(userModel));
         }
     }
 }

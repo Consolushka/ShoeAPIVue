@@ -10,13 +10,6 @@ namespace Repository.EntityRepository
             Context = context;
         }
 
-        public Brand Update(Brand brand)
-        {
-            var res = Context.Brand.Update(brand);
-            Context.SaveChanges();
-            return res.Entity;
-        }
-
         public void Delete(long id)
         {
             var brand = GetById(id);

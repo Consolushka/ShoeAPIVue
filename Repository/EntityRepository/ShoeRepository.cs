@@ -19,13 +19,6 @@ namespace Repository.EntityRepository
             return Context.Shoe.Include(s=>s.Brand).ToList();
         }
 
-        public Shoe Update(Shoe shoe)
-        {
-            var res = Context.Shoe.Update(shoe);
-            Context.SaveChanges();
-            return res.Entity;
-        }
-
         public void Delete(long id)
         {
             var shoe = GetById(id);

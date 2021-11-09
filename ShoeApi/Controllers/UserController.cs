@@ -69,6 +69,12 @@ namespace WebApplication.Controllers
             return u;
         }
 
+        public async Task<IActionResult> Update(UserModel userModel)
+        {
+            var u =await _userService.Update(userModel);
+            return Ok();
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult GetAll()

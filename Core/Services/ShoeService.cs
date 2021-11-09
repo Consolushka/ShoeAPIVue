@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.Models;
 using Repository.Contracts;
 using Core.Contracts;
@@ -29,9 +30,9 @@ namespace Core.Services
             return _repository.Add(shoe).Result;
         }
 
-        public Shoe Update(Shoe shoe)
+        public async Task<Shoe> Update(Shoe shoe)
         {
-            return _repository.Update(shoe);
+            return await _repository.Update(shoe);
         }
 
         public void Delete(long id)

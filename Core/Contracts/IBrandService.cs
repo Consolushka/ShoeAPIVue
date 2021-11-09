@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Entities.Models;
 
 namespace Core.Contracts
@@ -8,7 +9,7 @@ namespace Core.Contracts
         List<Brand> GetAll();
         Brand GetById(long Id);
         Brand Add(Brand brand);
-        Brand Update(Brand brand);
+        Task<Brand> Update(Brand brand);
         void Delete(long id);
     }
 }

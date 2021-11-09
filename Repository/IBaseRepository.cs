@@ -9,5 +9,6 @@ namespace Repository
         List<T> GetAll();
         T GetById(long id);
         Task<T> Add(T entity);
+        Task<T> Update(T entity);
     }
 }
