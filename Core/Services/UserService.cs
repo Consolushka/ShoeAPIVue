@@ -11,7 +11,7 @@ using Core.Contracts;
 
 namespace Core.Services
 {
-    public class UserService: IUserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
@@ -23,14 +23,15 @@ namespace Core.Services
             _configuration = configuration;
             _mapper = mapper;
         }
+
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
             var user = _userRepository
                 .GetAll()
                 .FirstOrDefault(
-                    x => 
-                        (x.Email == model.Login || x.UserName==model.Login)
-                        && 
+                    x =>
+                        (x.Email == model.Login || x.UserName == model.Login)
+                        &&
                         _configuration.Decode(x.Password) == model.Password
                         &&
                         x.IsConfirmed);
@@ -55,9 +56,9 @@ namespace Core.Services
             return addedUser;
         }
 
-        public async Task<bool> ConfirmRegistration(Guid key)
+        public async Task<bool> ConfirmUser(Guid key)
         {
-            var user = await _userRepository.GetByKey(key); 
+            var user = await _userRepository.GetByKey(key);
             if (user != null)
             {
                 _userRepository.ConfirmUser(user);
@@ -66,6 +67,7 @@ namespace Core.Services
 
             return false;
         }
+
         public List<User> GetAll()
         {
             return _userRepository.GetAll();
@@ -76,9 +78,26 @@ namespace Core.Services
             return _userRepository.GetById(Id);
         }
 
-        public async Task<User> Update(UserModel userModel)
+        public async Task<User> Update(long id, UserModel userModel)
         {
-            return await _userRepository.Update(_mapper.Map<User>(userModel));
+            var currentUser = _userRepository.GetById(id);
+            if (currentUser == null)
+            {
+                return null;
+            }
+            currentUser.ConfirmString = Guid.NewGuid();
+            currentUser.Password = _configuration.Encode(userModel.Password);
+            currentUser.UserName = userModel.UserName;
+            currentUser.IsConfirmed = false;
+            return await _userRepository.Update(currentUser);
+        }
+
+        public async Task<User> AbortUpdation(Guid key)
+        {
+            var user = await _userRepository.GetByKey(key);
+            user.ConfirmString = Guid.NewGuid();
+            user.IsConfirmed = false;
+            return await _userRepository.Update(user);
         }
     }
 }

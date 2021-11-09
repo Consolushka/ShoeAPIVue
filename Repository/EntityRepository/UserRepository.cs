@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Entities.Models;
+using Entities.Support;
 using Microsoft.EntityFrameworkCore;
 using Repository.Contracts;
 
@@ -18,7 +19,7 @@ namespace Repository.EntityRepository
         {
             foreach (var user in await Context.User.ToListAsync())
             {
-                if (entity.Email == user.Email)
+                if (entity.Email == user.Email || entity.UserName==user.UserName)
                 {
                     return null;
                 }

@@ -56,5 +56,48 @@ namespace Middleware
                 throw ex;
             }
         }
+
+        public static void ConfirmUpdate(User user)
+        {
+            try
+            {
+
+                // set smtp-client with basicAuthentication
+                SmtpClient.UseDefaultCredentials = false;
+                SmtpClient.EnableSsl = true;
+                NetworkCredential basicAuthenticationInfo = Authentication;
+                SmtpClient.Credentials = basicAuthenticationInfo;
+
+                // add from,to mailaddresses
+                MailAddress to = new MailAddress(user.Email);
+                MailMessage myMail = new MailMessage(From, to);
+
+                // add ReplyTo
+                MailAddress replyTo = new MailAddress("consolushka@gmail.com");
+                myMail.ReplyToList.Add(replyTo);
+
+                // set subject and encoding
+                myMail.Subject = "Test message";
+                myMail.SubjectEncoding = Encoding.UTF8;
+
+                // set body-message and encoding
+                myMail.Body = $"<a href='http://localhost:8080/#/user/confirm?key={user.ConfirmString}'>Confirm Data Updation</a><a href='http://localhost:8080/#/user/confirm?key={user.ConfirmString}'>Confirm Data Updation</a>";
+                myMail.BodyEncoding = Encoding.UTF8;
+                // text or html
+                myMail.IsBodyHtml = true;
+
+                SmtpClient.Send(myMail);
+            }
+
+            catch (SmtpException ex)
+            {
+                throw new ApplicationException
+                    ("SmtpException has occured: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper.Configuration;
-using Core;
 using Core.Contracts;
-using Entities.Models;
 using Entities.Support;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
@@ -53,7 +50,7 @@ namespace WebApplication.Controllers
         public IActionResult ConfirmRegistration(string key)
         {
             var Gkey = Guid.Parse(key);
-            if (_userService.ConfirmRegistration(Gkey).Result)
+            if (_userService.ConfirmUser(Gkey).Result)
             {
                 return Ok();   
             }
@@ -69,9 +66,16 @@ namespace WebApplication.Controllers
             return u;
         }
 
-        public async Task<IActionResult> Update(UserModel userModel)
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update(long id, UserModel userModel)
         {
-            var u =await _userService.Update(userModel);
+            var u =await _userService.Update(id, userModel);
+            if (u == null)
+            {
+                return BadRequest("Cannot find your Account");
+            }
+            
+            MailSender.ConfirmUpdate(u);
             return Ok();
         }
 

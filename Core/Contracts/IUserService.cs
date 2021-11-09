@@ -10,9 +10,9 @@ namespace Core.Contracts
     {
         AuthenticateResponse Authenticate(AuthenticateRequest model);
         Task<User> Register(UserModel userModel);
-        Task<bool> ConfirmRegistration(Guid key);
+        Task<bool> ConfirmUser(Guid key);
         List<User> GetAll();
         User GetById(long Id);
-        Task<User> Update(UserModel userModel);
+        Task<User> Update(long id, UserModel userModel);
     }
 }
