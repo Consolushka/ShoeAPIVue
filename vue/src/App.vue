@@ -38,9 +38,9 @@
         <v-tab to="/User/signup" v-if="$store.getters.ISAUTH !== 'true'">
           Sing in
         </v-tab>
-        <v-btn color="red" style="margin: auto 0" @click="$store.dispatch('LOGOUT')" v-if="$store.getters.ISAUTH === 'true'">
-          Log Out
-        </v-btn>
+        <v-tab to="/User" v-if="$store.getters.ISAUTH === 'true'">
+          Account
+        </v-tab>
       </v-tabs>
     </v-app-bar>
 

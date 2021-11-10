@@ -36,6 +36,9 @@ export const store = new Vuex.Store({
         },
         SHOES: state=>{
             return state.Shoes;
+        },
+        USER: state=>{
+            return state.User;
         }
     },
     mutations: {
@@ -50,6 +53,7 @@ export const store = new Vuex.Store({
             axios.post(utils.API.USER+`GetById?id=${id}`, null,config)
                 .then((response)=>{
                     localStorage.setItem('userId', response.data.id);
+                    console.log(response.data);
                     state.User = new User(response.data);
                 })
         },

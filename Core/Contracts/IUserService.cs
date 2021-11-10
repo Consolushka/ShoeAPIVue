@@ -13,6 +13,6 @@ namespace Core.Contracts
         Task<bool> ConfirmUser(Guid key);
         List<User> GetAll();
         User GetById(long Id);
-        Task<User> Update(long id, UserModel userModel);
+        Task<User> Update(User user);
     }
 }

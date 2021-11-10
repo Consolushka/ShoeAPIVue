@@ -128,8 +128,10 @@ export class User {
     IsConfirmed
 
     constructor(user) {
+        console.log(user);
         if (user === undefined) {
             user = {
+                id: 0,
                 email: "",
                 userName: "",
                 password: "",
@@ -138,6 +140,7 @@ export class User {
                 isConfirmed: false
             }
         }
+        this.Id = user.id;
         this.Email = user.email;
         this.UserName = user.userName;
         this.Password = user.Password;
@@ -161,6 +164,12 @@ export class User {
 
     Authenticate(){
         return axios.post(utils.API.USER+"authenticate", this)
+            .then(response => response)
+            .catch(err=>err.response);
+    }
+
+    Update(){
+        return axios.post(utils.API.USER+"Update", this)
             .then(response => response)
             .catch(err=>err.response);
     }

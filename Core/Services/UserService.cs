@@ -78,18 +78,12 @@ namespace Core.Services
             return _userRepository.GetById(Id);
         }
 
-        public async Task<User> Update(long id, UserModel userModel)
+        public async Task<User> Update(User user)
         {
-            var currentUser = _userRepository.GetById(id);
-            if (currentUser == null)
-            {
-                return null;
-            }
-            currentUser.ConfirmString = Guid.NewGuid();
-            currentUser.Password = _configuration.Encode(userModel.Password);
-            currentUser.UserName = userModel.UserName;
-            currentUser.IsConfirmed = false;
-            return await _userRepository.Update(currentUser);
+            user.ConfirmString = Guid.NewGuid();
+            user.Password = _configuration.Encode(user.Password);
+            user.IsConfirmed = false;
+            return await _userRepository.Update(user);
         }
 
         public async Task<User> AbortUpdation(Guid key)

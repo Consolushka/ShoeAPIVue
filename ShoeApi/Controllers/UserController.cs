@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Core.Contracts;
+using Entities.Models;
 using Entities.Support;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
@@ -67,9 +68,9 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost("Update")]
-        public async Task<IActionResult> Update(long id, UserModel userModel)
+        public async Task<IActionResult> Update(User user)
         {
-            var u =await _userService.Update(id, userModel);
+            var u =await _userService.Update(user);
             if (u == null)
             {
                 return BadRequest("Cannot find your Account");
