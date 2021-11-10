@@ -33,9 +33,6 @@ namespace WebApplication.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserModel userModel)
         {
-            userModel.Password = Crypto.Encode(userModel.Password);
-            userModel.RoleId = 1;
-            userModel.IsConfirmed = false;
             var response = await _userService.Register(userModel);
             
             if (response!=null)

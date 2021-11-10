@@ -17,13 +17,6 @@ namespace Repository.EntityRepository
 
         public new async Task<User> Add(User entity)
         {
-            foreach (var user in await Context.User.ToListAsync())
-            {
-                if (entity.Email == user.Email || entity.UserName==user.UserName)
-                {
-                    return null;
-                }
-            }
             var res = await Context.AddAsync(entity);
             await Context.SaveChangesAsync();
             return res.Entity;

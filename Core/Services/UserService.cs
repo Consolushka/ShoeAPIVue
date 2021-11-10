@@ -49,8 +49,19 @@ namespace Core.Services
 
         public async Task<User> Register(UserModel userModel)
         {
+            userModel.Password = _configuration.Encode(userModel.Password);
+            userModel.RoleId = 1;
+            userModel.IsConfirmed = false;
             var user = _mapper.Map<User>(userModel);
             user.ConfirmString = Guid.NewGuid();
+            var thisUser = _userRepository.GetAll().FirstOrDefault(u =>
+                u.Email == user.Email
+                ||
+                u.Password == user.Password);
+            if (thisUser != null)
+            {
+                return null;
+            }
             var addedUser = await _userRepository.Add(user);
 
             return addedUser;
