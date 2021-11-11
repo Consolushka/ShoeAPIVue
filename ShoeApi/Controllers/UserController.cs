@@ -104,18 +104,6 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("1.1")]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate(AuthenticateRequest model)
-        {
-            var response = _userService.Authenticate(model);
-
-            if (response == null)
-                return BadRequest("Username or password is incorrect");
-
-            return Ok(response);
-        }
-
-        [MapToApiVersion("1.1")]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserModel userModel)
         {
@@ -141,6 +129,18 @@ namespace WebApplication.Controllers.V2
             }
             
             return BadRequest();
+        }
+
+        [MapToApiVersion("1.1")]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest("Username or password is incorrect");
+
+            return Ok(response);
         }
 
         [Authorize]
