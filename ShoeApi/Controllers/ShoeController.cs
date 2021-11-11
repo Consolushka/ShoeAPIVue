@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
 
-namespace WebApplication.Controllers
+namespace WebApplication.Controllers.V1
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("1.0", Deprecated = true)]
+    [Route("api/v{version:apiVersion}/[controller]")]  
     public class ShoeController: Controller
     {
         private readonly IShoeService _service;
@@ -35,7 +36,7 @@ namespace WebApplication.Controllers
             return _service.GetById(id);
         }
 
-        [Authorize]
+        [Admin]
         [HttpPost("Add")]
         public IActionResult Add(Shoe shoe)
         {
@@ -47,7 +48,7 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Admin]
         [HttpPut("Update")]
         public IActionResult Update(Shoe shoe)
         {
@@ -60,7 +61,7 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Admin]
         [HttpDelete("Delete/{id}")]
         public IActionResult Delete(long id)
         {
@@ -68,7 +69,102 @@ namespace WebApplication.Controllers
             return Ok();
         }
         
-        [Authorize]
+        [Admin]
+        [HttpPost("SaveFile")]
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httprequest = Request.Form;
+                var requestFile = httprequest.Files[0];
+                string fileName = requestFile.FileName;
+                var PhysicalPath = _env.ContentRootPath + "/Photos/" + fileName;
+
+                using (var stream = new FileStream(PhysicalPath, FileMode.Create))
+                {
+                    requestFile.CopyTo(stream);
+                }
+
+                return new JsonResult(fileName);
+            }
+            catch
+            {
+                return new JsonResult("error.png");
+            }
+        }
+    }
+}
+
+namespace WebApplication.Controllers.V2
+{
+    [ApiController]
+    [ApiVersion("1.1")]
+    [Route("api/v{version:apiVersion}/[controller]")]  
+    public class ShoeController: Controller
+    {
+        private readonly IShoeService _service;
+        private readonly IWebHostEnvironment _env;
+
+        public ShoeController(IShoeService service, IWebHostEnvironment env)
+        {
+            _service = service;
+            _env = env;
+        }
+        
+        [MapToApiVersion("1.1")]
+        [HttpGet("GetAll")]
+        public List<Shoe> GetAll()
+        {
+            var res =  _service.GetAll();
+
+            return res;
+        }
+
+        [MapToApiVersion("1.1")]
+        [HttpGet("GetById")]
+        public Shoe GetById(long id)
+        {
+            return _service.GetById(id);
+        }
+
+        [Admin]
+        [MapToApiVersion("1.1")]
+        [HttpPost("Add")]
+        public IActionResult Add(Shoe shoe)
+        {
+            var res = _service.Add(shoe);
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
+        }
+
+        [Admin]
+        [MapToApiVersion("1.1")]
+        [HttpPut("Update")]
+        public IActionResult Update(Shoe shoe)
+        {
+            var res =  _service.Update(shoe);
+            
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
+        }
+
+        [Admin]
+        [MapToApiVersion("1.1")]
+        [HttpDelete("Delete/{id}")]
+        public IActionResult Delete(long id)
+        {
+            _service.Delete(id);
+            return Ok();
+        }
+        
+        [Admin]
+        [MapToApiVersion("1.1")]
         [HttpPost("SaveFile")]
         public JsonResult SaveFile()
         {

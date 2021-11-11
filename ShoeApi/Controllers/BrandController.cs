@@ -4,10 +4,11 @@ using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Middleware;
 
-namespace WebApplication.Controllers
+namespace WebApplication.Controllers.V1
 {
     [ApiController]
-    [Route("[controller]")]
+    [ApiVersion("1.0", Deprecated = true)]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class BrandController : Controller
     {
         private readonly IBrandService _brandService;
@@ -31,7 +32,6 @@ namespace WebApplication.Controllers
             return _brandService.GetById(id);
         }
 
-        [Authorize]
         [Admin]
         [HttpPost("Add")]
         public IActionResult Add(Brand brand)
@@ -44,7 +44,6 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-        [Authorize]
         [Admin]
         [HttpPut("Update")]
         public IActionResult Update(Brand brand)
@@ -57,8 +56,74 @@ namespace WebApplication.Controllers
             return Ok();
         }
 
-        [Authorize]
         [Admin]
+        [HttpDelete("Delete/{id}")]
+        public IActionResult Delete(long id)
+        {
+            _brandService.Delete(id);
+            return Ok();
+        }
+    }
+}
+
+namespace WebApplication.Controllers.V2
+{
+    [ApiController]
+    [ApiVersion("1.1", Deprecated = false)]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class BrandController : Controller
+    {
+        private readonly IBrandService _brandService;
+
+        public BrandController(IBrandService brandService)
+        {
+            _brandService = brandService;
+        }
+
+        [MapToApiVersion("1.1")]
+        [HttpGet("GetAll")]
+        public List<Brand> GetAll()
+        {
+            var res =  _brandService.GetAll();
+
+            return res;
+        }
+
+        [MapToApiVersion("1.1")]
+        [HttpGet("GetById")]
+        public Brand GetById(long id)
+        {
+            return _brandService.GetById(id);
+        }
+
+        [Admin]
+        [MapToApiVersion("1.1")]
+        [HttpPost("Add")]
+        public IActionResult Add(Brand brand)
+        {
+            var res =_brandService.Add(brand);
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
+        }
+
+        [Admin]
+        [MapToApiVersion("1.1")]
+        [HttpPut("Update")]
+        public IActionResult Update(Brand brand)
+        {
+            var res =_brandService.Update(brand);
+            if (res == null)
+            {
+                return BadRequest("Server Error");
+            }
+            return Ok();
+        }
+
+        [Admin]
+        [MapToApiVersion("1.1")]
         [HttpDelete("Delete/{id}")]
         public IActionResult Delete(long id)
         {
