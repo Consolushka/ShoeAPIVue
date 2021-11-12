@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Entities.Support
+﻿namespace Entities.Support
 {
     public class UserModel
     {
@@ -9,7 +7,7 @@ namespace Entities.Support
         public string UserName { get; set; }
         public string Password { get; set; }
         public long RoleId { get; set; }
-        public bool IsConfirmed { get; set; }
+        public bool IsActive { get; set; }
 
         public UserModel(string email, string password)
         {
@@ -17,7 +15,7 @@ namespace Entities.Support
             Email = email;
             Password = password;
             RoleId = 1;
-            IsConfirmed = false;
+            IsActive = false;
         }
     }
 }

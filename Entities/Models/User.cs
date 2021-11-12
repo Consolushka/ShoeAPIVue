@@ -13,7 +13,7 @@ namespace Entities.Models
 
         public long RoleId { get; set; }
         public Role Role { get; set;}
-        public bool IsConfirmed { get; set; }
+        public bool IsActive { get; set; }
         public Guid ConfirmString { get; set; }
     }
 }

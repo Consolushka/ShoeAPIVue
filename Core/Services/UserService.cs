@@ -34,7 +34,7 @@ namespace Core.Services
                         &&
                         _configuration.Decode(x.Password) == model.Password
                         &&
-                        x.IsConfirmed);
+                        x.IsActive);
 
             if (user == null)
             {
@@ -51,7 +51,7 @@ namespace Core.Services
         {
             userModel.Password = _configuration.Encode(userModel.Password);
             userModel.RoleId = 1;
-            userModel.IsConfirmed = false;
+            userModel.IsActive = false;
             var user = _mapper.Map<User>(userModel);
             user.ConfirmString = Guid.NewGuid();
             var thisUser = _userRepository.GetAll().FirstOrDefault(u =>
@@ -93,7 +93,7 @@ namespace Core.Services
         {
             user.ConfirmString = Guid.NewGuid();
             user.Password = _configuration.Encode(user.Password);
-            user.IsConfirmed = false;
+            user.IsActive = false;
             return await _userRepository.Update(user);
         }
 
@@ -101,7 +101,7 @@ namespace Core.Services
         {
             var user = await _userRepository.GetByKey(key);
             user.ConfirmString = Guid.NewGuid();
-            user.IsConfirmed = false;
+            user.IsActive = false;
             return await _userRepository.Update(user);
         }
     }

@@ -15,7 +15,7 @@ namespace Middleware
                 return "Unauthorized";
             }
 
-            if (user.IsConfirmed == false)
+            if (user.IsActive == false)
             {
                 // not logged in
                 return "Your account is inactive";
