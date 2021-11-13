@@ -32,7 +32,7 @@ namespace Middleware
                 return isExists;
             }
 
-            if (user.RoleId == 2)
+            if (user.IsAdmin)
             {
                 return null;
             }

@@ -11,8 +11,7 @@ namespace Entities.Models
         [JsonIgnore]
         public string Password { get; set; }
 
-        public long RoleId { get; set; }
-        public Role Role { get; set;}
+        public bool IsAdmin { get; set; }
         public bool IsActive { get; set; }
         public Guid ConfirmString { get; set; }
     }
