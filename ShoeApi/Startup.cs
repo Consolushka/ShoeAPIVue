@@ -110,6 +110,8 @@ namespace WebApplication
                     Path.Combine(Directory.GetCurrentDirectory(),"Photos")),
                 RequestPath = "/Photos"
             });
+            
+            DataInitializer.SeedData(app);
         }
     }
 }
