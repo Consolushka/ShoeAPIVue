@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Core.Contracts;
-using Entities.Models;
-using Entities.Support;
 using Microsoft.AspNetCore.Mvc;
-using Middleware;
+using WebApplication.Data.Models;
+using WebApplication.Data.ViewModels;
+using WebApplication.Middleware;
+using WebApplication.Services.Contracts;
 
 namespace WebApplication.Controllers.V2
 {

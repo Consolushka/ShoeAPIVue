@@ -1,7 +1,4 @@
 using System.IO;
-using Core.Contracts;
-using Core.Services;
-using Entities.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Repository.Contracts;
-using Middleware;
-using Repository;
-using Repository.EntityRepository;
+using WebApplication.Data;
+using WebApplication.Data.Models;
+using WebApplication.Middleware;
+using WebApplication.Repository;
+using WebApplication.Repository.Contracts;
+using WebApplication.Repository.EntityRepository;
+using WebApplication.Services.Contracts;
+using WebApplication.Services.ModelServices;
 
 namespace WebApplication
 {

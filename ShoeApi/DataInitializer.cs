@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Entities.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Middleware;
-using Repository;
+using WebApplication.Data;
+using WebApplication.Data.Models;
+using WebApplication.Middleware;
 
 namespace WebApplication
 {
