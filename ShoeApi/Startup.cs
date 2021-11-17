@@ -102,6 +102,7 @@ namespace WebApplication
             app.UseAuthorization();
 
             app.UseMiddleware<JwtMiddleware>();
+            app.ConfigurationBuildInException();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             

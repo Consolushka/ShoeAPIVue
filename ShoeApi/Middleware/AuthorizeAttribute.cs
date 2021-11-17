@@ -1,6 +1,4 @@
 using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebApplication.Data.Models;
 
@@ -12,13 +10,13 @@ namespace WebApplication.Middleware
         {
             if (user == null)
             {
-                return "Unauthorized";
+                throw new Exception("You are Unauthorized");
             }
 
             if (user.IsActive == false)
             {
                 // not logged in
-                return "Your account is inactive";
+                throw new Exception($"Email {user.Email} is unconfirmed");
             }
 
             return null;
@@ -37,7 +35,7 @@ namespace WebApplication.Middleware
                 return null;
             }
 
-            return "You dont have needed rights";
+            throw new Exception($"User with Email {user.Email} don't have needed rights");
         }
     }
     
@@ -47,14 +45,6 @@ namespace WebApplication.Middleware
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var answer = new UserCheck().IsActiveUserExistingUser((User)context.HttpContext.Items["User"]);
-            
-            if (answer == null)
-            {
-                return;
-            }
-            
-            context.Result = new JsonResult(new { message = answer })
-                { StatusCode = StatusCodes.Status401Unauthorized };
         }
     }
 
@@ -63,14 +53,6 @@ namespace WebApplication.Middleware
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var answer = new UserCheck().IsAdmin((User)context.HttpContext.Items["User"]);
-            
-            if (answer == null)
-            {
-                return;
-            }
-            
-            context.Result = new JsonResult(new { message = answer })
-                { StatusCode = StatusCodes.Status401Unauthorized };
         }
     }
 }

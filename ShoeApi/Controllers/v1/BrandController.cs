@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
-using WebApplication.Exceptions;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
 
@@ -30,15 +29,7 @@ namespace WebApplication.Controllers.V1
         [HttpGet("GetById")]
         public IActionResult GetById(long id)
         {
-            try
-            {
-                var brand = _brandService.GetById(id);
-                return Ok(brand);
-            }
-            catch (NullEntityException ex)
-            {
-                return BadRequest($"{ex.Message} {ex.Id}");
-            }
+            return Ok(_brandService.GetById(id));
         }
 
         [Admin]

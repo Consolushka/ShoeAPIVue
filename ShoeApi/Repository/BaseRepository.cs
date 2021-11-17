@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication.Data;
 using WebApplication.Data.Models;
-using WebApplication.Exceptions;
 
 namespace WebApplication.Repository
 {
@@ -47,7 +47,7 @@ namespace WebApplication.Repository
         private void CheckForId(long id)
         {
             if (Context.Set<T>().FirstOrDefault(t => t.Id == id) == null)
-                throw new NullEntityException($"Cannot find {typeof(T).Name} with id:", id);
+                throw new Exception($"Cannot find {typeof(T).Name} with id: ${id}");
         }
     }
 }
