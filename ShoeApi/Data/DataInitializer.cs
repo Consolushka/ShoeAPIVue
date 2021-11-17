@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApplication.Data;
 using WebApplication.Data.Models;
 using WebApplication.Middleware;
 
-namespace WebApplication
+namespace WebApplication.Data
 {
     public static class DataInitializer
     {
-        public static void SeedData(IApplicationBuilder builder)
+
+        public static void SeedData(IApplicationBuilder builder, IConfiguration configuration)
         {
             using (var serviceScope = builder.ApplicationServices.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<ShoeContext>();
 
-                SeedUsersIfNone(context);
+                SeedUsersIfNone(context, configuration);
                 SeedBrandsIfNone(context);
                 SeedShoesIfNone(context);
 
@@ -25,7 +27,7 @@ namespace WebApplication
             }
         }
 
-        private static void SeedUsersIfNone(ShoeContext context)
+        private static void SeedUsersIfNone(ShoeContext context, IConfiguration configuration)
         {
             if (!context.User.Any())
             {
@@ -33,7 +35,7 @@ namespace WebApplication
                 {
                     ConfirmString = new Guid(),
                     Email = "consolushka@gmail.com",
-                    Password = Crypto.Encode("admin"),
+                    Password = configuration.Encode("admin"),
                     IsActive = true,
                     UserName = "admin"
                 });

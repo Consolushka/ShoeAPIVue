@@ -112,7 +112,7 @@ namespace WebApplication
                 RequestPath = "/Photos"
             });
             
-            DataInitializer.SeedData(app);
+            DataInitializer.SeedData(app,Configuration);
         }
     }
 }

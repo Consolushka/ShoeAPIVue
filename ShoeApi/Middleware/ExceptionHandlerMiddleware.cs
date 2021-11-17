@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Middleware
+namespace WebApplication.Middleware
 {
     public static class ExceptionHandlerMiddleware
     {
