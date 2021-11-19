@@ -47,8 +47,8 @@ namespace WebApplication.Middleware
 
             catch (SmtpException ex)
             {
-                throw new ApplicationException
-                    ("SmtpException has occured: " + ex.Message);
+                // throw new ApplicationException
+                //     ("SmtpException has occured: " + ex.Message);
             }
         }
 
@@ -86,8 +86,8 @@ namespace WebApplication.Middleware
 
             catch (SmtpException ex)
             {
-                throw new ApplicationException
-                    ("SmtpException has occured: " + ex.Message);
+                // throw new ApplicationException
+                //     ("SmtpException has occured: " + ex.Message);
             }
         }
     }

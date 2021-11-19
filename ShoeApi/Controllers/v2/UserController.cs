@@ -22,9 +22,9 @@ namespace WebApplication.Controllers.V2
 
         [MapToApiVersion("2.0")]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserModel userModel)
+        public async Task<IActionResult> Register(UserVM userVm)
         {
-            var response = await _userService.Register(userModel);
+            var response = await _userService.Register(userVm);
             
             if (response!=null)
             {
@@ -50,9 +50,9 @@ namespace WebApplication.Controllers.V2
 
         [MapToApiVersion("2.0")]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate(AuthenticateRequest model)
+        public IActionResult Authenticate(UserVM vm)
         {
-            var response = _userService.Authenticate(model);
+            var response = _userService.Authenticate(vm);
 
             if (response == null)
                 return BadRequest("Username or password is incorrect");
@@ -71,10 +71,10 @@ namespace WebApplication.Controllers.V2
 
         [Authorize]
         [MapToApiVersion("2.0")]
-        [HttpPost("update")]
-        public async Task<IActionResult> Update(User user)
+        [HttpPost("update/{id}")]
+        public async Task<IActionResult> Update(UserVM userVm, long id)
         {
-            var u =await _userService.Update(user);
+            var u =await _userService.Update(userVm, id);
             if (u == null)
             {
                 return BadRequest("Cannot find your Account");

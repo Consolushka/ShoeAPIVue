@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
+using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
 
@@ -19,11 +20,11 @@ namespace WebApplication.Controllers.V1
         }
 
         [HttpGet("get-all")]
-        public List<Brand> GetAll()
+        public IActionResult GetAll()
         {
             var res =  _brandService.GetAll();
 
-            return res;
+            return Ok(res);
         }
 
         [HttpGet("get-by-id")]
@@ -34,7 +35,7 @@ namespace WebApplication.Controllers.V1
 
         [Admin]
         [HttpPost("add")]
-        public IActionResult Add(Brand brand)
+        public IActionResult Add(BrandVM brand)
         {
             var res =_brandService.Add(brand);
             if (res == null)
@@ -45,10 +46,10 @@ namespace WebApplication.Controllers.V1
         }
 
         [Admin]
-        [HttpPut("update")]
-        public IActionResult Update(Brand brand)
+        [HttpPut("update/{id}")]
+        public IActionResult Update(BrandVM brandVm, long id)
         {
-            var res =_brandService.Update(brand);
+            var res =_brandService.Update(brandVm, id);
             if (res == null)
             {
                 return BadRequest("Server Error");

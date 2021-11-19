@@ -61,6 +61,8 @@ namespace WebApplication
             });
             
             services.AddAutoMapper(typeof(UserMapper));
+            services.AddAutoMapper(typeof(BrandMapper));
+            services.AddAutoMapper(typeof(ShoeMapper));
             
             services.AddScoped<BaseRepository<User>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

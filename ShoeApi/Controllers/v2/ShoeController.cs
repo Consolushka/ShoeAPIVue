@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
+using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
 
@@ -24,26 +25,26 @@ namespace WebApplication.Controllers.V2
         
         [MapToApiVersion("2.0")]
         [HttpGet("get-all")]
-        public List<Shoe> GetAll()
+        public IActionResult GetAll()
         {
             var res =  _service.GetAll();
 
-            return res;
+            return Ok(res);
         }
 
         [MapToApiVersion("2.0")]
         [HttpGet("get-by-id")]
-        public Shoe GetById(long id)
+        public IActionResult GetById(long id)
         {
-            return _service.GetById(id);
+            return Ok(_service.GetById(id));
         }
 
         [Admin]
         [MapToApiVersion("2.0")]
         [HttpPost("add")]
-        public IActionResult Add(Shoe shoe)
+        public IActionResult Add(ShoeVM shoeVm)
         {
-            var res = _service.Add(shoe);
+            var res = _service.Add(shoeVm);
             if (res == null)
             {
                 return BadRequest("Server Error");
@@ -53,10 +54,10 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPut("update")]
-        public IActionResult Update(Shoe shoe)
+        [HttpPut("update/{id}")]
+        public IActionResult Update(ShoeVM shoe, long id)
         {
-            var res =  _service.Update(shoe);
+            var res =  _service.Update(shoe, id);
             
             if (res == null)
             {

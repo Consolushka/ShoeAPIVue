@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication.Data.Models;
+using WebApplication.Data.ViewModels;
 
 namespace WebApplication.Services.Contracts
 {
@@ -8,8 +9,8 @@ namespace WebApplication.Services.Contracts
     {
         List<Shoe> GetAll();
         Shoe GetById(long Id);
-        Shoe Add(Shoe shoe);
-        Task<Shoe> Update(Shoe shoe);
+        Shoe Add(ShoeVM shoe);
+        Task<Shoe> Update(ShoeVM shoe, long id);
         void Delete(long id);
     }
 }

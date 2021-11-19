@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
+using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
 
@@ -20,24 +21,24 @@ namespace WebApplication.Controllers.V2
 
         [MapToApiVersion("2.0")]
         [HttpGet("get-all")]
-        public List<Brand> GetAll()
+        public IActionResult GetAll()
         {
             var res =  _brandService.GetAll();
 
-            return res;
+            return Ok(res);
         }
 
         [MapToApiVersion("2.0")]
         [HttpGet("get-by-id")]
-        public Brand GetById(long id)
+        public IActionResult GetById(long id)
         {
-            return _brandService.GetById(id);
+            return Ok(_brandService.GetById(id));
         }
 
         [Admin]
         [MapToApiVersion("2.0")]
         [HttpPost("add")]
-        public IActionResult Add(Brand brand)
+        public IActionResult Add(BrandVM brand)
         {
             var res =_brandService.Add(brand);
             if (res == null)
@@ -49,10 +50,10 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPut("update")]
-        public IActionResult Update(Brand brand)
+        [HttpPut("update/{id}")]
+        public IActionResult Update(BrandVM brandVm, long id)
         {
-            var res =_brandService.Update(brand);
+            var res =_brandService.Update(brandVm, id);
             if (res == null)
             {
                 return BadRequest("Server Error");

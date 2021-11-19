@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using WebApplication.Data.Models;
+using WebApplication.Data.ViewModels;
 using WebApplication.Repository.Contracts;
 using WebApplication.Services.Contracts;
 
@@ -9,10 +11,12 @@ namespace WebApplication.Services.ModelServices
     public class ShoeService: IShoeService
     {
         private readonly IShoeRepository _repository;
+        private readonly IMapper _mapper;
 
-        public ShoeService(IShoeRepository repository)
+        public ShoeService(IShoeRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public List<Shoe> GetAll()
@@ -25,13 +29,16 @@ namespace WebApplication.Services.ModelServices
             return _repository.GetById(id);
         }
 
-        public Shoe Add(Shoe shoe)
+        public Shoe Add(ShoeVM shoeVm)
         {
+            var shoe = _mapper.Map<Shoe>(shoeVm);
             return _repository.Add(shoe).Result;
         }
 
-        public async Task<Shoe> Update(Shoe shoe)
+        public async Task<Shoe> Update(ShoeVM shoeVm, long id)
         {
+            var shoe = _mapper.Map<Shoe>(shoeVm);
+            shoe.Id = id;
             return await _repository.Update(shoe);
         }
 

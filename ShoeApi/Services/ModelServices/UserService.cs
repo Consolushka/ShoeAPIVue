@@ -25,15 +25,15 @@ namespace WebApplication.Services.ModelServices
             _mapper = mapper;
         }
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        public UserResponse Authenticate(UserVM vm)
         {
             var user = _userRepository
                 .GetAll()
                 .FirstOrDefault(
                     x =>
-                        (x.Email == model.Login || x.UserName == model.Login)
+                        (x.Email == vm.Email || x.UserName == vm.UserName)
                         &&
-                        _configuration.Decode(x.Password) == model.Password
+                        _configuration.Decode(x.Password) == vm.Password
                         &&
                         x.IsActive);
 
@@ -45,15 +45,15 @@ namespace WebApplication.Services.ModelServices
 
             var token = _configuration.GenerateJwtToken(user);
 
-            return new AuthenticateResponse(user, token);
+            return new UserResponse(user, token);
         }
 
-        public async Task<User> Register(UserModel userModel)
+        public async Task<User> Register(UserVM userVm)
         {
-            userModel.Password = _configuration.Encode(userModel.Password);
-            userModel.RoleId = 1;
-            userModel.IsActive = false;
-            var user = _mapper.Map<User>(userModel);
+            userVm.Password = _configuration.Encode(userVm.Password);
+            var user = _mapper.Map<User>(userVm);
+            user.IsActive = false;
+            user.IsAdmin = false;
             user.ConfirmString = Guid.NewGuid();
             var thisUser = _userRepository.GetAll().FirstOrDefault(u =>
                 u.Email == user.Email
@@ -90,8 +90,10 @@ namespace WebApplication.Services.ModelServices
             return _userRepository.GetById(Id);
         }
 
-        public async Task<User> Update(User user)
+        public async Task<User> Update(UserVM userVm, long id)
         {
+            var user = _mapper.Map<User>(userVm);
+            user.Id = id;
             user.ConfirmString = Guid.NewGuid();
             user.Password = _configuration.Encode(user.Password);
             user.IsActive = false;
