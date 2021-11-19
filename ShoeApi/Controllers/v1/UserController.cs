@@ -20,7 +20,7 @@ namespace WebApplication.Controllers.V1
             _userService = userService;
         }
 
-        [HttpPost("authenticate")]
+        [HttpGet("authenticate")]
         public IActionResult Authenticate(UserVM vm)
         {
             var response = _userService.Authenticate(vm);
@@ -58,7 +58,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Authorize]
-        [HttpPost("get-by-id")]
+        [HttpGet("get-by-id")]
         public UserResponse GetById(int id)
         {
             var u = new UserResponse(_userService.GetById(id));

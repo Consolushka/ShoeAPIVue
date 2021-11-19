@@ -49,7 +49,7 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("2.0")]
-        [HttpPost("authenticate")]
+        [HttpGet("authenticate")]
         public IActionResult Authenticate(UserVM vm)
         {
             var response = _userService.Authenticate(vm);
@@ -62,7 +62,7 @@ namespace WebApplication.Controllers.V2
 
         [Authorize]
         [MapToApiVersion("2.0")]
-        [HttpPost("get-by-id")]
+        [HttpGet("get-by-id")]
         public UserResponse GetById(int id)
         {
             var u = new UserResponse(_userService.GetById(id));
