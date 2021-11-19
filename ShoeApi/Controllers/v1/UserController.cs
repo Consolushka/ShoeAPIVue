@@ -45,7 +45,7 @@ namespace WebApplication.Controllers.V1
             return BadRequest("User with this Email already exists");
         }
 
-        [HttpPost("ConfirmRegistration")]
+        [HttpPost("confirm-registration")]
         public IActionResult ConfirmRegistration(string key)
         {
             var Gkey = Guid.Parse(key);
@@ -58,7 +58,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Authorize]
-        [HttpPost("GetById")]
+        [HttpPost("get-by-id")]
         public UserResponse GetById(int id)
         {
             var u = new UserResponse(_userService.GetById(id));
@@ -66,7 +66,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Authorize]
-        [HttpPost("Update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update(User user)
         {
             var u =await _userService.Update(user);
@@ -80,7 +80,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("get-all")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();

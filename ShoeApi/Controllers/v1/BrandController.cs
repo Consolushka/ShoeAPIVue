@@ -18,7 +18,7 @@ namespace WebApplication.Controllers.V1
             _brandService = brandService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         public List<Brand> GetAll()
         {
             var res =  _brandService.GetAll();
@@ -26,14 +26,14 @@ namespace WebApplication.Controllers.V1
             return res;
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("get-by-id")]
         public IActionResult GetById(long id)
         {
             return Ok(_brandService.GetById(id));
         }
 
         [Admin]
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(Brand brand)
         {
             var res =_brandService.Add(brand);
@@ -45,7 +45,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Admin]
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update(Brand brand)
         {
             var res =_brandService.Update(brand);
@@ -57,7 +57,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Admin]
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
             _brandService.Delete(id);

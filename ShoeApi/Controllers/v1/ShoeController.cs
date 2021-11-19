@@ -22,7 +22,7 @@ namespace WebApplication.Controllers.V1
             _env = env;
         }
         
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         public List<Shoe> GetAll()
         {
             var res =  _service.GetAll();
@@ -30,14 +30,14 @@ namespace WebApplication.Controllers.V1
             return res;
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("get-by-id")]
         public Shoe GetById(long id)
         {
             return _service.GetById(id);
         }
 
         [Admin]
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(Shoe shoe)
         {
             var res = _service.Add(shoe);
@@ -49,7 +49,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Admin]
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update(Shoe shoe)
         {
             var res =  _service.Update(shoe);
@@ -62,7 +62,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Admin]
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
             _service.Delete(id);
@@ -70,7 +70,7 @@ namespace WebApplication.Controllers.V1
         }
         
         [Admin]
-        [HttpPost("SaveFile")]
+        [HttpPost("save-file")]
         public JsonResult SaveFile()
         {
             try

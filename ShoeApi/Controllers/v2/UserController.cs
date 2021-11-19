@@ -36,7 +36,7 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("2.0")]
-        [HttpPost("ConfirmRegistration")]
+        [HttpPost("confirm-registration")]
         public IActionResult ConfirmRegistration(string key)
         {
             var Gkey = Guid.Parse(key);
@@ -62,7 +62,7 @@ namespace WebApplication.Controllers.V2
 
         [Authorize]
         [MapToApiVersion("2.0")]
-        [HttpPost("GetById")]
+        [HttpPost("get-by-id")]
         public UserResponse GetById(int id)
         {
             var u = new UserResponse(_userService.GetById(id));
@@ -71,7 +71,7 @@ namespace WebApplication.Controllers.V2
 
         [Authorize]
         [MapToApiVersion("2.0")]
-        [HttpPost("Update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update(User user)
         {
             var u =await _userService.Update(user);
@@ -86,7 +86,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpGet]
+        [HttpGet("get-all")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();

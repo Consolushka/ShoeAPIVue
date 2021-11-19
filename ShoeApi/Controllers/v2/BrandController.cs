@@ -19,7 +19,7 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("2.0")]
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         public List<Brand> GetAll()
         {
             var res =  _brandService.GetAll();
@@ -28,7 +28,7 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("2.0")]
-        [HttpGet("GetById")]
+        [HttpGet("get-by-id")]
         public Brand GetById(long id)
         {
             return _brandService.GetById(id);
@@ -36,7 +36,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(Brand brand)
         {
             var res =_brandService.Add(brand);
@@ -49,7 +49,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update(Brand brand)
         {
             var res =_brandService.Update(brand);
@@ -62,7 +62,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
             _brandService.Delete(id);

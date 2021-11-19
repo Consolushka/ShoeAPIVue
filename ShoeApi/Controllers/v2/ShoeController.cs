@@ -23,7 +23,7 @@ namespace WebApplication.Controllers.V2
         }
         
         [MapToApiVersion("2.0")]
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         public List<Shoe> GetAll()
         {
             var res =  _service.GetAll();
@@ -32,7 +32,7 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("2.0")]
-        [HttpGet("GetById")]
+        [HttpGet("get-by-id")]
         public Shoe GetById(long id)
         {
             return _service.GetById(id);
@@ -40,7 +40,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(Shoe shoe)
         {
             var res = _service.Add(shoe);
@@ -53,7 +53,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update(Shoe shoe)
         {
             var res =  _service.Update(shoe);
@@ -67,7 +67,7 @@ namespace WebApplication.Controllers.V2
 
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
             _service.Delete(id);
@@ -76,7 +76,7 @@ namespace WebApplication.Controllers.V2
         
         [Admin]
         [MapToApiVersion("2.0")]
-        [HttpPost("SaveFile")]
+        [HttpPost("save-file")]
         public JsonResult SaveFile()
         {
             try
