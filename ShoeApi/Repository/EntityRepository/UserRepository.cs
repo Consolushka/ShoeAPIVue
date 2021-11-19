@@ -24,13 +24,13 @@ namespace WebApplication.Repository.EntityRepository
 
         public async Task<User> GetByKey(Guid key)
         {
-            return await Context.User.FirstOrDefaultAsync(u => u.ConfirmString == key && u.IsActive == false);
+            return await Context.Users.FirstOrDefaultAsync(u => u.ConfirmString == key && u.IsActive == false);
         }
 
         public void ConfirmUser(User user)
         {
             user.IsActive = true;
-            Context.User.Update(user);
+            Context.Users.Update(user);
             Context.SaveChanges();
         }
     }

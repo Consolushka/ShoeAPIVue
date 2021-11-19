@@ -29,9 +29,9 @@ namespace WebApplication.Data
 
         private static void SeedUsersIfNone(ShoeContext context, IConfiguration configuration)
         {
-            if (!context.User.Any())
+            if (!context.Users.Any())
             {
-                context.User.Add(new User()
+                context.Users.Add(new User()
                 {
                     ConfirmString = new Guid(),
                     Email = "consolushka@gmail.com",
@@ -44,9 +44,9 @@ namespace WebApplication.Data
         
         private static void SeedBrandsIfNone(ShoeContext context)
         {
-            if (!context.Brand.Any())
+            if (!context.Brands.Any())
             {
-                context.Brand.AddRange(new List<Brand>()
+                context.Brands.AddRange(new List<Brand>()
                 {
                     new Brand()
                     {
@@ -62,9 +62,9 @@ namespace WebApplication.Data
         
         private static void SeedShoesIfNone(ShoeContext context)
         {
-            if (!context.Shoe.Any())
+            if (!context.Shoes.Any())
             {
-                context.Shoe.AddRange(new List<Shoe>()
+                context.Shoes.AddRange(new List<Shoe>()
                 {
                     new Shoe()
                     {

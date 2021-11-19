@@ -10,8 +10,8 @@ namespace WebApplication.Data
             : base(options)
         {
         }
-        public DbSet<User> User { get; set; }
-        public DbSet<Brand> Brand { get; set; }
-        public DbSet<Shoe> Shoe { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Shoe> Shoes { get; set; }
     }
 }

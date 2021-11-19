@@ -48,6 +48,8 @@ namespace WebApplication
                 setup.SubstituteApiVersionInUrl = true;
             });
             
+            services.AddRouting(options => options.LowercaseUrls = true);
+            
             services.AddSwaggerGen();
             services.ConfigureOptions<ConfigureSwaggerOptions>();
             

@@ -17,7 +17,7 @@ namespace WebApplication.Repository.EntityRepository
 
         public new List<Shoe> GetAll()
         {
-            return Context.Shoe.Include(s=>s.Brand).ToList();
+            return Context.Shoes.Include(s=>s.Brand).ToList();
         }
     }
 }
