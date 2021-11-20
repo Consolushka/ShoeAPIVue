@@ -59,10 +59,10 @@ namespace WebApplication.Controllers.V1
 
         [Authorize]
         [HttpGet("get-by-id")]
-        public UserResponse GetById(int id)
+        public IActionResult GetById(int id)
         {
             var u = new UserResponse(_userService.GetById(id));
-            return u;
+            return Ok(u);
         }
 
         [Authorize]

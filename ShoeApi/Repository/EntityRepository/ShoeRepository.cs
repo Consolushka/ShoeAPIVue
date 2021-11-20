@@ -19,5 +19,10 @@ namespace WebApplication.Repository.EntityRepository
         {
             return Context.Shoes.Include(s=>s.Brand).ToList();
         }
+
+        public new Shoe GetById(long id)
+        {
+            return Context.Shoes.Include(s=>s.Brand).FirstOrDefault(s=>s.Id == id);
+        }
     }
 }
