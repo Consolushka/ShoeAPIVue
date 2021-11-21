@@ -49,7 +49,7 @@ namespace WebApplication.Controllers.V2
         }
 
         [MapToApiVersion("2.0")]
-        [HttpGet("authenticate")]
+        [HttpPost("authenticate")]
         public IActionResult Authenticate(UserVM vm)
         {
             var response = _userService.Authenticate(vm);
@@ -71,7 +71,7 @@ namespace WebApplication.Controllers.V2
 
         [Authorize]
         [MapToApiVersion("2.0")]
-        [HttpPost("update/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(UserVM userVm, long id)
         {
             var u =await _userService.Update(userVm, id);

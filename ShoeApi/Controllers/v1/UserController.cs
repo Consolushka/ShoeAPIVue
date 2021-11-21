@@ -20,7 +20,7 @@ namespace WebApplication.Controllers.V1
             _userService = userService;
         }
 
-        [HttpGet("authenticate")]
+        [HttpPost("authenticate")]
         public IActionResult Authenticate(UserVM vm)
         {
             var response = _userService.Authenticate(vm);
@@ -66,7 +66,7 @@ namespace WebApplication.Controllers.V1
         }
 
         [Authorize]
-        [HttpPost("update/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(UserVM userVm, long id)
         {
             var u =await _userService.Update(userVm, id);

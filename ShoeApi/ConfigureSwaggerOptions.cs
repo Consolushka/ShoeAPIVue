@@ -38,7 +38,7 @@ namespace WebApplication
         {
             var info = new OpenApiInfo()
             {
-                Title = "Heroes API",
+                Title = "ShoeAPI",
                 Version = description.ApiVersion.ToString()
             };
 
