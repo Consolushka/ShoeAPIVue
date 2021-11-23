@@ -3,17 +3,19 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Middleware
 {
     public static class ExceptionHandlerMiddleware
     {
-        public static void ConfigurationBuildInException(this IApplicationBuilder app)
+        public static void ConfigurationBuildInException(this IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             app.UseExceptionHandler(appError =>
             {
                 appError.Run(async context =>
                 {
+                    var logger = loggerFactory.CreateLogger("ConfigurationBuildInException");
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
 
@@ -22,12 +24,16 @@ namespace WebApplication.Middleware
 
                     if (context != null)
                     {
-                        await context.Response.WriteAsync(new Error()
+                        var errVM = new Error()
                         {
                             StatusCode = context.Response.StatusCode,
                             Message = contextFeatures.Error.Message,
                             Path = contextRequest.Path
-                        }.ToString());
+                        }.ToString();
+                        
+                        logger.LogError(errVM);
+
+                        await context.Response.WriteAsync(errVM);
                     }
                 });
             });

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using WebApplication.Data;
 using WebApplication.Data.Models;
 using WebApplication.Middleware;
@@ -73,13 +74,17 @@ namespace WebApplication
             services.AddScoped<BaseRepository<Shoe>,ShoeRepository>();
             services.AddScoped<IShoeRepository, ShoeRepository>();
             
+            services.AddScoped<BaseRepository<Log>,LogRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IShoeService, ShoeService>();
+            services.AddScoped<ILogService, LogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider, ILoggerFactory factory)
         {
             //Enable CORS
             app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
@@ -106,7 +111,7 @@ namespace WebApplication
             app.UseAuthorization();
 
             app.UseMiddleware<JwtMiddleware>();
-            app.ConfigurationBuildInException();
+            app.ConfigurationBuildInException(factory);
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             

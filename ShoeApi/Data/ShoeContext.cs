@@ -13,5 +13,6 @@ namespace WebApplication.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
+        public DbSet<Log> Logs { get; set; }
     }
 }
