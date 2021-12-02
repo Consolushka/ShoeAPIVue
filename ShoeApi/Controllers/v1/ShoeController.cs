@@ -17,13 +17,16 @@ namespace WebApplication.Controllers.V1
     {
         private readonly IShoeService _service;
         private readonly IWebHostEnvironment _env;
-        private readonly IMapper _mapper;
 
-        public ShoeController(IShoeService service, IWebHostEnvironment env, IMapper mapper)
+        public ShoeController(IShoeService service, IWebHostEnvironment env)
         {
             _service = service;
             _env = env;
-            _mapper = mapper;
+        }
+        
+        public ShoeController(IShoeService service)
+        {
+            _service = service;
         }
         
         [HttpGet("get-all")]
@@ -75,7 +78,7 @@ namespace WebApplication.Controllers.V1
         
         [Admin]
         [HttpPost("save-file")]
-        public JsonResult SaveFile()
+        private JsonResult SaveFile()
         {
             try
             {

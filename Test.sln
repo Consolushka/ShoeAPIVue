@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoeApi", "ShoeApi\ShoeApi.csproj", "{708BE08C-3AA7-458C-9A11-13FCD0A1D77B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoeAPI_Tests", "ShoeAPI_Tests\ShoeAPI_Tests.csproj", "{674E162D-EB03-4738-BD35-BE385D6F661D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{708BE08C-3AA7-458C-9A11-13FCD0A1D77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708BE08C-3AA7-458C-9A11-13FCD0A1D77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708BE08C-3AA7-458C-9A11-13FCD0A1D77B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{674E162D-EB03-4738-BD35-BE385D6F661D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{674E162D-EB03-4738-BD35-BE385D6F661D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{674E162D-EB03-4738-BD35-BE385D6F661D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{674E162D-EB03-4738-BD35-BE385D6F661D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

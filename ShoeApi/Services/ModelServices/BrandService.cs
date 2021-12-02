@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using WebApplication.Data.Models;
@@ -29,16 +30,24 @@ namespace WebApplication.Services.ModelServices
             return _brandRepository.GetById(Id);
         }
 
-        public Brand Add(BrandVM brandVm)
+        public async Task<Brand> Add(BrandVM brandVm)
         {
             var brand = _mapper.Map<Brand>(brandVm);
-            return _brandRepository.Add(brand).Result;
+            if (brand == null)
+            {
+                return null;
+            }
+            return await _brandRepository.Add(brand);
         }
 
         public async Task<Brand> Update(BrandVM brandVm, long id)
         {
-            var brand = _mapper.Map<Brand>(brandVm);
-            brand.Id = id;
+            var brand = GetById(id);
+            if (brandVm == null)
+            {
+                return null;
+            }
+            brand.Name = brandVm.Name;
             return await _brandRepository.Update(brand);
         }
 

@@ -47,7 +47,7 @@ namespace WebApplication.Repository
         private void CheckForId(long id)
         {
             if (Context.Set<T>().FirstOrDefault(t => t.Id == id) == null)
-                throw new Exception($"Cannot find {typeof(T).Name} with id: ${id}");
+                throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");
         }
     }
 }

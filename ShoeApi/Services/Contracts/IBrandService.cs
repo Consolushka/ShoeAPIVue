@@ -9,7 +9,7 @@ namespace WebApplication.Services.Contracts
     {
         List<Brand> GetAll();
         Brand GetById(long Id);
-        Brand Add(BrandVM brandVm);
+        Task<Brand> Add(BrandVM brandVm);
         Task<Brand> Update(BrandVM brandVm, long id);
         void Delete(long id);
     }

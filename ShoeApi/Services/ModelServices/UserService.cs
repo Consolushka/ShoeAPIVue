@@ -39,7 +39,6 @@ namespace WebApplication.Services.ModelServices
 
             if (user == null)
             {
-                // todo: need to add logger
                 return null;
             }
 

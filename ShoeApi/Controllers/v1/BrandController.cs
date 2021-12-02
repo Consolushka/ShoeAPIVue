@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
@@ -33,24 +35,24 @@ namespace WebApplication.Controllers.V1
 
         [Admin]
         [HttpPost("add")]
-        public IActionResult Add(BrandVM brand)
+        public async Task<IActionResult> Add(BrandVM brand)
         {
-            var res =_brandService.Add(brand);
+            var res = await _brandService.Add(brand);
             if (res == null)
             {
-                return BadRequest("Server Error");
+                return BadRequest();
             }
             return Ok();
         }
 
         [Admin]
         [HttpPut("update/{id}")]
-        public IActionResult Update(BrandVM brandVm, long id)
+        public async Task<IActionResult> Update(BrandVM brandVm, long id)
         {
-            var res =_brandService.Update(brandVm, id);
+            var res =await _brandService.Update(brandVm, id);
             if (res == null)
             {
-                return BadRequest("Server Error");
+                return BadRequest();
             }
             return Ok();
         }

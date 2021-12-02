@@ -10,17 +10,17 @@ namespace WebApplication.Controllers.V1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class LogController : Controller
     {
-        private readonly ILogService _brandService;
+        private readonly ILogService _logService;
 
-        public LogController(ILogService brandService)
+        public LogController(ILogService logService)
         {
-            _brandService = brandService;
+            _logService = logService;
         }
 
         [HttpGet("get-all")]
         public IActionResult GetAll()
         {
-            var res =  _brandService.GetAll();
+            var res =  _logService.GetAll();
 
             return Ok(res);
         }
@@ -28,14 +28,14 @@ namespace WebApplication.Controllers.V1
         [HttpGet("get-by-id")]
         public IActionResult GetById(long id)
         {
-            return Ok(_brandService.GetById(id));
+            return Ok(_logService.GetById(id));
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
-            _brandService.Delete(id);
+            _logService.Delete(id);
             return Ok();
         }
     }

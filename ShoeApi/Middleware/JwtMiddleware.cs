@@ -55,7 +55,7 @@ namespace WebApplication.Middleware
             }
             catch
             {
-                // todo: need to add logger
+                
             }
         }
     }
