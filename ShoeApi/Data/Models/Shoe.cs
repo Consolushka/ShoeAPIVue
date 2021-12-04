@@ -1,4 +1,5 @@
 ﻿using System;
+using WebApplication.Data.ViewModels;
 
 namespace WebApplication.Data.Models
 {
@@ -9,5 +10,13 @@ namespace WebApplication.Data.Models
         public Brand Brand { get; set; }
         public DateTime CreationTime { get; set; }
         public string PhotoFileName { get; set; }
+
+        public void Update(ShoeVM shoeVm)
+        {
+            Name = shoeVm.Name;
+            BrandId = shoeVm.BrandId;
+            CreationTime = shoeVm.CreationTime;
+            PhotoFileName = shoeVm.PhotoFileName;
+        }
     }
 }

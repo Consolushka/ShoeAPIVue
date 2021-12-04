@@ -19,4 +19,12 @@
       <ProjectReference Include="..\ShoeApi\ShoeApi.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="Controllers\appsettings.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

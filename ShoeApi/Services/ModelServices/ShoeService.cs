@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using WebApplication.Data.Models;
@@ -32,13 +33,21 @@ namespace WebApplication.Services.ModelServices
         public Shoe Add(ShoeVM shoeVm)
         {
             var shoe = _mapper.Map<Shoe>(shoeVm);
+            if (shoe == null)
+            {
+                return null;
+            }
             return _repository.Add(shoe).Result;
         }
 
         public async Task<Shoe> Update(ShoeVM shoeVm, long id)
         {
-            var shoe = _mapper.Map<Shoe>(shoeVm);
-            shoe.Id = id;
+            if (shoeVm == null)
+            {
+                return null;
+            }
+            var shoe = GetById(id);
+            shoe.Update(shoeVm);
             return await _repository.Update(shoe);
         }
 

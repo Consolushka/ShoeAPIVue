@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -50,22 +51,22 @@ namespace WebApplication.Controllers.V1
             var res = _service.Add(shoeVm);
             if (res == null)
             {
-                return BadRequest("Server Error");
+                return BadRequest();
             }
             return Ok();
         }
 
         [Admin]
         [HttpPut("update/{id}")]
-        public IActionResult Update(ShoeVM shoe, long id)
+        public async Task<IActionResult> Update(ShoeVM shoe, long id)
         {
-            var res =  _service.Update(shoe, id);
+            var res = await _service.Update(shoe, id);
             
             if (res == null)
             {
-                return BadRequest("Server Error");
+                return BadRequest();
             }
-            return Ok();
+            return Ok(res);
         }
 
         [Admin]

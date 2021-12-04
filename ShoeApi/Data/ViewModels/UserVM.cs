@@ -6,6 +6,8 @@
         public string UserName { get; set; }
         public string Password { get; set; }
 
+        public UserVM() {}
+
         public UserVM(string email, string password)
         {
             Email = email;

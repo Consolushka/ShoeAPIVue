@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 
-namespace WebApplication.Middleware
+namespace ShoeAPI_Tests.Controllers
 {
     public static class CryptoMiddleware
     {
