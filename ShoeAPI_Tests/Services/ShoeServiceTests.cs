@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using WebApplication.Controllers.V1;
 using WebApplication.Data;
 using WebApplication.Data.Models;
-using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Repository.EntityRepository;
 using WebApplication.Services.Contracts;
 using WebApplication.Services.ModelServices;
 
-namespace ShoeAPI_Tests.Controllers
+namespace ShoeAPI_Tests.Services
 {
-    public class UserControllerTests
+    public class ShoeServiceTests
     {
         private static DbContextOptions<ShoeContext> _dbContextOptions = new DbContextOptionsBuilder<ShoeContext>()
             .UseInMemoryDatabase(databaseName: "ShoeTest")
@@ -25,91 +21,53 @@ namespace ShoeAPI_Tests.Controllers
 
         private ShoeContext _context;
 
-        private IUserService _userService;
-        private UsersController _controller;
+        private IShoeService _shoeService;
         
         [OneTimeSetUp]
         public void Setup()
         {
             _context = new ShoeContext(_dbContextOptions);
             _context.Database.EnsureCreated();
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
 
             SeedDatabase();
             
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new UserMapper());
+                mc.AddProfile(new BrandMapper());
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
-            _userService = new UserService(new UserRepository(_context), configuration, mapper);
-            
-            _controller = new UsersController(_userService);
+            _shoeService = new ShoeService(new ShoeRepository(_context), mapper);
         }
 
-        [Test]
-        public void HttpPost_Authenticate_Success()
-        {
-            var res = _controller.Authenticate(new UserVM()
-            {
-                Email = "consolushka@gmail.com",
-                Password = "admin",
-                UserName = "admin"
-            });
-            
-            Assert.That(res, Is.TypeOf<OkObjectResult>());
-        }
-
-        [Test]
-        public void HttpPost_Authenticate_IncorrectPasswordOrUser()
-        {
-            var res = _controller.Authenticate(new UserVM()
-            {
-                Email = "consolushka@gmail.com",
-                Password = "admin123",
-                UserName = "admin"
-            });
-            
-            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
-        }
-
-        [Test]
-        public void HttpPost_Register_Err()
-        {
-            var res = _controller.Register(new UserVM()
-            {
-                Email = "consolushka@gmail.com",
-                Password = "admin123",
-                UserName = "admin"
-            });
-            
-            Assert.That(res.Result, Is.TypeOf<BadRequestObjectResult>());
-        }
-
-        [Test]
-        public void HttpGet_GetById()
-        {
-            var res = _controller.GetById(1);
-            
-            Assert.That(res, Is.TypeOf<OkObjectResult>());
-
-            var resData = (res as OkObjectResult).Value as UserResponse;
-            
-            Assert.AreEqual("consolushka@gmail.com",resData.Email);
-            Assert.AreEqual(true, resData.IsActive);
-            Assert.AreEqual(true, resData.IsAdmin);
-            Assert.AreEqual("admin", resData.UserName);
-        }
-        
-        
         [OneTimeTearDown]
         public void CleanUp()
         {
             _context.Database.EnsureDeleted();
         }
+
+        [Test]
+        public void GetAll()
+        {
+            var res = _shoeService.GetAll();
+            
+            Assert.AreEqual(res.Count, 2);
+        }
+
+        [Test]
+        public void GetById_Success()
+        {
+            var res = _shoeService.GetById(1);
+            
+            Assert.AreEqual(1,res.Id);
+        }
+        
+        [Test]
+        public void GetById_Err()
+        {
+            Assert.That(()=>_shoeService.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+        }
+        
 
         private void SeedDatabase()
         {
@@ -130,7 +88,6 @@ namespace ShoeAPI_Tests.Controllers
                     Email = "consolushka@gmail.com",
                     Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
                     IsActive = true,
-                    IsAdmin = true,
                     UserName = "admin"
                 });
             }
