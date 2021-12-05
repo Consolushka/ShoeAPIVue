@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication.Data.ViewModels;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using WebApplication.Data.Models;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
 
@@ -18,9 +20,9 @@ namespace WebApplication.Controllers.V1
         }
 
         [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var res =  _logService.GetAll();
+            IEnumerable<Log> res =  await _logService.GetAll();
 
             return Ok(res);
         }

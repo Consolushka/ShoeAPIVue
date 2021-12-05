@@ -54,9 +54,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(1)]
-        public void HttpGet_GetAll()
+        public async Task HttpGet_GetAll()
         {
-            IActionResult actionResult = _controller.GetAll();
+            IActionResult actionResult = await _controller.GetAll();
             
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             
@@ -65,9 +65,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(2)]
-        public void HttpGet_GetById_Success()
+        public async Task HttpGet_GetById_Success()
         {
-            var res = _controller.GetById(1);
+            var res = await _controller.GetById(1);
             
             Assert.That(res, Is.TypeOf<OkObjectResult>());
             var actionDate = (res as OkObjectResult).Value as Shoe;

@@ -7,8 +7,8 @@ namespace WebApplication.Services.Contracts
 {
     public interface IBrandService
     {
-        List<Brand> GetAll();
-        Brand GetById(long Id);
+        Task<List<Brand>> GetAll();
+        Task<Brand> GetById(long Id);
         Task<Brand> Add(BrandVM brandVm);
         Task<Brand> Update(BrandVM brandVm, long id);
         void Delete(long id);

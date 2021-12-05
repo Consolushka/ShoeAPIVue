@@ -25,11 +25,10 @@ namespace WebApplication.Services.ModelServices
             _mapper = mapper;
         }
 
-        public UserResponse Authenticate(UserVM vm)
+        public async Task<UserResponse> Authenticate(UserVM vm)
         {
-            var user = _userRepository
-                .GetAll()
-                .FirstOrDefault(
+            var users = await _userRepository.GetAll(); 
+            var user = users.FirstOrDefault(
                     x =>
                         (x.Email == vm.Email || x.UserName == vm.UserName)
                         &&
@@ -54,7 +53,8 @@ namespace WebApplication.Services.ModelServices
             user.IsActive = false;
             user.IsAdmin = false;
             user.ConfirmString = Guid.NewGuid();
-            var thisUser = _userRepository.GetAll().FirstOrDefault(u =>
+            var users = await _userRepository.GetAll();
+            var thisUser = users.FirstOrDefault(u =>
                 u.Email == user.Email
                 ||
                 u.Password == user.Password);
@@ -79,14 +79,14 @@ namespace WebApplication.Services.ModelServices
             return false;
         }
 
-        public List<User> GetAll()
+        public async Task<List<User>> GetAll()
         {
-            return _userRepository.GetAll();
+            return await _userRepository.GetAll();
         }
 
-        public User GetById(long Id)
+        public async Task<User> GetById(long Id)
         {
-            return _userRepository.GetById(Id);
+            return await _userRepository.GetById(Id);
         }
 
         public async Task<User> Update(UserVM userVm, long id)

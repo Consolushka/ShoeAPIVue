@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,9 +52,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test]
-        public void HttpPost_Authenticate_Success()
+        public async Task HttpPost_Authenticate_Success()
         {
-            var res = _controller.Authenticate(new UserVM()
+            IActionResult res = await _controller.Authenticate(new UserVM()
             {
                 Email = "consolushka@gmail.com",
                 Password = "admin",
@@ -64,9 +65,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test]
-        public void HttpPost_Authenticate_IncorrectPasswordOrUser()
+        public async Task HttpPost_Authenticate_IncorrectPasswordOrUser()
         {
-            var res = _controller.Authenticate(new UserVM()
+            IActionResult res = await _controller.Authenticate(new UserVM()
             {
                 Email = "consolushka@gmail.com",
                 Password = "admin123",
@@ -77,22 +78,22 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test]
-        public void HttpPost_Register_Err()
+        public async Task HttpPost_Register_Err()
         {
-            var res = _controller.Register(new UserVM()
+            IActionResult res = await _controller.Register(new UserVM()
             {
                 Email = "consolushka@gmail.com",
                 Password = "admin123",
                 UserName = "admin"
             });
             
-            Assert.That(res.Result, Is.TypeOf<BadRequestObjectResult>());
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
         }
 
         [Test]
-        public void HttpGet_GetById()
+        public async Task HttpGet_GetById()
         {
-            var res = _controller.GetById(1);
+            IActionResult res = await _controller.GetById(1);
             
             Assert.That(res, Is.TypeOf<OkObjectResult>());
 

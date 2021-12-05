@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
@@ -21,9 +22,9 @@ namespace WebApplication.Controllers.V1
         }
 
         [HttpPost("authenticate")]
-        public IActionResult Authenticate(UserVM vm)
+        public async Task<IActionResult> Authenticate(UserVM vm)
         {
-            var response = _userService.Authenticate(vm);
+            UserResponse response = await _userService.Authenticate(vm);
 
             if (response == null)
                 return BadRequest("Username or password is incorrect");
@@ -34,7 +35,7 @@ namespace WebApplication.Controllers.V1
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserVM userVm)
         {
-            var response = await _userService.Register(userVm);
+            User response = await _userService.Register(userVm);
             
             if (response!=null)
             {
@@ -46,10 +47,10 @@ namespace WebApplication.Controllers.V1
         }
 
         [HttpPost("confirm-registration")]
-        public IActionResult ConfirmRegistration(string key)
+        public async Task<IActionResult> ConfirmRegistration(string key)
         {
             var Gkey = Guid.Parse(key);
-            if (_userService.ConfirmUser(Gkey).Result)
+            if (await _userService.ConfirmUser(Gkey))
             {
                 return Ok();   
             }
@@ -59,9 +60,9 @@ namespace WebApplication.Controllers.V1
 
         [Authorize]
         [HttpGet("get-by-id")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var u = new UserResponse(_userService.GetById(id));
+            UserResponse u = new UserResponse(await _userService.GetById(id));
             return Ok(u);
         }
 
@@ -69,7 +70,7 @@ namespace WebApplication.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(UserVM userVm, long id)
         {
-            var u =await _userService.Update(userVm, id);
+            User u =await _userService.Update(userVm, id);
             if (u == null)
             {
                 return BadRequest("Cannot find your Account");
@@ -81,9 +82,9 @@ namespace WebApplication.Controllers.V1
 
         [Authorize]
         [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var users = _userService.GetAll();
+            IEnumerable<User> users = await _userService.GetAll();
             return Ok(users);
         }
     }

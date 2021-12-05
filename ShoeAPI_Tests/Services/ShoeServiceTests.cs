@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -47,17 +48,17 @@ namespace ShoeAPI_Tests.Services
         }
 
         [Test]
-        public void GetAll()
+        public async Task GetAll()
         {
-            var res = _shoeService.GetAll();
+            IEnumerable<Shoe> res = await _shoeService.GetAll();
             
-            Assert.AreEqual(res.Count, 2);
+            Assert.AreEqual(res.Count(), 2);
         }
 
         [Test]
-        public void GetById_Success()
+        public async Task GetById_Success()
         {
-            var res = _shoeService.GetById(1);
+            Shoe res = await _shoeService.GetById(1);
             
             Assert.AreEqual(1,res.Id);
         }

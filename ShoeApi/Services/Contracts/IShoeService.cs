@@ -7,9 +7,9 @@ namespace WebApplication.Services.Contracts
 {
     public interface IShoeService
     {
-        List<Shoe> GetAll();
-        Shoe GetById(long Id);
-        Shoe Add(ShoeVM shoe);
+        Task<List<Shoe>> GetAll();
+        Task<Shoe> GetById(long id);
+        Task<Shoe> Add(ShoeVM shoe);
         Task<Shoe> Update(ShoeVM shoe, long id);
         void Delete(long id);
     }
