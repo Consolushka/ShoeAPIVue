@@ -11,12 +11,12 @@ namespace WebApplication.Repository
     {
         protected ShoeContext Context;
 
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             return Context.Set<T>().ToList();
         }
 
-        public T GetById(long id)
+        public virtual T GetById(long id)
         {
             CheckForId(id);
             return Context.Set<T>().FirstOrDefault(t => t.Id == id);
@@ -44,7 +44,7 @@ namespace WebApplication.Repository
             Context.SaveChanges();
         }
 
-        private void CheckForId(long id)
+        protected void CheckForId(long id)
         {
             if (Context.Set<T>().FirstOrDefault(t => t.Id == id) == null)
                 throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");
