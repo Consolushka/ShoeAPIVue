@@ -31,24 +31,24 @@ namespace WebApplication.Controllers.V1
         }
         
         [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var res =  _service.GetAll();
+            IEnumerable<Shoe> res =  await _service.GetAll();
 
             return Ok(res);
         }
 
         [HttpGet("get-by-id")]
-        public IActionResult GetById(long id)
+        public async Task<IActionResult> GetById(long id)
         {
-            return Ok(_service.GetById(id));
+            return Ok(await _service.GetById(id));
         }
 
         [Admin]
         [HttpPost("add")]
-        public IActionResult Add(ShoeVM shoeVm)
+        public async Task<IActionResult> Add(ShoeVM shoeVm)
         {
-            var res = _service.Add(shoeVm);
+            Shoe res = await _service.Add(shoeVm);
             if (res == null)
             {
                 return BadRequest();
@@ -60,7 +60,7 @@ namespace WebApplication.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(ShoeVM shoe, long id)
         {
-            var res = await _service.Update(shoe, id);
+            Shoe res = await _service.Update(shoe, id);
             
             if (res == null)
             {
@@ -79,7 +79,7 @@ namespace WebApplication.Controllers.V1
         
         [Admin]
         [HttpPost("save-file")]
-        private JsonResult SaveFile()
+        private async Task<JsonResult> SaveFile()
         {
             try
             {
@@ -90,7 +90,7 @@ namespace WebApplication.Controllers.V1
 
                 using (var stream = new FileStream(PhysicalPath, FileMode.Create))
                 {
-                    requestFile.CopyTo(stream);
+                    await requestFile.CopyToAsync(stream);
                 }
 
                 return new JsonResult(fileName);

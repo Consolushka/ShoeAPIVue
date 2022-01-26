@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication.Data.Models;
 using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
@@ -20,24 +22,24 @@ namespace WebApplication.Controllers.V1
         }
 
         [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var res =  _brandService.GetAll();
+            IEnumerable<Brand> res =  await _brandService.GetAll();
 
             return Ok(res);
         }
 
         [HttpGet("get-by-id")]
-        public IActionResult GetById(long id)
+        public async Task<IActionResult> GetById(long id)
         {
-            return Ok(_brandService.GetById(id));
+            return Ok(await _brandService.GetById(id));
         }
 
         [Admin]
         [HttpPost("add")]
         public async Task<IActionResult> Add(BrandVM brand)
         {
-            var res = await _brandService.Add(brand);
+            Brand res = await _brandService.Add(brand);
             if (res == null)
             {
                 return BadRequest();
@@ -49,7 +51,7 @@ namespace WebApplication.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(BrandVM brandVm, long id)
         {
-            var res =await _brandService.Update(brandVm, id);
+            Brand res =await _brandService.Update(brandVm, id);
             if (res == null)
             {
                 return BadRequest();

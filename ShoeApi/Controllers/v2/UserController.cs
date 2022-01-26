@@ -63,9 +63,9 @@ namespace WebApplication.Controllers.V2
         [Authorize]
         [MapToApiVersion("2.0")]
         [HttpGet("get-by-id")]
-        public UserResponse GetById(int id)
+        public async Task<UserResponse> GetById(int id)
         {
-            var u = new UserResponse(_userService.GetById(id));
+            var u = new UserResponse(await _userService.GetById(id));
             return u;
         }
 

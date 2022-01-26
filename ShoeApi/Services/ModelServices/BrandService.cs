@@ -20,14 +20,14 @@ namespace WebApplication.Services.ModelServices
             _mapper = mapper;
         }
 
-        public List<Brand> GetAll()
+        public async Task<List<Brand>> GetAll()
         {
-            return _brandRepository.GetAll();
+            return await _brandRepository.GetAll();
         }
 
-        public Brand GetById(long Id)
+        public async Task<Brand> GetById(long Id)
         {
-            return _brandRepository.GetById(Id);
+            return await _brandRepository.GetById(Id);
         }
 
         public async Task<Brand> Add(BrandVM brandVm)
@@ -42,7 +42,7 @@ namespace WebApplication.Services.ModelServices
 
         public async Task<Brand> Update(BrandVM brandVm, long id)
         {
-            var brand = GetById(id);
+            var brand = await GetById(id);
             if (brandVm == null)
             {
                 return null;

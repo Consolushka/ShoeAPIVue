@@ -23,14 +23,15 @@ namespace ShoeAPI_Tests.Controllers
             .UseInMemoryDatabase(databaseName: "ShoeTest")
             .Options;
 
-        private readonly ShoeContext _context = new (_dbContextOptions);
+        private ShoeContext _context;
 
-        private IShoeService ShoeService;
-        private ShoeController ShoeController;
+        private IShoeService _shoeService;
+        private ShoeController _controller;
         
         [OneTimeSetUp]
         public void Setup()
         {
+            _context = new ShoeContext(_dbContextOptions);
             _context.Database.EnsureCreated();
 
             SeedDatabase();
@@ -41,9 +42,9 @@ namespace ShoeAPI_Tests.Controllers
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
-            ShoeService = new ShoeService(new ShoeRepository(_context), mapper);
+            _shoeService = new ShoeService(new ShoeRepository(_context), mapper);
 
-            ShoeController = new ShoeController(ShoeService);
+            _controller = new ShoeController(_shoeService);
         }
         
         [OneTimeTearDown]
@@ -53,9 +54,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(1)]
-        public void HttpGet_GetAll()
+        public async Task HttpGet_GetAll()
         {
-            IActionResult actionResult = ShoeController.GetAll();
+            IActionResult actionResult = await _controller.GetAll();
             
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             
@@ -64,9 +65,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(2)]
-        public void HttpGet_GetById_Success()
+        public async Task HttpGet_GetById_Success()
         {
-            var res = ShoeController.GetById(1);
+            var res = await _controller.GetById(1);
             
             Assert.That(res, Is.TypeOf<OkObjectResult>());
             var actionDate = (res as OkObjectResult).Value as Shoe;
@@ -76,13 +77,13 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(3)]
         public void HttpGet_GetById_Err()
         {
-            Assert.That(()=>ShoeController.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            Assert.That(()=>_controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
         }
 
         [Test, Order(4)]
         public void HttpPost_AddShoe_Success()
         {
-            var res = ShoeController.Add(new ShoeVM()
+            var res = _controller.Add(new ShoeVM()
             {
                 Name = "Test",
                 BrandId = 1,
@@ -96,7 +97,7 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(5)]
         public void HttpPost_AddShoe_Err()
         {
-            var res = ShoeController.Add(null);
+            var res = _controller.Add(null);
             
             Assert.That(res, Is.TypeOf<BadRequestResult>());
         }
@@ -104,7 +105,7 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(6)]
         public async Task HttpPu_Update_Success()
         {
-            var res = await ShoeController.Update(new ShoeVM()
+            var res = await _controller.Update(new ShoeVM()
             {
                 BrandId = 2,
                 Name = "Test",
@@ -126,7 +127,7 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(7)]
         public async Task HttpPut_Update_WithoutVM()
         {
-            var res = await ShoeController.Update(null, 1);
+            var res = await _controller.Update(null, 1);
             
             Assert.That(res, Is.TypeOf<BadRequestResult>());
         }
@@ -135,7 +136,7 @@ namespace ShoeAPI_Tests.Controllers
         public void HttpPut_Update_WithoutId()
         {
             
-            Assert.That(()=>ShoeController.Update(new ShoeVM()
+            Assert.That(()=>_controller.Update(new ShoeVM()
             {
                 BrandId = 2,
                 Name = "Test",
@@ -147,7 +148,7 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(9)]
         public void HttpDelete_Delete_Success()
         {
-            var res = ShoeController.Delete(1);
+            var res = _controller.Delete(1);
             
             Assert.That(res, Is.TypeOf<OkResult>());
         }
@@ -155,7 +156,7 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(10)]
         public void HttpDelete_Delete_Err()
         {
-            Assert.That(()=>ShoeController.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
         }
         
         private void SeedDatabase()

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Data.Models;
 
@@ -11,15 +13,15 @@ namespace WebApplication.Repository
     {
         protected ShoeContext Context;
 
-        public virtual List<T> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return Context.Set<T>().ToList();
+            return await Context.Set<T>().ToListAsync();
         }
 
-        public virtual T GetById(long id)
+        public async Task<T> GetById(long id)
         {
             CheckForId(id);
-            return Context.Set<T>().FirstOrDefault(t => t.Id == id);
+            return await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<T> Add(T entity)
@@ -37,14 +39,14 @@ namespace WebApplication.Repository
             return res.Entity;
         }
 
-        public void Delete(long id)
+        public async void Delete(long id)
         {
             CheckForId(id);
-            Context.Set<T>().Remove(GetById(id));
-            Context.SaveChanges();
+            Context.Set<T>().Remove(await GetById(id));
+            await Context.SaveChangesAsync();
         }
 
-        protected void CheckForId(long id)
+        private void CheckForId(long id)
         {
             if (Context.Set<T>().FirstOrDefault(t => t.Id == id) == null)
                 throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");

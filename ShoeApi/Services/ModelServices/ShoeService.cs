@@ -20,24 +20,24 @@ namespace WebApplication.Services.ModelServices
             _mapper = mapper;
         }
 
-        public List<Shoe> GetAll()
+        public async Task<List<Shoe>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
-        public Shoe GetById(long id)
+        public async Task<Shoe> GetById(long id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
 
-        public Shoe Add(ShoeVM shoeVm)
+        public async Task<Shoe> Add(ShoeVM shoeVm)
         {
             var shoe = _mapper.Map<Shoe>(shoeVm);
             if (shoe == null)
             {
                 return null;
             }
-            return _repository.Add(shoe).Result;
+            return await _repository.Add(shoe);
         }
 
         public async Task<Shoe> Update(ShoeVM shoeVm, long id)
@@ -46,7 +46,7 @@ namespace WebApplication.Services.ModelServices
             {
                 return null;
             }
-            var shoe = GetById(id);
+            var shoe = await GetById(id);
             shoe.Update(shoeVm);
             return await _repository.Update(shoe);
         }

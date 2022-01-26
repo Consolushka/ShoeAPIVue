@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApplication.Repository.Contracts;
 using WebApplication.Services.Contracts;
 using Log = WebApplication.Data.Models.Log;
@@ -14,14 +15,14 @@ namespace WebApplication.Services.ModelServices
             _repository = repository;
         }
 
-        public List<Log> GetAll()
+        public async Task<List<Log>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
-        public Log GetById(long Id)
+        public async Task<Log> GetById(long Id)
         {
-            return _repository.GetById(Id);
+            return await _repository.GetById(Id);
         }
 
         public void Delete(long id)
