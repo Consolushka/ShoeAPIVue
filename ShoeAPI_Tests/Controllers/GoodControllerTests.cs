@@ -17,34 +17,34 @@ using WebApplication.Services.ModelServices;
 
 namespace ShoeAPI_Tests.Controllers
 {
-    public class ShoeControllerTests
+    public class GoodControllerTests
     {
-        private static DbContextOptions<ShoeContext> _dbContextOptions = new DbContextOptionsBuilder<ShoeContext>()
+        private static DbContextOptions<ShopContext> _dbContextOptions = new DbContextOptionsBuilder<ShopContext>()
             .UseInMemoryDatabase(databaseName: "ShoeTest")
             .Options;
 
-        private ShoeContext _context;
+        private ShopContext _context;
 
-        private IShoeService _shoeService;
-        private ShoeController _controller;
+        private IGoodsService _goodsService;
+        private GoodsController _controller;
         
         [OneTimeSetUp]
         public void Setup()
         {
-            _context = new ShoeContext(_dbContextOptions);
+            _context = new ShopContext(_dbContextOptions);
             _context.Database.EnsureCreated();
 
             SeedDatabase();
             
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new ShoeMapper());
+                mc.AddProfile(new GoodMapper());
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
-            _shoeService = new ShoeService(new ShoeRepository(_context), mapper);
+            _goodsService = new GoodsService(new GoodsRepository(_context), mapper);
 
-            _controller = new ShoeController(_shoeService);
+            _controller = new GoodsController(_goodsService);
         }
         
         [OneTimeTearDown]
@@ -60,7 +60,7 @@ namespace ShoeAPI_Tests.Controllers
             
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             
-            var actionDate = (actionResult as OkObjectResult).Value as List<Shoe>;
+            var actionDate = (actionResult as OkObjectResult).Value as List<Good>;
             Assert.AreEqual(actionDate.First().Name, "Nike v.1");
         }
 
@@ -70,24 +70,23 @@ namespace ShoeAPI_Tests.Controllers
             var res = await _controller.GetById(1);
             
             Assert.That(res, Is.TypeOf<OkObjectResult>());
-            var actionDate = (res as OkObjectResult).Value as Shoe;
+            var actionDate = (res as OkObjectResult).Value as Good;
             Assert.AreEqual(actionDate.Name, "Nike v.1");
         }
 
         [Test, Order(3)]
         public void HttpGet_GetById_Err()
         {
-            Assert.That(()=> _controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            Assert.That(()=> _controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
         }
 
         [Test, Order(4)]
-        public async Task HttpPost_AddShoe_Success()
+        public async Task HttpPost_AddGood_Success()
         {
-            var res = await _controller.Add(new ShoeVM()
+            var res = await _controller.Add(new GoodVm()
             {
                 Name = "Test",
                 BrandId = 1,
-                CreationTime = new DateTime(),
                 PhotoFileName = "undefined.png"
             });
             
@@ -95,7 +94,7 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(5)]
-        public async Task HttpPost_AddShoe_Err()
+        public async Task HttpPost_AddGood_Err()
         {
             var res = await _controller.Add(null);
             
@@ -105,22 +104,20 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(6)]
         public async Task HttpPu_Update_Success()
         {
-            var res = await _controller.Update(new ShoeVM()
+            var res = await _controller.Update(new GoodVm()
             {
                 BrandId = 2,
                 Name = "Test",
-                CreationTime = new DateTime(),
                 PhotoFileName = "undefined1.png"
             }, 1);
             
             Assert.That(res, Is.TypeOf<OkObjectResult>());
 
-            var resData = (res as OkObjectResult).Value as Shoe;
+            var resData = (res as OkObjectResult).Value as Good;
             
             Assert.AreEqual(1, resData.Id);
             Assert.AreEqual(2, resData.BrandId);
             Assert.AreEqual("Test", resData.Name);
-            Assert.AreEqual(new DateTime(), resData.CreationTime);
             Assert.AreEqual("undefined1.png", resData.PhotoFileName);
         }
 
@@ -136,13 +133,12 @@ namespace ShoeAPI_Tests.Controllers
         public void HttpPut_Update_WithoutId()
         {
             
-            Assert.That(()=>_controller.Update(new ShoeVM()
+            Assert.That(()=>_controller.Update(new GoodVm()
             {
                 BrandId = 2,
                 Name = "Test",
-                CreationTime = new DateTime(),
                 PhotoFileName = "undefined1.png"
-            }, 999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            }, 999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
         }
 
         [Test, Order(9)]
@@ -156,19 +152,19 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(10)]
         public void HttpDelete_Delete_Err()
         {
-            Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
         }
         
         private void SeedDatabase()
         {
             SeedUsersIfNone(_context);
             SeedBrandsIfNone(_context);
-            SeedShoesIfNone(_context);
+            SeedGoodsIfNone(_context);
 
             _context.SaveChanges();
         }
         
-        private static void SeedUsersIfNone(ShoeContext context)
+        private static void SeedUsersIfNone(ShopContext context)
         {
             if (!context.Users.Any())
             {
@@ -176,6 +172,7 @@ namespace ShoeAPI_Tests.Controllers
                 {
                     ConfirmString = new Guid(),
                     Email = "consolushka@gmail.com",
+                    Address = "Listvenichnaya alleya 2A",
                     Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
                     IsActive = true,
                     UserName = "admin"
@@ -183,7 +180,7 @@ namespace ShoeAPI_Tests.Controllers
             }
         }
         
-        private static void SeedBrandsIfNone(ShoeContext context)
+        private static void SeedBrandsIfNone(ShopContext context)
         {
             if (!context.Brands.Any())
             {
@@ -201,24 +198,22 @@ namespace ShoeAPI_Tests.Controllers
             }
         }
         
-        private static void SeedShoesIfNone(ShoeContext context)
+        private static void SeedGoodsIfNone(ShopContext context)
         {
-            if (!context.Shoes.Any())
+            if (!context.Goods.Any())
             {
-                context.Shoes.AddRange(new List<Shoe>()
+                context.Goods.AddRange(new List<Good>()
                 {
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Nike v.1",
                         BrandId = 1,
-                        CreationTime = DateTime.Now,
                         PhotoFileName = "undefined.jpg"
                     },
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Puma v.1",
                         BrandId = 2,
-                        CreationTime = DateTime.Now.AddDays(-1),
                         PhotoFileName = "undefined.jpg"
                     },
                 });

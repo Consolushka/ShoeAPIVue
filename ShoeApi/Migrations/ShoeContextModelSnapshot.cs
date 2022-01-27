@@ -8,7 +8,7 @@ using WebApplication.Data;
 
 namespace WebApplication.Migrations
 {
-    [DbContext(typeof(ShoeContext))]
+    [DbContext(typeof(ShopContext))]
     partial class ShoeContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -32,6 +32,32 @@ namespace WebApplication.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("WebApplication.Data.Models.Goods", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("BrandId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.ToTable("Goods");
                 });
 
             modelBuilder.Entity("WebApplication.Data.Models.Log", b =>
@@ -67,32 +93,6 @@ namespace WebApplication.Migrations
                     b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("WebApplication.Data.Models.Shoe", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("BrandId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhotoFileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
-
-                    b.ToTable("Shoes");
-                });
-
             modelBuilder.Entity("WebApplication.Data.Models.User", b =>
                 {
                     b.Property<long>("Id")
@@ -123,10 +123,10 @@ namespace WebApplication.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WebApplication.Data.Models.Shoe", b =>
+            modelBuilder.Entity("WebApplication.Data.Models.Goods", b =>
                 {
                     b.HasOne("WebApplication.Data.Models.Brand", "Brand")
-                        .WithMany("Shoes")
+                        .WithMany("Goods")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -136,7 +136,7 @@ namespace WebApplication.Migrations
 
             modelBuilder.Entity("WebApplication.Data.Models.Brand", b =>
                 {
-                    b.Navigation("Shoes");
+                    b.Navigation("Goods");
                 });
 #pragma warning restore 612, 618
         }

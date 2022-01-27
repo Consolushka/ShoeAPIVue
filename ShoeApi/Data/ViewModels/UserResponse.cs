@@ -6,6 +6,7 @@ namespace WebApplication.Data.ViewModels
     {
         public long Id { get; set;}
         public string Email { get; set;}
+        public string Address { get; set; }
         public string UserName { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsActive { get; set; }
@@ -16,6 +17,7 @@ namespace WebApplication.Data.ViewModels
             Id = u.Id;
             Email = u.Email;
             UserName = u.UserName;
+            Address = u.Address;
             IsAdmin = u.IsAdmin;
             IsActive = u.IsActive;
         }
@@ -24,6 +26,7 @@ namespace WebApplication.Data.ViewModels
         {
             Id = user.Id;
             Email = user.Email;
+            Address = user.Address;
             UserName = user.UserName;
             IsAdmin = user.IsAdmin;
             IsActive = user.IsActive;

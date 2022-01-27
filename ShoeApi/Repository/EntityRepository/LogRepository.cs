@@ -8,7 +8,7 @@ namespace WebApplication.Repository.EntityRepository
 {
     public class LogRepository: BaseRepository<Log>, ILogRepository
     {
-        public LogRepository(ShoeContext context)
+        public LogRepository(ShopContext context)
         {
             Context = context;
         }

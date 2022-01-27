@@ -9,7 +9,7 @@ using WebApplication.Data;
 
 namespace WebApplication.Migrations
 {
-    [DbContext(typeof(ShoeContext))]
+    [DbContext(typeof(ShopContext))]
     [Migration("20211118195212_STables")]
     partial class STables
     {

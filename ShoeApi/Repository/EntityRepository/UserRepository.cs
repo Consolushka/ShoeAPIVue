@@ -10,7 +10,7 @@ namespace WebApplication.Repository.EntityRepository
     public class UserRepository: BaseRepository<User>, IUserRepository
     {
 
-        public UserRepository(ShoeContext context)
+        public UserRepository(ShopContext context)
         {
             Context = context;
         }

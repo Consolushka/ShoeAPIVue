@@ -2,7 +2,7 @@
 
 namespace WebApplication.Repository.Contracts
 {
-    public interface IShoeRepository: IBaseRepository<Shoe>
+    public interface IGoodsRepository: IBaseRepository<Good>
     {
         
     }

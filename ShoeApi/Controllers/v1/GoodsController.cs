@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
@@ -7,78 +9,77 @@ using WebApplication.Data.ViewModels;
 using WebApplication.Middleware;
 using WebApplication.Services.Contracts;
 
-namespace WebApplication.Controllers.V2
+namespace WebApplication.Controllers.V1
 {
     [ApiController]
-    [ApiVersion("2.0")]
+    [ApiVersion("1.0", Deprecated = true)]
     [Route("api/v{version:apiVersion}/[controller]")]  
-    public class ShoeController: Controller
+    public class GoodsController: Controller
     {
-        private readonly IShoeService _service;
+        private readonly IGoodsService _service;
         private readonly IWebHostEnvironment _env;
 
-        public ShoeController(IShoeService service, IWebHostEnvironment env)
+        public GoodsController(IGoodsService service, IWebHostEnvironment env)
         {
             _service = service;
             _env = env;
         }
         
-        [MapToApiVersion("2.0")]
-        [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public GoodsController(IGoodsService service)
         {
-            var res =  _service.GetAll();
+            _service = service;
+        }
+        
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<Good> res =  await _service.GetAll();
 
             return Ok(res);
         }
 
-        [MapToApiVersion("2.0")]
         [HttpGet("get-by-id")]
-        public IActionResult GetById(long id)
+        public async Task<IActionResult> GetById(long id)
         {
-            return Ok(_service.GetById(id));
+            return Ok(await _service.GetById(id));
         }
 
         [Admin]
-        [MapToApiVersion("2.0")]
         [HttpPost("add")]
-        public IActionResult Add(ShoeVM shoeVm)
+        public async Task<IActionResult> Add(GoodVm goodVm)
         {
-            var res = _service.Add(shoeVm);
+            Good res = await _service.Add(goodVm);
             if (res == null)
             {
-                return BadRequest("Server Error");
+                return BadRequest();
             }
             return Ok();
         }
 
         [Admin]
-        [MapToApiVersion("2.0")]
         [HttpPut("update/{id}")]
-        public IActionResult Update(ShoeVM shoe, long id)
+        public async Task<IActionResult> Update(GoodVm good, long id)
         {
-            var res =  _service.Update(shoe, id);
+            Good res = await _service.Update(good, id);
             
             if (res == null)
             {
-                return BadRequest("Server Error");
+                return BadRequest();
             }
-            return Ok();
+            return Ok(res);
         }
 
         [Admin]
-        [MapToApiVersion("2.0")]
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            _service.Delete(id);
+            await _service.Delete(id);
             return Ok();
         }
         
         [Admin]
-        [MapToApiVersion("2.0")]
         [HttpPost("save-file")]
-        public JsonResult SaveFile()
+        private async Task<JsonResult> SaveFile()
         {
             try
             {
@@ -89,7 +90,7 @@ namespace WebApplication.Controllers.V2
 
                 using (var stream = new FileStream(PhysicalPath, FileMode.Create))
                 {
-                    requestFile.CopyTo(stream);
+                    await requestFile.CopyToAsync(stream);
                 }
 
                 return new JsonResult(fileName);

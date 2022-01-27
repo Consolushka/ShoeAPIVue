@@ -11,7 +11,7 @@ namespace WebApplication.Repository
 {
     public class BaseRepository<T>: IBaseRepository<T> where T:Base
     {
-        protected ShoeContext Context;
+        protected ShopContext Context;
 
         public virtual async Task<List<T>> GetAll()
         {

@@ -9,46 +9,46 @@ using WebApplication.Services.Contracts;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class ShoeService: IShoeService
+    public class GoodsService: IGoodsService
     {
-        private readonly IShoeRepository _repository;
+        private readonly IGoodsRepository _repository;
         private readonly IMapper _mapper;
 
-        public ShoeService(IShoeRepository repository, IMapper mapper)
+        public GoodsService(IGoodsRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<List<Shoe>> GetAll()
+        public async Task<List<Good>> GetAll()
         {
             return await _repository.GetAll();
         }
 
-        public async Task<Shoe> GetById(long id)
+        public async Task<Good> GetById(long id)
         {
             return await _repository.GetById(id);
         }
 
-        public async Task<Shoe> Add(ShoeVM shoeVm)
+        public async Task<Good> Add(GoodVm goodVm)
         {
-            var shoe = _mapper.Map<Shoe>(shoeVm);
-            if (shoe == null)
+            var good = _mapper.Map<Good>(goodVm);
+            if (good == null)
             {
                 return null;
             }
-            return await _repository.Add(shoe);
+            return await _repository.Add(good);
         }
 
-        public async Task<Shoe> Update(ShoeVM shoeVm, long id)
+        public async Task<Good> Update(GoodVm goodVm, long id)
         {
-            if (shoeVm == null)
+            if (goodVm == null)
             {
                 return null;
             }
-            var shoe = await GetById(id);
-            shoe.CompareWithVM(shoeVm);
-            return await _repository.Update(shoe);
+            var good = await GetById(id);
+            good.CompareWithVM(goodVm);
+            return await _repository.Update(good);
         }
 
         public async Task Delete(long id)

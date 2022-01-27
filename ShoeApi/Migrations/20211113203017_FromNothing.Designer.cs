@@ -9,7 +9,7 @@ using WebApplication.Data;
 
 namespace WebApplication.Migrations
 {
-    [DbContext(typeof(ShoeContext))]
+    [DbContext(typeof(ShopContext))]
     [Migration("20211113203017_FromNothing")]
     partial class FromNothing
     {

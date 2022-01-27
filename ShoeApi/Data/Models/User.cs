@@ -6,6 +6,7 @@ namespace WebApplication.Data.Models
     public class User: Base
     {
         public string Email { get; set; }
+        public string Address { get; set; }
         public string UserName { get; set; }
 
         [JsonIgnore]

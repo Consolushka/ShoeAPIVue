@@ -54,7 +54,7 @@ namespace WebApplication
             services.AddSwaggerGen();
             services.ConfigureOptions<ConfigureSwaggerOptions>();
             
-            services.AddDbContext<ShoeContext>(options =>
+            services.AddDbContext<ShopContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SchoolContext"), b=>b.MigrationsAssembly("ShoeApi")));
             
             services.AddCors(c => {
@@ -63,7 +63,7 @@ namespace WebApplication
             
             services.AddAutoMapper(typeof(UserMapper));
             services.AddAutoMapper(typeof(BrandMapper));
-            services.AddAutoMapper(typeof(ShoeMapper));
+            services.AddAutoMapper(typeof(GoodMapper));
             
             services.AddScoped<BaseRepository<User>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -71,15 +71,15 @@ namespace WebApplication
             services.AddScoped<BaseRepository<Brand>,BrandRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             
-            services.AddScoped<BaseRepository<Shoe>,ShoeRepository>();
-            services.AddScoped<IShoeRepository, ShoeRepository>();
+            services.AddScoped<BaseRepository<Good>,GoodsRepository>();
+            services.AddScoped<IGoodsRepository, GoodsRepository>();
             
             services.AddScoped<BaseRepository<Log>,LogRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
-            services.AddScoped<IShoeService, ShoeService>();
+            services.AddScoped<IGoodsService, GoodsService>();
             services.AddScoped<ILogService, LogService>();
         }
 

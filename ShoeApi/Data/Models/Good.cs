@@ -3,20 +3,18 @@ using WebApplication.Data.ViewModels;
 
 namespace WebApplication.Data.Models
 {
-    public class Shoe: Base
+    public class Good: Base
     {
         public string Name { get; set; }
         public long BrandId { get; set;}
         public Brand Brand { get; set; }
-        public DateTime CreationTime { get; set; }
         public string PhotoFileName { get; set; }
 
-        public void CompareWithVM(ShoeVM shoeVm)
+        public void CompareWithVM(GoodVm goodVm)
         {
-            Name = shoeVm.Name;
-            BrandId = shoeVm.BrandId;
-            CreationTime = shoeVm.CreationTime;
-            PhotoFileName = shoeVm.PhotoFileName;
+            Name = goodVm.Name;
+            BrandId = goodVm.BrandId;
+            PhotoFileName = goodVm.PhotoFileName;
         }
     }
 }

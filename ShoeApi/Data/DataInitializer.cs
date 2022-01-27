@@ -17,17 +17,17 @@ namespace WebApplication.Data
         {
             using (var serviceScope = builder.ApplicationServices.CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetService<ShoeContext>();
+                var context = serviceScope.ServiceProvider.GetService<ShopContext>();
 
                 SeedUsersIfNone(context, configuration);
                 SeedBrandsIfNone(context);
-                SeedShoesIfNone(context);
+                SeedGoodsIfNone(context);
 
                 context.SaveChanges();
             }
         }
 
-        private static void SeedUsersIfNone(ShoeContext context, IConfiguration configuration)
+        private static void SeedUsersIfNone(ShopContext context, IConfiguration configuration)
         {
             if (!context.Users.Any())
             {
@@ -35,6 +35,7 @@ namespace WebApplication.Data
                 {
                     ConfirmString = new Guid(),
                     Email = "consolushka@gmail.com",
+                    Address = "Listvenichnaya alleya 2A",
                     Password = configuration.Encode("admin"),
                     IsActive = true,
                     UserName = "admin"
@@ -42,7 +43,7 @@ namespace WebApplication.Data
             }
         }
         
-        private static void SeedBrandsIfNone(ShoeContext context)
+        private static void SeedBrandsIfNone(ShopContext context)
         {
             if (!context.Brands.Any())
             {
@@ -60,24 +61,22 @@ namespace WebApplication.Data
             }
         }
         
-        private static void SeedShoesIfNone(ShoeContext context)
+        private static void SeedGoodsIfNone(ShopContext context)
         {
-            if (!context.Shoes.Any())
+            if (!context.Goods.Any())
             {
-                context.Shoes.AddRange(new List<Shoe>()
+                context.Goods.AddRange(new List<Good>()
                 {
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Nike v.1",
                         BrandId = 1,
-                        CreationTime = DateTime.Now,
                         PhotoFileName = "undefined.jpg"
                     },
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Puma v.1",
                         BrandId = 2,
-                        CreationTime = DateTime.Now.AddDays(-1),
                         PhotoFileName = "undefined.jpg"
                     },
                 });

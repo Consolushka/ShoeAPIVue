@@ -14,20 +14,20 @@ using WebApplication.Services.ModelServices;
 
 namespace ShoeAPI_Tests.Services
 {
-    public class ShoeServiceTests
+    public class GoodServiceTests
     {
-        private static DbContextOptions<ShoeContext> _dbContextOptions = new DbContextOptionsBuilder<ShoeContext>()
+        private static DbContextOptions<ShopContext> _dbContextOptions = new DbContextOptionsBuilder<ShopContext>()
             .UseInMemoryDatabase(databaseName: "ShoeTest")
             .Options;
 
-        private ShoeContext _context;
+        private ShopContext _context;
 
-        private IShoeService _shoeService;
+        private IGoodsService _goodsService;
         
         [OneTimeSetUp]
         public void Setup()
         {
-            _context = new ShoeContext(_dbContextOptions);
+            _context = new ShopContext(_dbContextOptions);
             _context.Database.EnsureCreated();
 
             SeedDatabase();
@@ -38,7 +38,7 @@ namespace ShoeAPI_Tests.Services
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
-            _shoeService = new ShoeService(new ShoeRepository(_context), mapper);
+            _goodsService = new GoodsService(new GoodsRepository(_context), mapper);
         }
 
         [OneTimeTearDown]
@@ -50,7 +50,7 @@ namespace ShoeAPI_Tests.Services
         [Test]
         public async Task GetAll()
         {
-            IEnumerable<Shoe> res = await _shoeService.GetAll();
+            IEnumerable<Good> res = await _goodsService.GetAll();
             
             Assert.AreEqual(res.Count(), 2);
         }
@@ -58,7 +58,7 @@ namespace ShoeAPI_Tests.Services
         [Test]
         public async Task GetById_Success()
         {
-            Shoe res = await _shoeService.GetById(1);
+            Good res = await _goodsService.GetById(1);
             
             Assert.AreEqual(1,res.Id);
         }
@@ -66,7 +66,7 @@ namespace ShoeAPI_Tests.Services
         [Test]
         public void GetById_Err()
         {
-            Assert.That(()=>_shoeService.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            Assert.That(()=>_goodsService.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
         }
         
 
@@ -74,12 +74,12 @@ namespace ShoeAPI_Tests.Services
         {
             SeedUsersIfNone(_context);
             SeedBrandsIfNone(_context);
-            SeedShoesIfNone(_context);
+            SeedGoodsIfNone(_context);
 
             _context.SaveChanges();
         }
         
-        private static void SeedUsersIfNone(ShoeContext context)
+        private static void SeedUsersIfNone(ShopContext context)
         {
             if (!context.Users.Any())
             {
@@ -94,7 +94,7 @@ namespace ShoeAPI_Tests.Services
             }
         }
         
-        private static void SeedBrandsIfNone(ShoeContext context)
+        private static void SeedBrandsIfNone(ShopContext context)
         {
             if (!context.Brands.Any())
             {
@@ -112,24 +112,22 @@ namespace ShoeAPI_Tests.Services
             }
         }
         
-        private static void SeedShoesIfNone(ShoeContext context)
+        private static void SeedGoodsIfNone(ShopContext context)
         {
-            if (!context.Shoes.Any())
+            if (!context.Goods.Any())
             {
-                context.Shoes.AddRange(new List<Shoe>()
+                context.Goods.AddRange(new List<Good>()
                 {
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Nike v.1",
                         BrandId = 1,
-                        CreationTime = DateTime.Now,
                         PhotoFileName = "undefined.jpg"
                     },
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Puma v.1",
                         BrandId = 2,
-                        CreationTime = DateTime.Now.AddDays(-1),
                         PhotoFileName = "undefined.jpg"
                     },
                 });

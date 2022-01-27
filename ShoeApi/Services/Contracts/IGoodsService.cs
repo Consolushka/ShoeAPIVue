@@ -5,12 +5,12 @@ using WebApplication.Data.ViewModels;
 
 namespace WebApplication.Services.Contracts
 {
-    public interface IShoeService
+    public interface IGoodsService
     {
-        Task<List<Shoe>> GetAll();
-        Task<Shoe> GetById(long id);
-        Task<Shoe> Add(ShoeVM shoe);
-        Task<Shoe> Update(ShoeVM shoe, long id);
+        Task<List<Good>> GetAll();
+        Task<Good> GetById(long id);
+        Task<Good> Add(GoodVm good);
+        Task<Good> Update(GoodVm good, long id);
         Task Delete(long id);
     }
 }

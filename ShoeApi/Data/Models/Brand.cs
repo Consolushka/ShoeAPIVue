@@ -7,6 +7,6 @@ namespace WebApplication.Data.Models
         public string Name { get; set; }
         
         //Nav Prop
-        public List<Shoe> Shoes { get; set; }
+        public List<Good> Goods { get; set; }
     }
 }

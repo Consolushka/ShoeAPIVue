@@ -6,7 +6,7 @@ namespace WebApplication.Repository.EntityRepository
 {
     public class BrandRepository: BaseRepository<Brand>, IBrandRepository
     {   
-        public BrandRepository(ShoeContext context)
+        public BrandRepository(ShopContext context)
         {
             Context = context;
         }

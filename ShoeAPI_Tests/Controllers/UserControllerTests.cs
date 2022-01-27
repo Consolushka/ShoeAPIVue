@@ -20,11 +20,11 @@ namespace ShoeAPI_Tests.Controllers
 {
     public class UserControllerTests
     {
-        private static DbContextOptions<ShoeContext> _dbContextOptions = new DbContextOptionsBuilder<ShoeContext>()
+        private static DbContextOptions<ShopContext> _dbContextOptions = new DbContextOptionsBuilder<ShopContext>()
             .UseInMemoryDatabase(databaseName: "ShoeTest")
             .Options;
 
-        private ShoeContext _context;
+        private ShopContext _context;
 
         private IUserService _userService;
         private UsersController _controller;
@@ -32,7 +32,7 @@ namespace ShoeAPI_Tests.Controllers
         [OneTimeSetUp]
         public void Setup()
         {
-            _context = new ShoeContext(_dbContextOptions);
+            _context = new ShopContext(_dbContextOptions);
             _context.Database.EnsureCreated();
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -116,12 +116,12 @@ namespace ShoeAPI_Tests.Controllers
         {
             SeedUsersIfNone(_context);
             SeedBrandsIfNone(_context);
-            SeedShoesIfNone(_context);
+            SeedGoodsIfNone(_context);
 
             _context.SaveChanges();
         }
         
-        private static void SeedUsersIfNone(ShoeContext context)
+        private static void SeedUsersIfNone(ShopContext context)
         {
             if (!context.Users.Any())
             {
@@ -129,6 +129,7 @@ namespace ShoeAPI_Tests.Controllers
                 {
                     ConfirmString = new Guid(),
                     Email = "consolushka@gmail.com",
+                    Address = "Listvenichnaya alleya 2A",
                     Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
                     IsActive = true,
                     IsAdmin = true,
@@ -137,7 +138,7 @@ namespace ShoeAPI_Tests.Controllers
             }
         }
         
-        private static void SeedBrandsIfNone(ShoeContext context)
+        private static void SeedBrandsIfNone(ShopContext context)
         {
             if (!context.Brands.Any())
             {
@@ -155,24 +156,22 @@ namespace ShoeAPI_Tests.Controllers
             }
         }
         
-        private static void SeedShoesIfNone(ShoeContext context)
+        private static void SeedGoodsIfNone(ShopContext context)
         {
-            if (!context.Shoes.Any())
+            if (!context.Goods.Any())
             {
-                context.Shoes.AddRange(new List<Shoe>()
+                context.Goods.AddRange(new List<Good>()
                 {
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Nike v.1",
                         BrandId = 1,
-                        CreationTime = DateTime.Now,
                         PhotoFileName = "undefined.jpg"
                     },
-                    new Shoe()
+                    new Good()
                     {
                         Name = "Puma v.1",
                         BrandId = 2,
-                        CreationTime = DateTime.Now.AddDays(-1),
                         PhotoFileName = "undefined.jpg"
                     },
                 });

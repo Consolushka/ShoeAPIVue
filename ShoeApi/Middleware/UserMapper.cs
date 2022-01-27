@@ -16,6 +16,7 @@ namespace WebApplication.Middleware
             
             CreateMap<User, UserResponse>()
                 .ForMember(dst => dst.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dst => dst.Address, opt => opt.MapFrom(src => src.Address))
                 .ForMember(dst => dst.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dst => dst.IsAdmin, opt => opt.MapFrom(src => src.IsAdmin))
                 .ForMember(dst => dst.IsActive, opt => opt.MapFrom(src => src.IsActive))
