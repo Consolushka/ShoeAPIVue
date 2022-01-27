@@ -11,6 +11,6 @@ namespace WebApplication.Services.Contracts
         Task<Brand> GetById(long Id);
         Task<Brand> Add(BrandVM brandVm);
         Task<Brand> Update(BrandVM brandVm, long id);
-        void Delete(long id);
+        Task Delete(long id);
     }
 }

@@ -11,6 +11,6 @@ namespace WebApplication.Services.Contracts
         Task<Shoe> GetById(long id);
         Task<Shoe> Add(ShoeVM shoe);
         Task<Shoe> Update(ShoeVM shoe, long id);
-        void Delete(long id);
+        Task Delete(long id);
     }
 }

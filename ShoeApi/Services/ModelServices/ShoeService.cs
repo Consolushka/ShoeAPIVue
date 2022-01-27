@@ -47,13 +47,13 @@ namespace WebApplication.Services.ModelServices
                 return null;
             }
             var shoe = await GetById(id);
-            shoe.Update(shoeVm);
+            shoe.CompareWithVM(shoeVm);
             return await _repository.Update(shoe);
         }
 
-        public void Delete(long id)
+        public async Task Delete(long id)
         {
-            _repository.Delete(id);
+            await _repository.Delete(id);
         }
     }
 }

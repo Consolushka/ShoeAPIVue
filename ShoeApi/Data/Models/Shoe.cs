@@ -11,7 +11,7 @@ namespace WebApplication.Data.Models
         public DateTime CreationTime { get; set; }
         public string PhotoFileName { get; set; }
 
-        public void Update(ShoeVM shoeVm)
+        public void CompareWithVM(ShoeVM shoeVm)
         {
             Name = shoeVm.Name;
             BrandId = shoeVm.BrandId;

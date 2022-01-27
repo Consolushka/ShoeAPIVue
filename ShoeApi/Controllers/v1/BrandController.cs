@@ -61,9 +61,9 @@ namespace WebApplication.Controllers.V1
 
         [Admin]
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            _brandService.Delete(id);
+            await _brandService.Delete(id);
             return Ok();
         }
     }

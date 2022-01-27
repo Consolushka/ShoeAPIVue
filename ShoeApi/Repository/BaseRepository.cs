@@ -13,12 +13,12 @@ namespace WebApplication.Repository
     {
         protected ShoeContext Context;
 
-        public async Task<List<T>> GetAll()
+        public virtual async Task<List<T>> GetAll()
         {
             return await Context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetById(long id)
+        public virtual async Task<T> GetById(long id)
         {
             CheckForId(id);
             return await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
@@ -39,14 +39,14 @@ namespace WebApplication.Repository
             return res.Entity;
         }
 
-        public async void Delete(long id)
+        public async Task Delete(long id)
         {
             CheckForId(id);
             Context.Set<T>().Remove(await GetById(id));
             await Context.SaveChangesAsync();
         }
 
-        private void CheckForId(long id)
+        protected void CheckForId(long id)
         {
             if (Context.Set<T>().FirstOrDefault(t => t.Id == id) == null)
                 throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");

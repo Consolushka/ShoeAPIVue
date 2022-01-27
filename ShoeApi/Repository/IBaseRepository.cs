@@ -10,6 +10,6 @@ namespace WebApplication.Repository
         Task<T> GetById(long id);
         Task<T> Add(T entity);
         Task<T> Update(T entity);
-        void Delete(long id);
+        Task Delete(long id);
     }
 }

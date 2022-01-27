@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Data.Models;
@@ -16,15 +15,15 @@ namespace WebApplication.Repository.EntityRepository
             Context = context;
         }
 
-        public override List<Shoe> GetAll()
+        public override async Task<List<Shoe>> GetAll()
         {
-            return Context.Shoes.Include(s=>s.Brand).ToList();
+            return await Context.Shoes.Include(s=>s.Brand).ToListAsync();
         }
 
-        public override Shoe GetById(long id)
+        public override async Task<Shoe> GetById(long id)
         {
             CheckForId(id);
-            return Context.Shoes.Include(s=>s.Brand).FirstOrDefault(s=>s.Id == id);
+            return await Context.Shoes.Include(s=>s.Brand).FirstOrDefaultAsync(s=>s.Id == id);
         }
     }
 }

@@ -77,13 +77,13 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(3)]
         public void HttpGet_GetById_Err()
         {
-            Assert.That(()=>_controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
+            Assert.That(()=> _controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Shoe with id: 999"));
         }
 
         [Test, Order(4)]
-        public void HttpPost_AddShoe_Success()
+        public async Task HttpPost_AddShoe_Success()
         {
-            var res = _controller.Add(new ShoeVM()
+            var res = await _controller.Add(new ShoeVM()
             {
                 Name = "Test",
                 BrandId = 1,
@@ -95,9 +95,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(5)]
-        public void HttpPost_AddShoe_Err()
+        public async Task HttpPost_AddShoe_Err()
         {
-            var res = _controller.Add(null);
+            var res = await _controller.Add(null);
             
             Assert.That(res, Is.TypeOf<BadRequestResult>());
         }
@@ -146,9 +146,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test, Order(9)]
-        public void HttpDelete_Delete_Success()
+        public async Task HttpDelete_Delete_Success()
         {
-            var res = _controller.Delete(1);
+            var res = await _controller.Delete(1);
             
             Assert.That(res, Is.TypeOf<OkResult>());
         }

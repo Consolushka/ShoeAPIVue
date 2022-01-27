@@ -121,9 +121,9 @@ namespace ShoeAPI_Tests.Controllers
         }
         
         [Test, Order(8)]
-        public void HttpDelete_DeleteBrand()
+        public async Task HttpDelete_DeleteBrand()
         {
-            IActionResult actionResult =  _controller.Delete(1);
+            var actionResult =  await _controller.Delete(1);
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
         }
