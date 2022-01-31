@@ -47,7 +47,7 @@ namespace WebApplication.Services.ModelServices
                 return null;
             }
             var good = await GetById(id);
-            good.CompareWithVM(goodVm);
+            good.FillFromVm(goodVm);
             return await _repository.Update(good);
         }
 

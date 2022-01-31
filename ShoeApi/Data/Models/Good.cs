@@ -10,7 +10,7 @@ namespace WebApplication.Data.Models
         public Brand Brand { get; set; }
         public string PhotoFileName { get; set; }
 
-        public void CompareWithVM(GoodVm goodVm)
+        public void FillFromVm(GoodVm goodVm)
         {
             Name = goodVm.Name;
             BrandId = goodVm.BrandId;
