@@ -24,7 +24,7 @@ namespace WebApplication.Repository
             return await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public async Task<T> Add(T entity)
+        public virtual async Task<T> Add(T entity)
         {
             var res = await Context.AddAsync(entity);
             await Context.SaveChangesAsync();
@@ -35,6 +35,7 @@ namespace WebApplication.Repository
         {
             CheckForId(entity.Id);
             var res = Context.Update(entity);
+            Context.Entry(entity).State = EntityState.Detached;
             await Context.SaveChangesAsync();
             return res.Entity;
         }

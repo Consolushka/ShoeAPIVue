@@ -7,7 +7,7 @@ using WebApplication.Repository.Contracts;
 
 namespace WebApplication.Repository.EntityRepository
 {
-    public class GoodsRepository : BaseRepository<Good>, IGoodsRepository
+    public class GoodsRepository : BaseModelProductRepository<Good>, IGoodsRepository
     {
 
         public GoodsRepository(ShopContext context)

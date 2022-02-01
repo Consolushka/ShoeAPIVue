@@ -68,10 +68,10 @@ namespace WebApplication
             services.AddScoped<BaseRepository<User>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             
-            services.AddScoped<BaseRepository<Brand>,BrandRepository>();
+            services.AddScoped<BaseModelProductRepository<Brand>,BrandRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             
-            services.AddScoped<BaseRepository<Good>,GoodsRepository>();
+            services.AddScoped<BaseModelProductRepository<Good>,GoodsRepository>();
             services.AddScoped<IGoodsRepository, GoodsRepository>();
             
             services.AddScoped<BaseRepository<Log>,LogRepository>();
