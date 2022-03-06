@@ -57,7 +57,7 @@ namespace WebApplication.Services.ModelServices
             var thisUser = users.FirstOrDefault(u =>
                 u.Email == user.Email
                 ||
-                u.Password == user.Password);
+                u.UserName == user.UserName);
             if (thisUser != null)
             {
                 return null;
@@ -84,18 +84,17 @@ namespace WebApplication.Services.ModelServices
             return await _userRepository.GetAll();
         }
 
-        public async Task<User> GetById(long Id)
+        public User GetById(long Id)
         {
-            return await _userRepository.GetById(Id);
+            return _userRepository.GetById(Id).Result;
         }
 
         public async Task<User> Update(UserVM userVm, long id)
         {
-            var user = _mapper.Map<User>(userVm);
-            user.Id = id;
+            var user = await _userRepository.GetById(id);
+            user.FillFromVM(userVm);
             user.ConfirmString = Guid.NewGuid();
             user.Password = _configuration.Encode(user.Password);
-            user.IsActive = false;
             return await _userRepository.Update(user);
         }
 

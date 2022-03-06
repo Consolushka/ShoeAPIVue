@@ -27,7 +27,7 @@ namespace WebApplication.Services.ModelServices
 
         public void Delete(long id)
         {
-            _repository.Delete(id);
+            _repository.Delete(new Log(){Id=id});
         }
     }
 }

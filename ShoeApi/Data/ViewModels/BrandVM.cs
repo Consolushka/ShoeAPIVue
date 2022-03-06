@@ -1,4 +1,6 @@
-﻿namespace WebApplication.Data.ViewModels
+﻿using WebApplication.Data.Models;
+
+namespace WebApplication.Data.ViewModels
 {
     public class BrandVM
     {

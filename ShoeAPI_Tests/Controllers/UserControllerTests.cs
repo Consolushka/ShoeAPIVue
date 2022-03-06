@@ -91,9 +91,9 @@ namespace ShoeAPI_Tests.Controllers
         }
 
         [Test]
-        public async Task HttpGet_GetById()
+        public void HttpGet_GetById()
         {
-            IActionResult res = await _controller.GetById(1);
+            IActionResult res = _controller.GetById(1);
             
             Assert.That(res, Is.TypeOf<OkObjectResult>());
 

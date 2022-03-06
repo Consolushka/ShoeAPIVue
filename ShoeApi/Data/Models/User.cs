@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using WebApplication.Data.ViewModels;
 
 namespace WebApplication.Data.Models
 {
@@ -15,5 +16,14 @@ namespace WebApplication.Data.Models
         public bool IsAdmin { get; set; }
         public bool IsActive { get; set; }
         public Guid ConfirmString { get; set; }
+
+        public void FillFromVM(UserVM vm)
+        {
+            Email = vm.Email;
+            Address = vm.Address;
+            UserName = vm.UserName;
+            Password = vm.Password;
+            IsActive = false;
+        }
     }
 }

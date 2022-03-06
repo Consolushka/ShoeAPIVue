@@ -14,5 +14,7 @@ namespace WebApplication.Data
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Good> Goods { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Type> Types { get; set; }
+        public DbSet<BrandType> BrandTypes { get; set; }
     }
 }

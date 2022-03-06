@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using WebApplication.Data.Models;
@@ -53,7 +52,8 @@ namespace WebApplication.Services.ModelServices
 
         public async Task Delete(long id)
         {
-            await _brandRepository.Delete(id);
+            var brand = await GetById(id);
+            await _brandRepository.Delete(brand);
         }
     }
 }

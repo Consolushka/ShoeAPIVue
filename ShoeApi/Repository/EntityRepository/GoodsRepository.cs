@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
@@ -22,8 +23,10 @@ namespace WebApplication.Repository.EntityRepository
 
         public override async Task<Good> GetById(long id)
         {
-            CheckForId(id);
-            return await Context.Goods.Include(s=>s.Brand).FirstOrDefaultAsync(s=>s.Id == id);
+            var res = await Context.Goods.Include(s=>s.Brand).FirstOrDefaultAsync(t => t.Id == id); 
+            if (res == null)
+                throw new Exception($"Cannot find Good with id: {id}");
+            return res;
         }
     }
 }

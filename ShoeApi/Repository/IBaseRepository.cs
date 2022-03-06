@@ -10,6 +10,7 @@ namespace WebApplication.Repository
         Task<T> GetById(long id);
         Task<T> Add(T entity);
         Task<T> Update(T entity);
-        Task Delete(long id);
+        Task Delete(T entity);
+        Task<bool> IsExists(string name);
     }
 }

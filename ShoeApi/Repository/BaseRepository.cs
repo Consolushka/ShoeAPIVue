@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Data.Models;
+using Type = WebApplication.Data.Models.Type;
 
 namespace WebApplication.Repository
 {
@@ -20,37 +21,36 @@ namespace WebApplication.Repository
 
         public virtual async Task<T> GetById(long id)
         {
-            CheckForId(id);
-            return await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
+            var res = await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id); 
+            if (res == null)
+                throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");
+            return res;
         }
 
-        public virtual async Task<T> Add(T entity)
+        public async Task<T> Add(T entity)
         {
             var res = await Context.AddAsync(entity);
             await Context.SaveChangesAsync();
             return res.Entity;
         }
 
-        public async Task<T> Update(T entity)
+        public virtual async Task<T> Update(T entity)
         {
-            CheckForId(entity.Id);
+            await GetById(entity.Id);
             var res = Context.Update(entity);
-            Context.Entry(entity).State = EntityState.Detached;
             await Context.SaveChangesAsync();
             return res.Entity;
         }
 
-        public async Task Delete(long id)
+        public async Task Delete(T entity)
         {
-            CheckForId(id);
-            Context.Set<T>().Remove(await GetById(id));
+            Context.Set<T>().Remove(entity);
             await Context.SaveChangesAsync();
         }
 
-        protected void CheckForId(long id)
+        public virtual Task<bool> IsExists(string name)
         {
-            if (Context.Set<T>().FirstOrDefault(t => t.Id == id) == null)
-                throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");
+            return null;
         }
     }
 }

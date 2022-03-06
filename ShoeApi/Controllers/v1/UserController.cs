@@ -60,9 +60,9 @@ namespace WebApplication.Controllers.V1
 
         [Authorize]
         [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetById(int id)
+        public IActionResult GetById(int id)
         {
-            UserResponse u = new UserResponse(await _userService.GetById(id));
+            UserResponse u = new UserResponse(_userService.GetById(id));
             return Ok(u);
         }
 

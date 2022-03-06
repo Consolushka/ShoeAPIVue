@@ -55,6 +55,7 @@ namespace ShoeAPI_Tests.Controllers
 
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             Assert.AreEqual(actionResultData.First().Name, "Nike");
+            Assert.AreEqual(actionResultData.Count, 2);
         }
         
         [Test, Order(2)]
@@ -83,16 +84,23 @@ namespace ShoeAPI_Tests.Controllers
             {
                 Name = "Test"
             });
+
+            IActionResult allRes = await _controller.GetAll();
+            var allResData = (allRes as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
+            Assert.AreEqual(allResData.Count, 3);
         }
 
         [Test, Order(5)]
         public async Task HttpPost_AddBrand_Err()
         {
             IActionResult actionResult = await _controller.Add(null);
+            IActionResult allRes = await _controller.GetAll();
+            var allResData = (allRes as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
+            Assert.AreEqual(allResData.Count, 3);
         }
 
         [Test, Order(6)]
@@ -103,7 +111,11 @@ namespace ShoeAPI_Tests.Controllers
                 Name = "Test"
             }, 1);
             
+            IActionResult currBrand = await _controller.GetById(1);
+            var currBrandData = (currBrand as OkObjectResult).Value as Brand;
+            
             Assert.That(actionResult, Is.TypeOf<OkResult>());
+            Assert.AreEqual(currBrandData.Name, "Test");
         }
 
         [Test, Order(7)]
@@ -111,7 +123,11 @@ namespace ShoeAPI_Tests.Controllers
         {
             IActionResult actionResult = await _controller.Update(null, 1);
             
+            IActionResult currBrand = await _controller.GetById(1);
+            var currBrandData = (currBrand as OkObjectResult).Value as Brand;
+            
             Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
+            Assert.AreEqual(currBrandData.Name, "Test");
         }
         
         [Test, Order(8)]
@@ -125,7 +141,12 @@ namespace ShoeAPI_Tests.Controllers
         {
             var actionResult =  await _controller.Delete(1);
             
+            IActionResult allRes = await _controller.GetAll();
+            var allResData = (allRes as OkObjectResult).Value as List<Brand>;
+            
             Assert.That(actionResult, Is.TypeOf<OkResult>());
+            
+            Assert.AreEqual(allResData.Count, 2);
         }
         
         [Test, Order(9)]

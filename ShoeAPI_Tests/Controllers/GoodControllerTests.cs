@@ -44,7 +44,7 @@ namespace ShoeAPI_Tests.Controllers
 
             _goodsService = new GoodsService(new GoodsRepository(_context), mapper);
 
-            _controller = new GoodsController(_goodsService);
+            _controller = new GoodsController(_goodsService, null);
         }
         
         [OneTimeTearDown]
@@ -62,6 +62,7 @@ namespace ShoeAPI_Tests.Controllers
             
             var actionDate = (actionResult as OkObjectResult).Value as List<Good>;
             Assert.AreEqual(actionDate.First().Name, "Nike v.1");
+            Assert.AreEqual(actionDate.Count, 2);
         }
 
         [Test, Order(2)]
@@ -91,6 +92,10 @@ namespace ShoeAPI_Tests.Controllers
             });
             
             Assert.That(res, Is.TypeOf<OkResult>());
+
+            IActionResult allRes = await _controller.GetAll();
+            var allData = (allRes as OkObjectResult).Value as List<Good>;
+            Assert.AreEqual(allData.Count, 3);
         }
 
         [Test, Order(5)]
@@ -99,6 +104,10 @@ namespace ShoeAPI_Tests.Controllers
             var res = await _controller.Add(null);
             
             Assert.That(res, Is.TypeOf<BadRequestResult>());
+            
+            IActionResult allRes = await _controller.GetAll();
+            var allData = (allRes as OkObjectResult).Value as List<Good>;
+            Assert.AreEqual(allData.Count, 3);
         }
 
         [Test, Order(6)]

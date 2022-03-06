@@ -12,7 +12,7 @@ namespace WebApplication.Services.Contracts
         Task<User> Register(UserVM userVm);
         Task<bool> ConfirmUser(Guid key);
         Task<List<User>> GetAll();
-        Task<User> GetById(long Id);
+        User GetById(long Id);
         Task<User> Update(UserVM user, long id);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data.Models;
@@ -23,11 +22,6 @@ namespace WebApplication.Controllers.V1
         {
             _service = service;
             _env = env;
-        }
-        
-        public GoodsController(IGoodsService service)
-        {
-            _service = service;
         }
         
         [HttpGet("get-all")]

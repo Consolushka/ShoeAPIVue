@@ -71,11 +71,17 @@ namespace WebApplication
             services.AddScoped<BaseModelProductRepository<Brand>,BrandRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             
+            services.AddScoped<BaseRepository<BrandType>,BrandTypeRepository>();
+            services.AddScoped<IBrandTypeRepository, BrandTypeRepository>();
+            
             services.AddScoped<BaseModelProductRepository<Good>,GoodsRepository>();
             services.AddScoped<IGoodsRepository, GoodsRepository>();
             
             services.AddScoped<BaseRepository<Log>,LogRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
+            
+            services.AddScoped<BaseModelProductRepository<Type>,TypeRepository>();
+            services.AddScoped<ITypeRepository, TypeRepository>();
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
