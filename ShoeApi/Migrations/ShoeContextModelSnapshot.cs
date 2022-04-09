@@ -53,7 +53,7 @@ namespace WebApplication.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("BrandType");
+                    b.ToTable("BrandTypes");
                 });
 
             modelBuilder.Entity("WebApplication.Data.Models.Good", b =>
@@ -129,7 +129,7 @@ namespace WebApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Type");
+                    b.ToTable("Types");
                 });
 
             modelBuilder.Entity("WebApplication.Data.Models.User", b =>

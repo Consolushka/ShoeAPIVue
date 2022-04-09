@@ -7,47 +7,77 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApplication.Data;
 using WebApplication.Data.Models;
 using WebApplication.Middleware;
+using Type = WebApplication.Data.Models.Type;
 
 namespace WebApplication.Data
 {
     public static class DataInitializer
     {
 
+        private static IApplicationBuilder _builder;
+        private static IConfiguration _configuration;
+        private static ShopContext _context;
+
         public static void SeedData(IApplicationBuilder builder, IConfiguration configuration)
         {
-            using (var serviceScope = builder.ApplicationServices.CreateScope())
+            _builder = builder;
+            _configuration = configuration;
+            using (var serviceScope = _builder.ApplicationServices.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<ShopContext>();
+                _context = context;
+                SeedGoodsTypes();
+                SeedUsersIfNone();
+                SeedBrandsIfNone();
+                SeedGoodsIfNone();
 
-                SeedUsersIfNone(context, configuration);
-                SeedBrandsIfNone(context);
-                SeedGoodsIfNone(context);
+                _context.SaveChanges();
 
-                context.SaveChanges();
+                SeedBrandTypes();
+
+                _context.SaveChanges();
             }
         }
 
-        private static void SeedUsersIfNone(ShopContext context, IConfiguration configuration)
+        private static void SeedGoodsTypes()
         {
-            if (!context.Users.Any())
+            if (!_context.Types.Any())
             {
-                context.Users.Add(new User()
+                _context.Types.AddRange(new List<Type>()
+                {
+                    new Type()
+                    {
+                        Name = "Shoe"
+                    },
+                    new Type()
+                    {
+                        Name = "T-Shirt"
+                    },
+                });
+            }
+        }
+
+        private static void SeedUsersIfNone()
+        {
+            if (!_context.Users.Any())
+            {
+                _context.Users.Add(new User()
                 {
                     ConfirmString = new Guid(),
                     Email = "consolushka@gmail.com",
                     Address = "Listvenichnaya alleya 2A",
-                    Password = configuration.Encode("admin"),
+                    Password = _configuration.Encode("admin"),
                     IsActive = true,
                     UserName = "admin"
                 });
             }
         }
         
-        private static void SeedBrandsIfNone(ShopContext context)
+        private static void SeedBrandsIfNone()
         {
-            if (!context.Brands.Any())
+            if (!_context.Brands.Any())
             {
-                context.Brands.AddRange(new List<Brand>()
+                _context.Brands.AddRange(new List<Brand>()
                 {
                     new Brand()
                     {
@@ -60,12 +90,37 @@ namespace WebApplication.Data
                 });
             }
         }
-        
-        private static void SeedGoodsIfNone(ShopContext context)
+
+        private static void SeedBrandTypes()
         {
-            if (!context.Goods.Any())
+            if (!_context.BrandTypes.Any())
             {
-                context.Goods.AddRange(new List<Good>()
+                _context.BrandTypes.AddRange(new List<BrandType>()
+                {
+                    new BrandType()
+                    {
+                        Brand = _context.Brands.Find((long)1),
+                        Type = _context.Types.Find((long)1),
+                    },
+                    new BrandType()
+                    {
+                        Brand = _context.Brands.Find((long)1),
+                        Type = _context.Types.Find((long)2),
+                    },
+                    new BrandType()
+                    {
+                        Brand = _context.Brands.Find((long)2),
+                        Type = _context.Types.Find((long)1),
+                    },
+                });
+            }
+        }
+        
+        private static void SeedGoodsIfNone()
+        {
+            if (!_context.Goods.Any())
+            {
+                _context.Goods.AddRange(new List<Good>()
                 {
                     new Good()
                     {
