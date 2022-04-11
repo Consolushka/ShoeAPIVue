@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Data.Models;
-using Type = WebApplication.Data.Models.Type;
 
 namespace WebApplication.Repository
 {
@@ -27,30 +24,46 @@ namespace WebApplication.Repository
             return res;
         }
 
-        public async Task<T> Add(T entity)
+        public virtual async Task<T> Add(T entity)
         {
-            var res = await Context.AddAsync(entity);
-            await Context.SaveChangesAsync();
-            return res.Entity;
+            if (!await IsExists(entity))
+            {
+                var res = await Context.AddAsync(entity);
+                await Context.SaveChangesAsync();
+                return res.Entity;   
+            }
+
+            throw new Exception($"Same {typeof(T).Name} already exists");
         }
 
         public virtual async Task<T> Update(T entity)
         {
-            await GetById(entity.Id);
-            var res = Context.Update(entity);
-            await Context.SaveChangesAsync();
-            return res.Entity;
+            if (await IsExists(entity))
+            {
+                await GetById(entity.Id);
+                var res = Context.Update(entity);
+                await Context.SaveChangesAsync();
+                return res.Entity;   
+            }
+            throw new Exception($"Cannot find this {typeof(T).Name}");
         }
 
         public async Task Delete(T entity)
         {
-            Context.Set<T>().Remove(entity);
-            await Context.SaveChangesAsync();
+            if (await IsExists(entity))
+            {
+                Context.Set<T>().Remove(entity);
+                await Context.SaveChangesAsync();   
+            }
+            else
+            {
+                throw new Exception($"Cannot find this {typeof(T).Name}");
+            }
         }
 
-        public virtual Task<bool> IsExists(string name)
+        public virtual async Task<bool> IsExists(T entity)
         {
-            return null;
+            return false;
         }
     }
 }

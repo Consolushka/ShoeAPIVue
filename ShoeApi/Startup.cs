@@ -69,19 +69,19 @@ namespace WebApplication
             services.AddScoped<BaseRepository<User>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             
-            services.AddScoped<BaseModelProductRepository<Brand>,BrandRepository>();
+            services.AddScoped<BaseRepository<Brand>,BrandRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             
             services.AddScoped<BaseRepository<BrandType>,BrandTypeRepository>();
             services.AddScoped<IBrandTypeRepository, BrandTypeRepository>();
             
-            services.AddScoped<BaseModelProductRepository<Good>,GoodsRepository>();
+            services.AddScoped<BaseRepository<Good>,GoodsRepository>();
             services.AddScoped<IGoodsRepository, GoodsRepository>();
             
             services.AddScoped<BaseRepository<Log>,LogRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             
-            services.AddScoped<BaseModelProductRepository<Type>,TypeRepository>();
+            services.AddScoped<BaseRepository<Type>,TypeRepository>();
             services.AddScoped<ITypeRepository, TypeRepository>();
             
             services.AddScoped<IUserService, UserService>();

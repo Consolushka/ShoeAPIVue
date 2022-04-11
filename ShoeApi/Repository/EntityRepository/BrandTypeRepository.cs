@@ -16,6 +16,17 @@ namespace WebApplication.Repository.EntityRepository
             Context = context;
         }
 
+        public override async Task<bool> IsExists(BrandType brandType)
+        {
+            if (await Context.BrandTypes.FirstOrDefaultAsync(bt =>
+                bt.Brand.Id == brandType.Brand.Id && bt.Type.Id == brandType.Type.Id) == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override async Task<List<BrandType>> GetAll()
         {
             return await Context.BrandTypes.Include(s=>s.Brand).Include(s=>s.Type).ToListAsync();;

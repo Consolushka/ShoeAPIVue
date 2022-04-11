@@ -8,11 +8,18 @@ using WebApplication.Repository.Contracts;
 
 namespace WebApplication.Repository.EntityRepository
 {
-    public class TypeRepository: BaseModelProductRepository<Type>, ITypeRepository
+    public class TypeRepository: BaseRepository<Type>, ITypeRepository
     {
         public TypeRepository(ShopContext context)
         {
             Context = context;
+        }
+
+        public override async Task<bool> IsExists(Type type)
+        {
+            if (await Context.Types.FirstOrDefaultAsync(t => t.Name == type.Name) == null)
+                return false;
+            return true;
         }
         //
         // public override async Task<List<Type>> GetAll()

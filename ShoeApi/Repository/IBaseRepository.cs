@@ -11,6 +11,6 @@ namespace WebApplication.Repository
         Task<T> Add(T entity);
         Task<T> Update(T entity);
         Task Delete(T entity);
-        Task<bool> IsExists(string name);
+        Task<bool> IsExists(T entity);
     }
 }
