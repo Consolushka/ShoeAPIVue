@@ -64,6 +64,7 @@ namespace WebApplication
             services.AddAutoMapper(typeof(UserMapper));
             services.AddAutoMapper(typeof(BrandMapper));
             services.AddAutoMapper(typeof(GoodMapper));
+            services.AddAutoMapper(typeof(TypeMapper));
             
             services.AddScoped<BaseRepository<User>, UserRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -85,6 +86,7 @@ namespace WebApplication
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<ITypeService, TypeService>();
             services.AddScoped<IGoodsService, GoodsService>();
             services.AddScoped<ILogService, LogService>();
         }
