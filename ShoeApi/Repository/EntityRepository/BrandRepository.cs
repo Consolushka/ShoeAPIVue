@@ -18,22 +18,17 @@ namespace WebApplication.Repository.EntityRepository
         public override async Task<List<Brand>> GetAll()
         {
             var res = await Context.Brands.ToListAsync();
-            List<BrandType> brandTypes = await Context.BrandTypes.Include(e => e.Brand).ToListAsync();
+            List<BrandType> brandTypes = await Context.BrandTypes.Include(e => e.Brand).Include(e=>e.Type).ToListAsync();
             foreach (var brand in res)
             {
                 List<Type> types = new List<Type>();
                 foreach (var bt in brandTypes)
                 {
-                    if (bt.Brand.Id == brand.Id)
+                    if (bt.BrandId == brand.Id)
                     {
                         types.Add(bt.Type);
                     }
                 }
-                foreach (var brandType in brandTypes)
-                {
-                    types.Add(await Context.Types.FirstOrDefaultAsync(e=>e.Id==brandType.Type.Id));
-                }
-
                 brand.Types = types;
 
             }

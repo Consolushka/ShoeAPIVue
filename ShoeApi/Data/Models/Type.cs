@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace WebApplication.Data.Models
 {
@@ -10,6 +10,7 @@ namespace WebApplication.Data.Models
         //Nav props
         public List<Good> Goods { get; set; }
         //Nav props
+        [JsonIgnore]
         public List<BrandType> BrandTypes { get; set; }
     }
 }

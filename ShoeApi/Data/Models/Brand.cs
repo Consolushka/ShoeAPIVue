@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace WebApplication.Data.Models
 {
@@ -7,6 +8,7 @@ namespace WebApplication.Data.Models
     {
         //Nav Prop
         public List<Good> Goods { get; set; }
+        [JsonIgnore]
         public List<BrandType> BrandTypes { get; set; }
         //Nav Prop
         [NotMapped]
