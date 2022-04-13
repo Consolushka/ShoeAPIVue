@@ -17,10 +17,14 @@ namespace WebApplication.Repository.EntityRepository
 
         public override async Task<List<Brand>> GetAll()
         {
-            var res = await Context.Brands.ToListAsync();
+            var res = await Context.Brands.Include(e=>e.Goods).ToListAsync();
             List<BrandType> brandTypes = await Context.BrandTypes.Include(e => e.Brand).Include(e=>e.Type).ToListAsync();
             foreach (var brand in res)
             {
+                foreach (var brandGood in brand.Goods)
+                {
+                    brandGood.Type.Goods = null;
+                }
                 List<Type> types = new List<Type>();
                 foreach (var bt in brandTypes)
                 {
@@ -35,7 +39,28 @@ namespace WebApplication.Repository.EntityRepository
             return res;
         }
 
-        public override async Task<bool> IsExists(Brand brand)
+        public override async Task<Brand> GetById(long id)
+        {
+            await CheckForExistingId(id);
+            var res = await Context.Brands.Include(e => e.Goods).FirstOrDefaultAsync(b=>b.Id==id);
+            List<BrandType> brandTypes = await Context.BrandTypes.Where(bt=>bt.BrandId==id).Include(e => e.Brand).Include(e=>e.Type).ToListAsync();
+            foreach (var brandGood in res.Goods)
+            {
+                brandGood.Type.Goods = null;
+            }
+            List<Type> types = new List<Type>();
+            foreach (var bt in brandTypes)
+            {
+                if (bt.BrandId == res.Id)
+                {
+                    types.Add(bt.Type);
+                }
+            }
+            res.Types = types;
+            return res;
+        }
+
+        public override async Task<bool> IsAlreadyExists(Brand brand)
         {
             if (await Context.Brands.FirstOrDefaultAsync(b => b.Name == brand.Name) == null)
             {

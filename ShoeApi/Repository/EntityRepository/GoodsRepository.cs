@@ -16,7 +16,7 @@ namespace WebApplication.Repository.EntityRepository
             Context = context;
         }
 
-        public override async Task<bool> IsExists(Good good)
+        public override async Task<bool> IsAlreadyExists(Good good)
         {
             if (await Context.Goods.FirstOrDefaultAsync(g =>
                 g.Name == good.Name && g.Brand.Id == good.Brand.Id && g.Type.Id == good.Type.Id) == null)

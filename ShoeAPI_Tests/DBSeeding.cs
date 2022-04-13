@@ -30,6 +30,8 @@ namespace ShoeAPI_Tests
             SeedUsers();
             SeedTypes();
             SeedBrands();
+
+            _context.SaveChanges();
             SeedBrandTypes();
             SeedGoods();
 

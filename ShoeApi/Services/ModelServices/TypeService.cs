@@ -52,8 +52,7 @@ namespace WebApplication.Services.ModelServices
 
         public async Task Delete(long id)
         {
-            var type = await GetById(id);
-            await _repository.Delete(type);
+            await _repository.Delete(id);
         }
     }
 }

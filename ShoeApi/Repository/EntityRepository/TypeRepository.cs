@@ -15,7 +15,7 @@ namespace WebApplication.Repository.EntityRepository
             Context = context;
         }
 
-        public override async Task<bool> IsExists(Type type)
+        public override async Task<bool> IsAlreadyExists(Type type)
         {
             if (await Context.Types.FirstOrDefaultAsync(t => t.Name == type.Name) == null)
                 return false;

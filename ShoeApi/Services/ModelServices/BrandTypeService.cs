@@ -10,14 +10,10 @@ namespace WebApplication.Services.ModelServices
     {
 
         private readonly IBrandTypeRepository _brandTypeRepository;
-        private readonly IBrandRepository _brandRepository;
-        private readonly ITypeRepository _typeRepository;
 
-        public BrandTypeService(IBrandTypeRepository brandTypeRepository/*, IBrandRepository brandRepository, ITypeRepository typeRepository*/)
+        public BrandTypeService(IBrandTypeRepository brandTypeRepository)
         {
             _brandTypeRepository = brandTypeRepository;
-            // _brandRepository = brandRepository;
-            // _typeRepository = typeRepository;
         }
 
         public async Task<IEnumerable<BrandType>> GetAll()
@@ -32,8 +28,7 @@ namespace WebApplication.Services.ModelServices
 
         public async Task Delete(long id)
         {
-            var curr = await GetById(id);
-            await _brandTypeRepository.Delete(curr);
+            await _brandTypeRepository.Delete(id);
         }
 
         public async Task<BrandType> GetById(long id)

@@ -17,7 +17,7 @@ namespace WebApplication.Repository.EntityRepository
             Context = context;
         }
 
-        public override async Task<bool> IsExists(BrandType brandType)
+        public override async Task<bool> IsAlreadyExists(BrandType brandType)
         {
             if (await Context.BrandTypes.FirstOrDefaultAsync(bt =>
                 bt.Brand.Id == brandType.Brand.Id && bt.Type.Id == brandType.Type.Id) == null)

@@ -48,8 +48,15 @@ namespace ShoeAPI_Tests.Controllers
             var actionResultData = (actionResult as OkObjectResult).Value as List<Brand>;
 
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
-            Assert.AreEqual(actionResultData.First().Name, "Nike");
-            Assert.AreEqual(actionResultData.Count, 2);
+            Assert.AreEqual("Nike", actionResultData.Find(b=>b.Id==1).Name);
+            Assert.AreEqual(2,actionResultData.Find(b=>b.Id==1).Types.Count);
+            Assert.AreEqual(2,actionResultData.Find(b=>b.Id==1).Goods.Count);
+            
+            Assert.AreEqual("Puma", actionResultData.Find(b=>b.Id==2).Name);
+            Assert.AreEqual(1,actionResultData.Find(b=>b.Id==2).Types.Count);
+            Assert.AreEqual(1,actionResultData.Find(b=>b.Id==2).Goods.Count);
+            
+            Assert.AreEqual(2, actionResultData.Count);
         }
         
         [Test, Order(2)]
@@ -61,8 +68,10 @@ namespace ShoeAPI_Tests.Controllers
             
             var actionResultData = (actionResult as OkObjectResult).Value as Brand;
             
-            Assert.AreEqual(actionResultData.Id, 1);
-            Assert.AreEqual(actionResultData.Name, "Nike");
+            Assert.AreEqual(1, actionResultData.Id);
+            Assert.AreEqual("Nike",actionResultData.Name);
+            Assert.AreEqual(2,actionResultData.Types.Count);
+            Assert.AreEqual(2,actionResultData.Goods.Count);
         }
         
         [Test, Order(3)]
@@ -144,7 +153,7 @@ namespace ShoeAPI_Tests.Controllers
         }
         
         [Test, Order(9)]
-        public void HttpDeleteBrand_WithErr()
+        public void HttpDeleteBrand_WithOut_ExistingId()
         {
             Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
         }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Data.Models;
+using Type = WebApplication.Data.Models.Type;
 
 namespace WebApplication.Repository
 {
@@ -18,15 +19,14 @@ namespace WebApplication.Repository
 
         public virtual async Task<T> GetById(long id)
         {
+            await CheckForExistingId(id);
             var res = await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id); 
-            if (res == null)
-                throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");
             return res;
         }
 
         public virtual async Task<T> Add(T entity)
         {
-            if (!await IsExists(entity))
+            if (!await IsAlreadyExists(entity))
             {
                 var res = await Context.AddAsync(entity);
                 await Context.SaveChangesAsync();
@@ -38,7 +38,7 @@ namespace WebApplication.Repository
 
         public virtual async Task<T> Update(T entity)
         {
-            if (await IsExists(entity))
+            if (await IsAlreadyExists(entity))
             {
                 await GetById(entity.Id);
                 var res = Context.Update(entity);
@@ -48,22 +48,24 @@ namespace WebApplication.Repository
             throw new Exception($"Cannot find this {typeof(T).Name}");
         }
 
-        public async Task Delete(T entity)
+        public async Task Delete(long id)
         {
-            if (await IsExists(entity))
-            {
-                Context.Set<T>().Remove(entity);
-                await Context.SaveChangesAsync();   
-            }
-            else
-            {
-                throw new Exception($"Cannot find this {typeof(T).Name}");
-            }
+            await CheckForExistingId(id);
+            Context.Set<T>().Remove(Context.Set<T>().Find(id));
+            await Context.SaveChangesAsync();
         }
 
-        public virtual async Task<bool> IsExists(T entity)
+        public virtual async Task<bool> IsAlreadyExists(T entity)
         {
             return false;
+        }
+
+        public async Task CheckForExistingId(long id)
+        {
+            if (await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id) == null)
+            {
+                throw new Exception($"Cannot find {typeof(T).Name} with id: {id}");
+            }
         }
     }
 }
