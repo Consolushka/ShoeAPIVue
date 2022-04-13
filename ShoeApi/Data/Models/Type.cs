@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication.Data.Models
 {
@@ -8,6 +9,7 @@ namespace WebApplication.Data.Models
         
         //Nav props
         public List<Good> Goods { get; set; }
+        //Nav props
         public List<BrandType> BrandTypes { get; set; }
     }
 }

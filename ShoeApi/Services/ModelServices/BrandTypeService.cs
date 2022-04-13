@@ -19,17 +19,36 @@ namespace WebApplication.Services.ModelServices
             // _brandRepository = brandRepository;
             // _typeRepository = typeRepository;
         }
-        
-        public async Task<List<BrandType>> GetBrandsByType(long id)
+
+        public async Task<IEnumerable<BrandType>> GetAll()
         {
-            var AllBT = await _brandTypeRepository.GetAll();
-            return AllBT.FindAll((bt) => bt.Type.Id == id);
+            return await _brandTypeRepository.GetAll();
+        }
+
+        public async Task<BrandType> Add(BrandType brandType)
+        {
+            return await _brandTypeRepository.Add(brandType); 
+        }
+
+        public async Task Delete(long id)
+        {
+            var curr = await GetById(id);
+            await _brandTypeRepository.Delete(curr);
+        }
+
+        public async Task<BrandType> GetById(long id)
+        {
+            return await _brandTypeRepository.GetById(id);
         }
         
-        public async Task<List<BrandType>> GetTypesByBrand(long id)
+        public async Task<List<Brand>> GetBrandsByType(long id)
         {
-            var AllBT = await _brandTypeRepository.GetAll();
-            return AllBT.FindAll((bt) => bt.Brand.Id == id);
+            return await _brandTypeRepository.GetByType(id);
+        }
+        
+        public async Task<List<Type>> GetTypesByBrand(long id)
+        {
+            return await _brandTypeRepository.GetByBrand(id);
         }
 
         public async Task<BrandType> TryToAdd(BrandType brandType)

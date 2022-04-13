@@ -86,6 +86,7 @@ namespace WebApplication
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IBrandTypeService, BrandTypeService>();
             services.AddScoped<ITypeService, TypeService>();
             services.AddScoped<IGoodsService, GoodsService>();
             services.AddScoped<ILogService, LogService>();

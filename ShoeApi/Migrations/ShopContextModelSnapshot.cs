@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication.Data;
 
 namespace WebApplication.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20211122200556_Logs")]
-    partial class Logs
+    partial class ShopContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,6 +32,56 @@ namespace WebApplication.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("WebApplication.Data.Models.BrandType", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("BrandId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TypeId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("BrandTypes");
+                });
+
+            modelBuilder.Entity("WebApplication.Data.Models.Good", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("BrandId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("TypeId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Goods");
                 });
 
             modelBuilder.Entity("WebApplication.Data.Models.Log", b =>
@@ -69,30 +117,19 @@ namespace WebApplication.Migrations
                     b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("WebApplication.Data.Models.Shoe", b =>
+            modelBuilder.Entity("WebApplication.Data.Models.Type", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("BrandId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhotoFileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
-                    b.ToTable("Shoes");
+                    b.ToTable("Types");
                 });
 
             modelBuilder.Entity("WebApplication.Data.Models.User", b =>
@@ -101,6 +138,9 @@ namespace WebApplication.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ConfirmString")
                         .HasColumnType("uniqueidentifier");
@@ -125,20 +165,56 @@ namespace WebApplication.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WebApplication.Data.Models.Shoe", b =>
+            modelBuilder.Entity("WebApplication.Data.Models.BrandType", b =>
                 {
                     b.HasOne("WebApplication.Data.Models.Brand", "Brand")
-                        .WithMany("Shoes")
+                        .WithMany("BrandTypes")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebApplication.Data.Models.Type", "Type")
+                        .WithMany("BrandTypes")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Brand");
+
+                    b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("WebApplication.Data.Models.Good", b =>
+                {
+                    b.HasOne("WebApplication.Data.Models.Brand", "Brand")
+                        .WithMany("Goods")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication.Data.Models.Type", "Type")
+                        .WithMany("Goods")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("WebApplication.Data.Models.Brand", b =>
                 {
-                    b.Navigation("Shoes");
+                    b.Navigation("BrandTypes");
+
+                    b.Navigation("Goods");
+                });
+
+            modelBuilder.Entity("WebApplication.Data.Models.Type", b =>
+                {
+                    b.Navigation("BrandTypes");
+
+                    b.Navigation("Goods");
                 });
 #pragma warning restore 612, 618
         }

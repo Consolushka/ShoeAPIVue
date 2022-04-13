@@ -29,6 +29,9 @@ namespace WebApplication.Data
                 SeedGoodsTypes();
                 SeedUsersIfNone();
                 SeedBrandsIfNone();
+                
+                _context.SaveChanges();
+                
                 SeedGoodsIfNone();
 
                 _context.SaveChanges();
@@ -88,6 +91,7 @@ namespace WebApplication.Data
                         Name = "Puma"
                     },
                 });
+                _context.SaveChanges();
             }
         }
 
@@ -126,12 +130,21 @@ namespace WebApplication.Data
                     {
                         Name = "Nike v.1",
                         BrandId = 1,
+                        TypeId = 1,
+                        PhotoFileName = "undefined.jpg"
+                    },
+                    new Good()
+                    {
+                        Name = "Nike T-Shirt",
+                        BrandId = 1,
+                        TypeId = 2,
                         PhotoFileName = "undefined.jpg"
                     },
                     new Good()
                     {
                         Name = "Puma v.1",
                         BrandId = 2,
+                        TypeId = 1,
                         PhotoFileName = "undefined.jpg"
                     },
                 });

@@ -19,10 +19,6 @@ namespace ShoeAPI_Tests.Controllers
 {
     public class BrandControllerTests
     {
-        private static DbContextOptions<ShopContext> _dbContextOptions = new DbContextOptionsBuilder<ShopContext>()
-            .UseInMemoryDatabase(databaseName: "ShoeTest")
-            .Options;
-
         private ShopContext _context;
 
         private IBrandService _brandService;
@@ -31,10 +27,8 @@ namespace ShoeAPI_Tests.Controllers
         [OneTimeSetUp]
         public void Setup()
         {
-            _context = new ShopContext(_dbContextOptions);
-            _context.Database.EnsureCreated();
 
-            SeedDatabase();
+            _context = DBSeeding.CreateDb();
             
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -159,71 +153,6 @@ namespace ShoeAPI_Tests.Controllers
         public void CleanUp()
         {
             _context.Database.EnsureDeleted();
-        }
-        
-        private void SeedDatabase()
-        {
-            SeedUsersIfNone(_context);
-            SeedBrandsIfNone(_context);
-            SeedGoodsIfNone(_context);
-
-            _context.SaveChanges();
-        }
-        
-        private static void SeedUsersIfNone(ShopContext context)
-        {
-            if (!context.Users.Any())
-            {
-                context.Users.Add(new User()
-                {
-                    ConfirmString = new Guid(),
-                    Email = "consolushka@gmail.com",
-                    Address = "Listvenichnaya alleya 2A",
-                    Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
-                    IsActive = true,
-                    UserName = "admin"
-                });
-            }
-        }
-        
-        private static void SeedBrandsIfNone(ShopContext context)
-        {
-            if (!context.Brands.Any())
-            {
-                context.Brands.AddRange(new List<Brand>()
-                {
-                    new Brand()
-                    {
-                        Name = "Nike"
-                    },
-                    new Brand()
-                    {
-                        Name = "Puma"
-                    },
-                });
-            }
-        }
-        
-        private static void SeedGoodsIfNone(ShopContext context)
-        {
-            if (!context.Goods.Any())
-            {
-                context.Goods.AddRange(new List<Good>()
-                {
-                    new Good()
-                    {
-                        Name = "Nike v.1",
-                        BrandId = 1,
-                        PhotoFileName = "undefined.jpg"
-                    },
-                    new Good()
-                    {
-                        Name = "Puma v.1",
-                        BrandId = 2,
-                        PhotoFileName = "undefined.jpg"
-                    },
-                });
-            }
         }
     }
 }
