@@ -93,6 +93,7 @@ namespace ShoeAPI_Tests.Controllers
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
             Assert.AreEqual(allResData.Count, 3);
+            Assert.AreEqual("Test", allResData[2].Name);
         }
 
         [Test, Order(5)]
