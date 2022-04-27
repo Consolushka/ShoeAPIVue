@@ -20,12 +20,27 @@ namespace WebApplication.Repository.EntityRepository
         public override async Task<bool> IsAlreadyExists(BrandType brandType)
         {
             if (await Context.BrandTypes.FirstOrDefaultAsync(bt =>
-                bt.Brand.Id == brandType.Brand.Id && bt.Type.Id == brandType.Type.Id) == null)
+                bt.BrandId == brandType.BrandId && bt.TypeId == brandType.TypeId) == null)
             {
                 return false;
             }
 
             return true;
+        }
+
+        public override async Task<BrandType> Add(BrandType entity)
+        {
+            if (await IsAlreadyExists(entity))
+            {
+                throw new Exception("Same BrandType already exists");
+            }
+
+            entity.Brand = await Context.Brands.FindAsync(entity.BrandId);
+            entity.Type = await Context.Types.FindAsync(entity.TypeId);
+            
+            var res = await Context.AddAsync(entity);
+            await Context.SaveChangesAsync();
+            return res.Entity;
         }
 
         public override async Task<List<BrandType>> GetAll()
