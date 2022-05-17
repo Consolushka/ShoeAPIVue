@@ -5,10 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication.Data;
 using WebApplication.Data.Models;
 using WebApplication.Repository.Contracts;
-
 namespace WebApplication.Repository.EntityRepository
 {
-    public class BrandRepository: BaseRepository<Brand>, IBrandRepository
+    internal class BrandRepository: BaseRepository<Brand>, IBrandRepository
     {   
         public BrandRepository(ShopContext context)
         {

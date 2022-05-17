@@ -7,7 +7,7 @@ using WebApplication.Repository.Contracts;
 
 namespace WebApplication.Repository.EntityRepository
 {
-    public class UserRepository: BaseRepository<User>, IUserRepository
+    internal class UserRepository: BaseRepository<User>, IUserRepository
     {
 
         public UserRepository(ShopContext context)

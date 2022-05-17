@@ -6,7 +6,7 @@ using WebApplication.Repository.Contracts;
 
 namespace WebApplication.Repository.EntityRepository
 {
-    public class LogRepository: BaseRepository<Log>, ILogRepository
+    internal class LogRepository: BaseRepository<Log>, ILogRepository
     {
         public LogRepository(ShopContext context)
         {

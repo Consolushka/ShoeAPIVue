@@ -8,7 +8,7 @@ using WebApplication.Services.Contracts;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class TypeService: ITypeService
+    internal class TypeService: ITypeService
     {
         private readonly ITypeRepository _repository;
         private readonly IMapper _mapper;

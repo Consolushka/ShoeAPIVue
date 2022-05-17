@@ -12,7 +12,7 @@ using WebApplication.Services.Contracts;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class UserService : IUserService
+    internal class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;

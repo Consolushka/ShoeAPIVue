@@ -8,7 +8,7 @@ using Type = WebApplication.Data.Models.Type;
 
 namespace WebApplication.Repository
 {
-    public class BaseRepository<T>: IBaseRepository<T> where T:Base
+    internal class BaseRepository<T>: IBaseRepository<T> where T:Base
     {
         protected ShopContext Context;
 
@@ -38,20 +38,20 @@ namespace WebApplication.Repository
 
         public virtual async Task<T> Update(T entity)
         {
-            if (await IsAlreadyExists(entity))
+            await CheckForExistingId(entity.Id);
+            if (!await IsAlreadyExists(entity))
             {
-                await GetById(entity.Id);
                 var res = Context.Update(entity);
                 await Context.SaveChangesAsync();
                 return res.Entity;   
             }
-            throw new Exception($"Cannot find this {typeof(T).Name}");
+            throw new Exception($"Same {typeof(T).Name} already exists");
         }
 
         public async Task Delete(long id)
         {
             await CheckForExistingId(id);
-            Context.Set<T>().Remove(Context.Set<T>().Find(id));
+            Context.Set<T>().Remove(await Context.Set<T>().FindAsync(id));
             await Context.SaveChangesAsync();
         }
 

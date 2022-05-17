@@ -10,7 +10,7 @@ using Type = WebApplication.Data.Models.Type;
 
 namespace WebApplication.Repository.EntityRepository
 {
-    public class BrandTypeRepository: BaseRepository<BrandType>, IBrandTypeRepository
+    internal class BrandTypeRepository: BaseRepository<BrandType>, IBrandTypeRepository
     {
         public BrandTypeRepository(ShopContext context)
         {

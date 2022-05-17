@@ -8,7 +8,7 @@ using WebApplication.Services.Contracts;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class BrandService: IBrandService
+    internal class BrandService: IBrandService
     {
         private readonly IBrandRepository _brandRepository;
         private readonly IMapper _mapper;

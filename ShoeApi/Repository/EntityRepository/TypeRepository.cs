@@ -8,7 +8,7 @@ using WebApplication.Repository.Contracts;
 
 namespace WebApplication.Repository.EntityRepository
 {
-    public class TypeRepository: BaseRepository<Type>, ITypeRepository
+    internal class TypeRepository: BaseRepository<Type>, ITypeRepository
     {
         public TypeRepository(ShopContext context)
         {

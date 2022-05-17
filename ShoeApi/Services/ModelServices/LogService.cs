@@ -6,7 +6,7 @@ using Log = WebApplication.Data.Models.Log;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class LogService: ILogService
+    internal class LogService: ILogService
     {
         private readonly ILogRepository _repository;
 

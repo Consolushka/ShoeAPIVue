@@ -9,7 +9,7 @@ using WebApplication.Services.Contracts;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class GoodsService: IGoodsService
+    internal class GoodsService: IGoodsService
     {
         private readonly IGoodsRepository _repository;
         private readonly IMapper _mapper;

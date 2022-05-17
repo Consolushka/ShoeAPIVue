@@ -6,7 +6,7 @@ using WebApplication.Services.Contracts;
 
 namespace WebApplication.Services.ModelServices
 {
-    public class BrandTypeService: IBrandTypeService
+    internal class BrandTypeService: IBrandTypeService
     {
 
         private readonly IBrandTypeRepository _brandTypeRepository;
