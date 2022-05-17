@@ -19,6 +19,7 @@ namespace WebApplication.Data.Models
         {
             Name = goodVm.Name;
             BrandId = goodVm.BrandId;
+            TypeId = goodVm.TypeId;
             PhotoFileName = goodVm.PhotoFileName;
         }
     }

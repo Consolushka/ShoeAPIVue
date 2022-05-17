@@ -11,6 +11,7 @@ namespace WebApplication.Middleware
             CreateMap<GoodVm, Good>()
                 .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dst => dst.BrandId, opt => opt.MapFrom(src => src.BrandId))
+                .ForMember(dst => dst.TypeId, opt => opt.MapFrom(src => src.TypeId))
                 .ForMember(dst => dst.PhotoFileName, opt => opt.MapFrom(src => src.PhotoFileName))
                 ;
         }

@@ -78,16 +78,9 @@ namespace ShoeAPI_Tests.Controllers
         }
         
         [Test, Order(3)]
-        public async Task HttpGet_GetAllByBrand_NotExistingBrandId()
-        {
-            IActionResult actionResult = await _controller.GetAllByBrand(999);
-            
-            Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
-            
-            var actionResultData = (actionResult as OkObjectResult).Value as List<Type>;
-            var res = actionResultData.OrderBy(bt => bt.Id).ToList();
-            
-            Assert.AreEqual(0,res.Count);
+        public void HttpGet_GetAllByBrand_NotExistingBrandId()
+        {   
+            Assert.That(async ()=>await _controller.GetAllByBrand(999),Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find this Brand"));
         }
         
         [Test, Order(4)]
@@ -105,24 +98,43 @@ namespace ShoeAPI_Tests.Controllers
             Assert.AreEqual(1, res[0].Id);
             Assert.AreEqual(2,res[1].Id);
         }
-        
-        [Test, Order(4)]
-        public async Task HttpPost_AddBrandType()
+
+        [Test, Order(5)]
+        public void HttpGet_GetAllByType_NoExistingType()
         {
+            Assert.That(async ()=>await _controller.GetAllByType(999),Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find this Type"));
+        }
+        
+        [Test, Order(6)]
+        public async Task HttpPost_AddBrandType_Success()
+        {
+            IActionResult allBeforeAdding = await _controller.GetAll();
             IActionResult actionResult = await _controller.Add(new BrandType()
             {
                 TypeId = 2,
                 BrandId = 2
             });
-        
-            IActionResult allRes = await _controller.GetAll();
-            var allResData = (allRes as OkObjectResult).Value as List<BrandType>;
-            var res = allResData.OrderBy(bt => bt.Id).ToList();
+            IActionResult allAfterAdding = await _controller.GetAll();
+            var allAfterRes = ((allAfterAdding as OkObjectResult).Value as List<BrandType>).OrderBy(bt => bt.Id).ToList();
+            var allBeforeRes = ((allBeforeAdding as OkObjectResult).Value as List<BrandType>).OrderBy(bt => bt.Id).ToList();
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
-            Assert.AreEqual(4, res.Count);
-            Assert.AreEqual(2, allResData[3].BrandId);
-            Assert.AreEqual(2, allResData[3].TypeId);
+            Assert.AreEqual(allBeforeRes.Count+1, allAfterRes.Count);
+            Assert.AreEqual(2, allAfterRes[3].BrandId);
+            Assert.AreEqual(2, allAfterRes[3].TypeId);
+        }
+        
+        [Test, Order(7)]
+        public async Task HttpPost_AddBrandType_Err_AlreadyExists()
+        {
+            IActionResult allBeforeAdding = await _controller.GetAll();
+            Assert.That(async ()=>await _controller.Add(new BrandType(){TypeId = 1,BrandId = 1}), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same BrandType already exists"));
+            IActionResult allAfterAdding = await _controller.GetAll();
+            var allAfterRes = (allAfterAdding as OkObjectResult).Value as List<BrandType>;
+            var allBeforeRes = (allBeforeAdding as OkObjectResult).Value as List<BrandType>;
+            var res = allAfterRes.OrderBy(bt => bt.Id).ToList();
+            
+            Assert.AreEqual(allBeforeRes.Count, res.Count);
         }
         
         

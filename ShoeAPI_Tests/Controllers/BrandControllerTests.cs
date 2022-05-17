@@ -77,34 +77,57 @@ namespace ShoeAPI_Tests.Controllers
         [Test, Order(3)]
         public void HttpGet_GetById_Error()
         {
-            Assert.That(()=>_controller.GetById(3), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 3"));
+            Assert.That(()=>_controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
         }
 
         [Test, Order(4)]
         public async Task HttpPost_AddBrand()
         {
+            IActionResult allResBefore = await _controller.GetAll();
+            var allResDataBefore = (allResBefore as OkObjectResult).Value as List<Brand>;
+            
             IActionResult actionResult = await _controller.Add(new BrandVM()
             {
                 Name = "Test"
             });
+            
+            
+            IActionResult allResAfter = await _controller.GetAll();
+            var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
 
-            IActionResult allRes = await _controller.GetAll();
-            var allResData = (allRes as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
-            Assert.AreEqual(allResData.Count, 3);
-            Assert.AreEqual("Test", allResData[2].Name);
+            Assert.AreEqual(allResDataBefore.Count+1, allResDataAfter.Count);
+            Assert.AreEqual("Test", allResDataAfter[allResDataAfter.Count-1].Name);
         }
 
         [Test, Order(5)]
-        public async Task HttpPost_AddBrand_Err()
+        public async Task HttpPost_AddBrand_Err_AlreadyExists()
         {
+            IActionResult allResBefore = await _controller.GetAll();
+            var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
+            
+            Assert.That(async ()=> await _controller.Add(new BrandVM() { Name = "Nike" }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Brand already exists"));
+            
+            
+            IActionResult allResAfter = await _controller.GetAll();
+            var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
+            Assert.AreEqual(allResData.Count, allResDataAfter.Count);
+        }
+
+        [Test, Order(5)]
+        public async Task HttpPost_AddBrand_Err_NoWM()
+        {
+            IActionResult allResBefore = await _controller.GetAll();
+            var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
+
             IActionResult actionResult = await _controller.Add(null);
-            IActionResult allRes = await _controller.GetAll();
-            var allResData = (allRes as OkObjectResult).Value as List<Brand>;
+            
+            IActionResult allResAfter = await _controller.GetAll();
+            var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
-            Assert.AreEqual(allResData.Count, 3);
+            Assert.AreEqual(allResData.Count, allResDataAfter.Count);
         }
 
         [Test, Order(6)]
@@ -112,14 +135,14 @@ namespace ShoeAPI_Tests.Controllers
         {
             IActionResult actionResult = await _controller.Update(new BrandVM()
             {
-                Name = "Test"
+                Name = "TestNew"
             }, 1);
             
             IActionResult currBrand = await _controller.GetById(1);
             var currBrandData = (currBrand as OkObjectResult).Value as Brand;
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
-            Assert.AreEqual(currBrandData.Name, "Test");
+            Assert.AreEqual(currBrandData.Name, "TestNew");
         }
 
         [Test, Order(7)]
@@ -131,7 +154,7 @@ namespace ShoeAPI_Tests.Controllers
             var currBrandData = (currBrand as OkObjectResult).Value as Brand;
             
             Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
-            Assert.AreEqual(currBrandData.Name, "Test");
+            Assert.AreEqual(currBrandData.Name, "TestNew");
         }
         
         [Test, Order(8)]
@@ -141,16 +164,26 @@ namespace ShoeAPI_Tests.Controllers
         }
         
         [Test, Order(8)]
+        public void HttpPut_UpdateBrand_Err_WVm_AlreadyExists()
+        {   
+            Assert.That(()=>_controller.Update(new BrandVM() { Name = "Puma" }, 1), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Brand already exists"));
+        }
+        
+        [Test, Order(8)]
         public async Task HttpDelete_DeleteBrand()
         {
+            
+            IActionResult allResBefore = await _controller.GetAll();
+            var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
+
             var actionResult =  await _controller.Delete(1);
             
-            IActionResult allRes = await _controller.GetAll();
-            var allResData = (allRes as OkObjectResult).Value as List<Brand>;
+            IActionResult allResAfter = await _controller.GetAll();
+            var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
             
-            Assert.AreEqual(allResData.Count, 2);
+            Assert.AreEqual(allResData.Count-1, allResDataAfter.Count);
         }
         
         [Test, Order(9)]

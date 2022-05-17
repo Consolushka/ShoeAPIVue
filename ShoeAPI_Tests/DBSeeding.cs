@@ -109,21 +109,21 @@ namespace ShoeAPI_Tests
             {
                 new Good()
                 {
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==1),
+                    TypeId = 1,
                     Name = "Nike v.1",
                     BrandId = 1,
                     PhotoFileName = "undefined.jpg"
                 },
                 new Good()
                 {
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==2),
+                    TypeId = 2,
                     Name = "Nike t-shirt v.1",
                     BrandId = 1,
                     PhotoFileName = "undefined.jpg"
                 },
                 new Good()
                 {
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==1),
+                    TypeId = 1,
                     Name = "Puma v.1",
                     BrandId = 2,
                     PhotoFileName = "undefined.jpg"

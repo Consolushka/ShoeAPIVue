@@ -6,6 +6,7 @@ namespace WebApplication.Data.ViewModels
     {
         public string Name { get; set; }
         public long BrandId { get; set; }
+        public long TypeId { get; set; }
         public string PhotoFileName { get; set; }
     }
 }
