@@ -23,7 +23,7 @@ namespace Shop.Services.ModelServices
 
         public async Task<Order> GetById(long id)
         {
-            await _repository.CheckForExistingId(id);
+            // await _repository.CheckForExistingId(id);
             return await _repository.GetById(id);
         }
 
@@ -38,13 +38,13 @@ namespace Shop.Services.ModelServices
 
         public async Task UpdateStatus(short status, long id)
         {
-            await _repository.CheckForExistingId(id);
+            // await _repository.CheckForExistingId(id);
             await _repository.UpdateStatus(id, status);
         }
 
         public async Task ChangePaidTrigger(bool isPaid, long id)
         {
-            await _repository.CheckForExistingId(id);
+            // await _repository.CheckForExistingId(id);
             await _repository.ChangePaidTrigger(id, isPaid);
         }
     }

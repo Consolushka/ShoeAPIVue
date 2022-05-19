@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Shop.Data.Models;
@@ -26,6 +27,11 @@ namespace Shop.Services.ModelServices
 
         public async Task<Good> GetById(long id)
         {
+            var matched = await _repository.GetById(id);
+            if (matched == null)
+            {
+                throw new Exception($"Cannot find Good with id: {id}");
+            }
             return await _repository.GetById(id);
         }
 
@@ -36,22 +42,41 @@ namespace Shop.Services.ModelServices
             {
                 return null;
             }
+            var matched = await _repository.GetSameGood(good);
+            if (matched != null)
+            {
+                throw new Exception("Same Good already exists");
+            }
             return await _repository.Add(good);
         }
 
         public async Task<Good> Update(GoodVm goodVm, long id)
         {
+            var good = await GetById(id);
+            if (good == null)
+            {
+                throw new Exception($"Cannot find Good with id: {id}");
+            }
             if (goodVm == null)
             {
                 return null;
             }
-            var good = await GetById(id);
             good.FillFromVm(goodVm);
+            var matched = await _repository.GetSameGood(good);
+            if (matched != null)
+            {
+                throw new Exception("Same Good already exists");
+            }
             return await _repository.Update(good);
         }
 
         public async Task Delete(long id)
         {
+            var matched = await _repository.GetById(id);
+            if (matched == null)
+            {
+                throw new Exception($"Cannot find Good with id: {id}");
+            }
             await _repository.Delete(id);
         }
     }

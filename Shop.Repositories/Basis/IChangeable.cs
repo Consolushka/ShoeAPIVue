@@ -7,7 +7,5 @@ namespace Shop.Repositories.Basis
     {
         Task<T> Update(T entity);
         Task Delete(long id);
-        Task<bool> IsAlreadyExists(T entity);
-        Task CheckForExistingId(long id);
     }
 }

@@ -26,19 +26,14 @@ namespace Shop.Services.ModelServices
 
         public async Task<UserResponse> Authenticate(UserVM vm)
         {
-            var users = await _userRepository.GetAll();
-            var pass = Encryption.Encode(vm.Password);
-            var user = users.FirstOrDefault(
-                    x =>
-                        (x.Email == vm.Email || x.UserName == vm.UserName)
-                        &&
-                        x.Password == Encryption.Encode(vm.Password)
-                        &&
-                        x.IsActive);
+            var user = _mapper.Map<User>(vm);
+            user.Password = Encryption.Encode(vm.Password);
 
-            if (user == null)
+            var matched = await _userRepository.GetByUserNameOrEmailAndPassword(user);
+            
+            if (matched == null)
             {
-                return null;
+                throw new Exception("Cannot find User with this login parameters, or your account is unconfirmed");
             }
             
             var token = _configuration.GenerateJwtToken(user);
@@ -48,20 +43,16 @@ namespace Shop.Services.ModelServices
 
         public async Task<User> Register(UserVM userVm)
         {
-            // userVm.Password = _configuration.Encode(userVm.Password);
+            userVm.Password = Encryption.Encode(userVm.Password);
             var user = _mapper.Map<User>(userVm);
+            var thisUser = _userRepository.GetByUsernameOrEmail(user);
+            if (thisUser != null)
+            {
+                throw new Exception("Same User with email or username already exists");
+            }
             user.IsActive = false;
             user.IsAdmin = false;
             user.ConfirmString = Guid.NewGuid();
-            var users = await _userRepository.GetAll();
-            var thisUser = users.FirstOrDefault(u =>
-                u.Email == user.Email
-                ||
-                u.UserName == user.UserName);
-            if (thisUser != null)
-            {
-                return null;
-            }
             var addedUser = await _userRepository.Add(user);
 
             return addedUser;

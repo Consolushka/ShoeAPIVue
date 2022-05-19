@@ -17,26 +17,18 @@ namespace Shop.Repositories.ModelRepositories
         {
         }
 
-        public override async Task<bool> IsAlreadyExists(BrandType brandType)
-        {
-            if (await Context.BrandTypes.FirstOrDefaultAsync(bt =>
-                bt.BrandId == brandType.BrandId && bt.TypeId == brandType.TypeId) == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public override async Task<BrandType> Add(BrandType entity)
         {
-            if (await IsAlreadyExists(entity))
-            {
-                throw new Exception("Same BrandType already exists");
-            }
-
             entity.Brand = await Context.Brands.FindAsync(entity.BrandId);
+            if (entity.Brand == null)
+            {
+                throw new Exception($"Cannot find Brand with id: {entity.BrandId}");
+            }
             entity.Type = await Context.Types.FindAsync(entity.TypeId);
+            if (entity.Type == null)
+            {
+                throw new Exception($"Cannot find Type with id: {entity.TypeId}");
+            }
             
             var res = await Context.AddAsync(entity);
             await Context.SaveChangesAsync();
@@ -84,6 +76,11 @@ namespace Shop.Repositories.ModelRepositories
             if (res == null)
                 throw new Exception($"Cannot find BrandType with id: {id}");
             return res;
+        }
+
+        public async Task<BrandType> GetByBrandAndType(long brandId, long typeId)
+        {
+            return await Context.BrandTypes.FirstOrDefaultAsync(bt => bt.BrandId == brandId && bt.TypeId == typeId);
         }
     }
 }

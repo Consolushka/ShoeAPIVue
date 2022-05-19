@@ -25,7 +25,7 @@ namespace Shop.API.Controllers.V1
         public async Task<IActionResult> Authenticate(UserVM user)
         {
             UserResponse response = await _userService.Authenticate(user);
-
+            //TODO: FIX
             if (response == null)
                 return BadRequest("Username or password is incorrect");
 

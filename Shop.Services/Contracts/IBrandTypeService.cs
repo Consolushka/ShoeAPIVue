@@ -12,6 +12,5 @@ namespace Shop.Services.Contracts
         Task Delete(long id);
         Task<List<Brand>> GetBrandsByType(long id);
         Task<List<Type>> GetTypesByBrand(long id);
-        Task<BrandType> TryToAdd(BrandType brandType);
     }
 }

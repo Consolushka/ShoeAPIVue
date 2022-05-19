@@ -8,6 +8,5 @@ namespace Shop.Repositories.Basis
     {
         Task<List<T>> GetAll();
         Task<T> GetById(long id);
-        Task CheckForExistingId(long id);
     }
 }

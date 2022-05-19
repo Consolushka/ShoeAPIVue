@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.Repositories.Contracts;
@@ -24,17 +25,32 @@ namespace Shop.Services.ModelServices
 
         public async Task<BrandType> Add(BrandType brandType)
         {
+            var matched = await _brandTypeRepository.GetByBrandAndType(brandType.BrandId, brandType.TypeId);
+            if (matched != null)
+            {
+                throw new Exception("Same BrandType already exists");
+            }
             return await _brandTypeRepository.Add(brandType); 
         }
 
         public async Task Delete(long id)
         {
+            var matched =await _brandTypeRepository.GetById(id);
+            if (matched == null)
+            {
+                throw new Exception($"Cannot find BrandType with id: {id}");
+            }
             await _brandTypeRepository.Delete(id);
         }
 
         public async Task<BrandType> GetById(long id)
         {
-            return await _brandTypeRepository.GetById(id);
+            var matched =await _brandTypeRepository.GetById(id);
+            if (matched == null)
+            {
+                throw new Exception($"Cannot find BrandType with id: {id}");
+            }
+            return matched;
         }
         
         public async Task<List<Brand>> GetBrandsByType(long id)
@@ -45,19 +61,6 @@ namespace Shop.Services.ModelServices
         public async Task<List<Type>> GetTypesByBrand(long id)
         {
             return await _brandTypeRepository.GetByBrand(id);
-        }
-
-        public async Task<BrandType> TryToAdd(BrandType brandType)
-        {
-            var all = await _brandTypeRepository.GetAll();
-            var matched = all.Find((bt) => bt.Brand == brandType.Brand && bt.Type == brandType.Type);
-            if (matched == null)
-            {
-                // _brandRepository.
-                return await _brandTypeRepository.Add(brandType);
-            }
-
-            return null;
         }
     }
 }

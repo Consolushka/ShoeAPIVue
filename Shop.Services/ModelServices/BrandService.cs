@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Shop.Data.Models;
@@ -24,30 +25,50 @@ namespace Shop.Services.ModelServices
             return await _brandRepository.GetAll();
         }
 
-        public async Task<Brand> GetById(long Id)
+        public async Task<Brand> GetById(long id)
         {
-            return await _brandRepository.GetById(Id);
+            var res = await _brandRepository.GetById(id);
+            if (res == null)
+            {
+                throw new Exception($"Cannot find Brand with id: {id}");
+            }
+            return res;
         }
 
         public async Task<Brand> Add(BrandVM brandVm)
         {
-            var brand = _mapper.Map<Brand>(brandVm);
-            if (brand == null)
+            var sameBrand = await _brandRepository.GetByName(brandVm.Name);
+            if (sameBrand != null)
             {
-                return null;
+                throw new Exception($"Same Brand already exists");
             }
+            var brand = _mapper.Map<Brand>(brandVm);
             return await _brandRepository.Add(brand);
         }
 
         public async Task<Brand> Update(BrandVM brandVm, long id)
         {
+            var sameBrand = await _brandRepository.GetByName(brandVm.Name);
+            if (sameBrand != null)
+            {
+                throw new Exception($"Same Brand already exists");
+            }
             var brand = await GetById(id);
+            if (brand == null)
+            {
+                throw new Exception($"Cannot find Brand with id: {id}");
+            }
             brand.Name = brandVm.Name;
             return await _brandRepository.Update(brand);
         }
 
         public async Task Delete(long id)
         {
+            var brand = await GetById(id);
+            if (brand == null)
+            {
+                throw new Exception($"Cannot find Brand with id: {id}");
+            }
             await _brandRepository.Delete(id);
         }
     }

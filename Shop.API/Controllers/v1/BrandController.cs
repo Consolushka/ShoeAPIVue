@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Shop.Services.Contracts;
 using Shop.API.Core;
 
@@ -38,11 +39,11 @@ namespace Shop.API.Controllers.V1
         [HttpPost("add")]
         public async Task<IActionResult> Add(BrandVM brand)
         {
-            Brand res = await _brandService.Add(brand);
-            if (res == null)
+            if (brand.Name.IsNullOrEmpty())
             {
-                return BadRequest();
+                return BadRequest("Null entity");
             }
+            Brand res = await _brandService.Add(brand);
             return Ok();
         }
 
@@ -50,11 +51,11 @@ namespace Shop.API.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(BrandVM brandVm, long id)
         {
-            Brand res =await _brandService.Update(brandVm, id);
-            if (res == null)
+            if (brandVm.Name.IsNullOrEmpty())
             {
-                return BadRequest();
+                return BadRequest("Null entity");
             }
+            Brand res =await _brandService.Update(brandVm, id);
             return Ok();
         }
 

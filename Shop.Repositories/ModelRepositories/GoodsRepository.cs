@@ -16,15 +16,10 @@ namespace Shop.Repositories.ModelRepositories
         {
         }
 
-        public override async Task<bool> IsAlreadyExists(Good good)
+        public async Task<Good> GetSameGood(Good good)
         {
-            if (await Context.Goods.FirstOrDefaultAsync(g =>
-                g.Name == good.Name && g.BrandId == good.BrandId && g.TypeId == good.TypeId) == null)
-            {
-                return false;
-            }
-
-            return true;
+            return await Context.Goods.FirstOrDefaultAsync(g =>
+                g.Name == good.Name && g.BrandId == good.BrandId && g.TypeId == good.TypeId);
         }
 
         public override async Task<List<Good>> GetAll()
@@ -34,10 +29,7 @@ namespace Shop.Repositories.ModelRepositories
 
         public override async Task<Good> GetById(long id)
         {
-            var res = await Context.Goods.Include(s=>s.Brand).Include(s=>s.Type).FirstOrDefaultAsync(t => t.Id == id); 
-            if (res == null)
-                throw new Exception($"Cannot find Good with id: {id}");
-            return res;
+            return await Context.Goods.Include(s=>s.Brand).Include(s=>s.Type).FirstOrDefaultAsync(t => t.Id == id);
         }
     }
 }

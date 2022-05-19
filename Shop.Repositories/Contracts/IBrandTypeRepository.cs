@@ -10,5 +10,6 @@ namespace Shop.Repositories.Contracts
     {
         Task<List<Type>> GetByBrand(long brandId);
         Task<List<Brand>> GetByType(long brandId);
+        Task<BrandType> GetByBrandAndType(long brandId, long typeId);
     }
 }

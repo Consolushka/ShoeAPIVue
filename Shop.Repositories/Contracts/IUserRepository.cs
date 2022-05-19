@@ -9,5 +9,7 @@ namespace Shop.Repositories.Contracts
     {
         Task<User> GetByKey(Guid key);
         void ConfirmUser(User user);
+        Task<User> GetByUserNameOrEmailAndPassword(User user);
+        Task<User> GetByUsernameOrEmail(User user);
     }
 }

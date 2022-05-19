@@ -27,6 +27,25 @@ namespace Shop.Repositories.ModelRepositories
             return await Context.Users.FirstOrDefaultAsync(u => u.ConfirmString == key && u.IsActive == false);
         }
 
+        public async Task<User> GetByUserNameOrEmailAndPassword(User user)
+        {
+            return await Context.Users.FirstOrDefaultAsync(
+                x =>
+                    (x.Email == user.Email || x.UserName == user.UserName)
+                    &&
+                    x.Password == user.Password
+                    &&
+                    x.IsActive);
+        }
+
+        public async Task<User> GetByUsernameOrEmail(User user)
+        {
+            return await Context.Users.FirstOrDefaultAsync(u =>
+                u.Email == user.Email
+                ||
+                u.UserName == user.UserName);
+        }
+
         public void ConfirmUser(User user)
         {
             user.IsActive = true;

@@ -8,7 +8,7 @@ namespace Shop.Services.Contracts
     public interface IBrandService
     {
         Task<List<Brand>> GetAll();
-        Task<Brand> GetById(long Id);
+        Task<Brand> GetById(long id);
         Task<Brand> Add(BrandVM brandVm);
         Task<Brand> Update(BrandVM brandVm, long id);
         Task Delete(long id);

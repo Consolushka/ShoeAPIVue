@@ -1,10 +1,11 @@
-﻿using Shop.Data.Models;
+﻿using System.Threading.Tasks;
+using Shop.Data.Models;
 using Shop.Repositories.Basis;
 
 namespace Shop.Repositories.Contracts
 {
     public interface IBrandRepository: IBaseRepository<Brand>
     {
-        
+        Task<Brand> GetByName(string name);
     }
 }

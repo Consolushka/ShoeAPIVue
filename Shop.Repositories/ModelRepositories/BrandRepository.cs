@@ -42,7 +42,6 @@ namespace Shop.Repositories.ModelRepositories
 
         public override async Task<Brand> GetById(long id)
         {
-            await CheckForExistingId(id);
             var res = await Context.Brands.Include(e => e.Goods).FirstOrDefaultAsync(b=>b.Id==id);
             List<BrandType> brandTypes = await Context.BrandTypes.Where(bt=>bt.BrandId==id).Include(e => e.Brand).Include(e=>e.Type).ToListAsync();
             foreach (var brandGood in res.Goods)
@@ -61,14 +60,9 @@ namespace Shop.Repositories.ModelRepositories
             return res;
         }
 
-        public override async Task<bool> IsAlreadyExists(Brand brand)
+        public async Task<Brand> GetByName(string name)
         {
-            if (await Context.Brands.FirstOrDefaultAsync(b => b.Name == brand.Name) == null)
-            {
-                return false;
-            }
-
-            return true;
+            return await Context.Brands.FirstOrDefaultAsync(b => b.Name == name);
         }
     }
 }

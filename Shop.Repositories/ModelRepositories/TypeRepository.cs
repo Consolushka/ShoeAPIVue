@@ -14,11 +14,9 @@ namespace Shop.Repositories.ModelRepositories
         {
         }
 
-        public override async Task<bool> IsAlreadyExists(Type type)
+        public async Task<Type> GetSameType(Type type)
         {
-            if (await Context.Types.FirstOrDefaultAsync(t => t.Name == type.Name) == null)
-                return false;
-            return true;
+            return await Context.Types.FirstOrDefaultAsync(t => t.Name == type.Name);
         }
         //
         // public override async Task<List<Type>> GetAll()

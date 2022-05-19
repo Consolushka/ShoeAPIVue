@@ -4,7 +4,7 @@ using Shop.Data;
 
 namespace Shop.Repositories.Basis
 {
-    public interface IBaseRepository<T>: IGettable<T>, IAddable<T>, IChangeable<T>, ICheckable<T> where T: Base 
+    public interface IBaseRepository<T>: IGettable<T>, IAddable<T>, IChangeable<T> where T: Base 
     {
         
     }

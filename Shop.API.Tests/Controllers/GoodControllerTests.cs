@@ -15,6 +15,7 @@ using Shop.Services.ModelServices;
 using Shop.API.Controllers.V1;
 using Mapper = Shop.MiddleWare.Mapper;
 
+//TODO: Add new Tests
 namespace Shop.API.Tests.Controllers
 {
     public class GoodControllerTests
