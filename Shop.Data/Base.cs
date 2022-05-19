@@ -1,4 +1,4 @@
-﻿namespace Shop.Data.Models
+﻿namespace Shop.Data
 {
     public abstract class Base
     {

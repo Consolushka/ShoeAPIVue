@@ -2,15 +2,15 @@
 using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.DataBase;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 
 namespace Shop.Repositories.ModelRepositories
 {
     internal class LogRepository: BaseRepository<Log>, ILogRepository
     {
-        public LogRepository(ShopContext context)
+        public LogRepository(ShopContext context) : base(context)
         {
-            Context = context;
         }
 
         public new Task<Log> Add(Log log)

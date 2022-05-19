@@ -1,5 +1,6 @@
 ﻿using Shop.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 using Shop.Repositories.ModelRepositories;
 using Type = Shop.Data.Models.Type;
@@ -27,6 +28,8 @@ namespace Shop.Repositories
             
             services.AddScoped<BaseRepository<Type>,TypeRepository>();
             services.AddScoped<ITypeRepository, TypeRepository>();
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.DataBase;
 using Microsoft.EntityFrameworkCore;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 
 namespace Shop.Repositories.ModelRepositories
@@ -11,9 +12,8 @@ namespace Shop.Repositories.ModelRepositories
     internal class GoodsRepository : BaseRepository<Good>, IGoodsRepository
     {
 
-        public GoodsRepository(ShopContext context)
+        public GoodsRepository(ShopContext context) : base(context)
         {
-            Context = context;
         }
 
         public override async Task<bool> IsAlreadyExists(Good good)

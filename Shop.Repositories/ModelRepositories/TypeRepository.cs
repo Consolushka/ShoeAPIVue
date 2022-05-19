@@ -2,6 +2,7 @@
 using Shop.Data.Models;
 using Shop.DataBase;
 using Microsoft.EntityFrameworkCore;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 using Type = Shop.Data.Models.Type;
 
@@ -9,9 +10,8 @@ namespace Shop.Repositories.ModelRepositories
 {
     internal class TypeRepository: BaseRepository<Type>, ITypeRepository
     {
-        public TypeRepository(ShopContext context)
+        public TypeRepository(ShopContext context) : base(context)
         {
-            Context = context;
         }
 
         public override async Task<bool> IsAlreadyExists(Type type)

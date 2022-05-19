@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.DataBase;
 using Microsoft.EntityFrameworkCore;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 using Type = Shop.Data.Models.Type;
 
@@ -12,9 +13,8 @@ namespace Shop.Repositories.ModelRepositories
 {
     internal class BrandTypeRepository: BaseRepository<BrandType>, IBrandTypeRepository
     {
-        public BrandTypeRepository(ShopContext context)
+        public BrandTypeRepository(ShopContext context) : base(context)
         {
-            Context = context;
         }
 
         public override async Task<bool> IsAlreadyExists(BrandType brandType)

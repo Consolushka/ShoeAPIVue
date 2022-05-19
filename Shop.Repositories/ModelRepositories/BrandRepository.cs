@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.DataBase;
 using Microsoft.EntityFrameworkCore;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 using Type = Shop.Data.Models.Type;
 
 namespace Shop.Repositories.ModelRepositories
 {
     internal class BrandRepository: BaseRepository<Brand>, IBrandRepository
-    {   
-        public BrandRepository(ShopContext context)
+    {
+        public BrandRepository(ShopContext context) : base(context)
         {
-            Context = context;
         }
 
         public override async Task<List<Brand>> GetAll()

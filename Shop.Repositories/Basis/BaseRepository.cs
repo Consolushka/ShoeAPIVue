@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Shop.Data.Models;
+using Shop.Data;
 using Shop.DataBase;
 using Microsoft.EntityFrameworkCore;
 
-namespace Shop.Repositories
+namespace Shop.Repositories.Basis
 {
     internal class BaseRepository<T>: IBaseRepository<T> where T:Base
     {
         protected ShopContext Context;
+
+        public BaseRepository(ShopContext _context)
+        {
+            Context = _context;
+        }
 
         public virtual async Task<List<T>> GetAll()
         {

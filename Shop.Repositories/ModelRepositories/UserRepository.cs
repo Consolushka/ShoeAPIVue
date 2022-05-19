@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.DataBase;
 using Microsoft.EntityFrameworkCore;
+using Shop.Repositories.Basis;
 using Shop.Repositories.Contracts;
 
 namespace Shop.Repositories.ModelRepositories
@@ -10,9 +11,8 @@ namespace Shop.Repositories.ModelRepositories
     internal class UserRepository: BaseRepository<User>, IUserRepository
     {
 
-        public UserRepository(ShopContext context)
+        public UserRepository(ShopContext context) : base(context)
         {
-            Context = context;
         }
 
         public new async Task<User> Add(User entity)

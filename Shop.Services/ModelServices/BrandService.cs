@@ -42,10 +42,6 @@ namespace Shop.Services.ModelServices
         public async Task<Brand> Update(BrandVM brandVm, long id)
         {
             var brand = await GetById(id);
-            if (brandVm == null)
-            {
-                return null;
-            }
             brand.Name = brandVm.Name;
             return await _brandRepository.Update(brand);
         }

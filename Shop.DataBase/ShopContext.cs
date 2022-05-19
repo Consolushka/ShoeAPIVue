@@ -6,7 +6,8 @@ namespace Shop.DataBase
 {
     public class ShopContext: DbContext
     {
-        
+        //dotnet ef --startup-project Shop.Api/Shop.Api.csproj migrations add AddedOrders -p Shop.DataBase/Shop.DataBase.csproj
+        //dotnet ef --startup-project Shop.Api/Shop.Api.csproj database update
         public ShopContext(DbContextOptions<ShopContext> options)
             : base(options)
         {
@@ -17,5 +18,6 @@ namespace Shop.DataBase
         public DbSet<Log> Logs { get; set; }
         public DbSet<Type> Types { get; set; }
         public DbSet<BrandType> BrandTypes { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
