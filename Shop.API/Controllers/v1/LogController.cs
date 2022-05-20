@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shop.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,23 +23,35 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            IEnumerable<Log> res =  await _logService.GetAll();
-
-            return Ok(res);
+            return Ok(await _logService.GetAll());
         }
 
         [HttpGet("get-by-id")]
         public IActionResult GetById(long id)
         {
-            return Ok(_logService.GetById(id));
+            try
+            {
+                return Ok(_logService.GetById(id));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
-            _logService.Delete(id);
-            return Ok();
+            try
+            {
+                _logService.Delete(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Shop.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Services.Contracts;
@@ -22,16 +23,21 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            var res =  await _service.GetAll();
-
-            return Ok(res);
+            return Ok(await _service.GetAll());
         }
 
         [MapToApiVersion("1.0")]
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            return Ok(await _service.GetById(id));
+            try
+            {
+                return Ok(await _service.GetById(id));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
@@ -39,12 +45,14 @@ namespace Shop.API.Controllers.V1
         [HttpPost("add")]
         public async Task<IActionResult> Add(TypeVM type)
         {
-            var res =await _service.Add(type);
-            if (res == null)
+            try
             {
-                return BadRequest("Server Error");
+                return Ok(await _service.Add(type));
             }
-            return Ok();
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
@@ -52,12 +60,15 @@ namespace Shop.API.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(TypeVM typeVm, long id)
         {
-            var res =await _service.Update(typeVm, id);
-            if (res == null)
+            try
             {
-                return BadRequest("Server Error");
+                await _service.Update(typeVm, id);
+                return Ok();
             }
-            return Ok();
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
@@ -65,8 +76,15 @@ namespace Shop.API.Controllers.V1
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            await _service.Delete(id);
-            return Ok();
+            try
+            {
+                await _service.Delete(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

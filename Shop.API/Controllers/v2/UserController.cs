@@ -39,10 +39,7 @@ namespace Shop.API.Controllers.V2
         public IActionResult ConfirmRegistration(string key)
         {
             var Gkey = Guid.Parse(key);
-            if (_userService.ConfirmUser(Gkey).Result)
-            {
-                return Ok();   
-            }
+            _userService.ConfirmUser(Gkey);
             
             return BadRequest();
         }

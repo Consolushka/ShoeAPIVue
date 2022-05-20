@@ -10,7 +10,7 @@ namespace Shop.Services.Contracts
     {
         Task<UserResponse> Authenticate(UserVM vm);
         Task<User> Register(UserVM userVm);
-        Task<bool> ConfirmUser(Guid key);
+        Task ConfirmUser(Guid key);
         Task<List<User>> GetAll();
         User GetById(long Id);
         Task<User> Update(UserVM user, long id);

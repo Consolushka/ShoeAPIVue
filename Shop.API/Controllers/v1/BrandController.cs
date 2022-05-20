@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.Data.ViewModels;
@@ -24,15 +25,20 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            IEnumerable<Brand> res =  await _brandService.GetAll();
-
-            return Ok(res);
+            return Ok(await _brandService.GetAll());
         }
 
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            return Ok(await _brandService.GetById(id));
+            try
+            {
+                return Ok(await _brandService.GetById(id));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
@@ -43,8 +49,14 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            Brand res = await _brandService.Add(brand);
-            return Ok();
+            try
+            {
+                return Ok(await _brandService.Add(brand));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
@@ -55,16 +67,31 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            Brand res =await _brandService.Update(brandVm, id);
-            return Ok();
+            try
+            {
+                await _brandService.Update(brandVm, id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            await _brandService.Delete(id);
-            return Ok();
+            Brand res = null;
+            try
+            {
+                await _brandService.Delete(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

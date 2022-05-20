@@ -24,68 +24,82 @@ namespace Shop.API.Controllers.V1
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(UserVM user)
         {
-            UserResponse response = await _userService.Authenticate(user);
-            //TODO: FIX
-            if (response == null)
-                return BadRequest("Username or password is incorrect");
-
-            return Ok(response);
+            try
+            {
+                return Ok(await _userService.Authenticate(user));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserVM userVm)
         {
-            User response = await _userService.Register(userVm);
-            
-            if (response!=null)
+            try
             {
+                User response = await _userService.Register(userVm);
                 MailSender.ConfirmRegistration(response);
                 return Ok();
             }
-            
-            return BadRequest("User with this Email already exists");
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpPost("confirm-registration")]
         public async Task<IActionResult> ConfirmRegistration(string key)
         {
-            var Gkey = Guid.Parse(key);
-            if (await _userService.ConfirmUser(Gkey))
+            try
             {
-                return Ok();   
+                var Gkey = Guid.Parse(key);
+                await _userService.ConfirmUser(Gkey);
+                return Ok();
             }
-            
-            return BadRequest();
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpGet("get-by-id")]
         public IActionResult GetById(int id)
         {
-            UserResponse u = new UserResponse(_userService.GetById(id));
-            return Ok(u);
+            try
+            {
+                return Ok(new UserResponse(_userService.GetById(id)));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(UserVM userVm, long id)
         {
-            User u =await _userService.Update(userVm, id);
-            if (u == null)
+            try
             {
-                return BadRequest("Cannot find your Account");
-            }
+                User u =await _userService.Update(userVm, id);
             
-            MailSender.ConfirmUpdate(u);
-            return Ok();
+                MailSender.ConfirmUpdate(u);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            IEnumerable<User> users = await _userService.GetAll();
-            return Ok(users);
+            return Ok(await _userService.GetAll());
         }
     }
 }

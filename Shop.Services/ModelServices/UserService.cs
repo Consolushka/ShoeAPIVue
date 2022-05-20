@@ -58,16 +58,15 @@ namespace Shop.Services.ModelServices
             return addedUser;
         }
 
-        public async Task<bool> ConfirmUser(Guid key)
+        public async Task ConfirmUser(Guid key)
         {
             var user = await _userRepository.GetByKey(key);
             if (user != null)
             {
                 _userRepository.ConfirmUser(user);
-                return true;
             }
 
-            return false;
+            throw new Exception("Cannot find user with this Confirm Key");
         }
 
         public async Task<List<User>> GetAll()

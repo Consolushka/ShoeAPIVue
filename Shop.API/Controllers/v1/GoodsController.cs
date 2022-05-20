@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Shop.Data.Models;
@@ -27,48 +28,64 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            IEnumerable<Good> res =  await _service.GetAll();
-
-            return Ok(res);
+            return Ok(await _service.GetAll());
         }
 
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            return Ok(await _service.GetById(id));
+            try
+            {
+                return Ok(await _service.GetById(id));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
         [HttpPost("add")]
         public async Task<IActionResult> Add(GoodVm goodVm)
         {
-            Good res = await _service.Add(goodVm);
-            if (res == null)
+            try
             {
-                return BadRequest();
+                return Ok(await _service.Add(goodVm));
             }
-            return Ok();
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(GoodVm good, long id)
         {
-            Good res = await _service.Update(good, id);
-            
-            if (res == null)
+            try
             {
-                return BadRequest();
+                await _service.Update(good, id);
+                return Ok();
             }
-            return Ok(res);
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            await _service.Delete(id);
-            return Ok();
+            try
+            {
+                await _service.Delete(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
         
         [Admin]
