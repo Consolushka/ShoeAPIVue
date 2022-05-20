@@ -45,7 +45,7 @@ namespace Shop.API.Controllers.V1
         [HttpPost("add")]
         public async Task<IActionResult> Add(BrandVM brand)
         {
-            if (brand.Name.IsNullOrEmpty())
+            if (brand == null)
             {
                 return BadRequest("Null entity");
             }
@@ -63,7 +63,7 @@ namespace Shop.API.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(BrandVM brandVm, long id)
         {
-            if (brandVm.Name.IsNullOrEmpty())
+            if (brandVm==null)
             {
                 return BadRequest("Null entity");
             }

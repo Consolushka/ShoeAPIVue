@@ -27,12 +27,14 @@ namespace Shop.Services.ModelServices
 
         public async Task<Brand> GetById(long id)
         {
-            var res = await _brandRepository.GetById(id);
-            if (res == null)
+            try
             {
-                throw new Exception($"Cannot find Brand with id: {id}");
+                return await _brandRepository.GetById(id);
             }
-            return res;
+            catch (System.NullReferenceException ex)
+            {
+                throw new System.NullReferenceException($"Cannot find Brand with id: {id}");
+            }
         }
 
         public async Task<Brand> Add(BrandVM brandVm)

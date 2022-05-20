@@ -75,9 +75,15 @@ namespace Shop.API.Tests.Controllers
         }
         
         [Test, Order(3)]
-        public void HttpGet_GetById_Error()
+        public async Task HttpGet_GetById_Error()
         {
-            Assert.That(()=>_controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
+            IActionResult actionResult = await _controller.GetById(999);
+            
+            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+            var responseData = (actionResult as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Cannot find Brand with id: 999", responseData.Message);
         }
 
         [Test, Order(4)]
@@ -90,15 +96,18 @@ namespace Shop.API.Tests.Controllers
             {
                 Name = "Test"
             });
+
+            var responseData = (actionResult as OkObjectResult).Value as Brand;
             
             
             IActionResult allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
 
             
-            Assert.That(actionResult, Is.TypeOf<OkResult>());
+            Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             Assert.AreEqual(allResDataBefore.Count+1, allResDataAfter.Count);
-            Assert.AreEqual("Test", allResDataAfter[allResDataAfter.Count-1].Name);
+            
+            Assert.AreEqual("Test",responseData.Name);
         }
 
         [Test, Order(5)]
@@ -106,8 +115,11 @@ namespace Shop.API.Tests.Controllers
         {
             IActionResult allResBefore = await _controller.GetAll();
             var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
+
+            IActionResult addedBrand = await _controller.Add(new BrandVM() { Name = "Nike" });
+            var responseData = (addedBrand as BadRequestObjectResult).Value as Exception;
             
-            Assert.That(async ()=> await _controller.Add(new BrandVM() { Name = "Nike" }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Brand already exists"));
+            Assert.AreEqual("Same Brand already exists", responseData.Message);
             
             
             IActionResult allResAfter = await _controller.GetAll();
@@ -126,7 +138,11 @@ namespace Shop.API.Tests.Controllers
             IActionResult allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             
-            Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
+            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+            var responseData = (actionResult as BadRequestObjectResult).Value as string;
+            Assert.AreEqual("Null entity", responseData);
+            
             Assert.AreEqual(allResData.Count, allResDataAfter.Count);
         }
 
@@ -148,25 +164,45 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(7)]
         public async Task HttpPut_UpdateBrand_Err_WoVM()
         {
+            var prevBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
+            
             IActionResult actionResult = await _controller.Update(null, 1);
             
             IActionResult currBrand = await _controller.GetById(1);
             var currBrandData = (currBrand as OkObjectResult).Value as Brand;
             
-            Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
-            Assert.AreEqual(currBrandData.Name, "TestNew");
+            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+            var responseData = (actionResult as BadRequestObjectResult).Value as string;
+            Assert.AreEqual("Null entity", responseData);
+            Assert.AreEqual(currBrandData.Name, prevBrand.Name);
         }
         
         [Test, Order(8)]
-        public void HttpPut_UpdateBrand_Err_WVm_WithOutExistingId()
+        public async Task HttpPut_UpdateBrand_Err_WVm_WithOutExistingId()
         {   
-            Assert.That(()=>_controller.Update(new BrandVM() { Name = "Test1" }, 999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
+            IActionResult actionResult = await _controller.Update(new BrandVM() { Name = "Test1" }, 999);
+            
+            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+            var responseData = (actionResult as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Cannot find Brand with id: 999", responseData.Message);
         }
         
         [Test, Order(8)]
-        public void HttpPut_UpdateBrand_Err_WVm_AlreadyExists()
-        {   
-            Assert.That(()=>_controller.Update(new BrandVM() { Name = "Puma" }, 1), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Brand already exists"));
+        public async Task HttpPut_UpdateBrand_Err_WVm_AlreadyExists()
+        {
+            var prevBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
+            
+            IActionResult addedBrand = await _controller.Update(new BrandVM() { Name = "Puma" }, 1);
+            var responseData = (addedBrand as BadRequestObjectResult).Value as Exception;
+            
+            var newBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
+            
+            Assert.AreEqual("Same Brand already exists", responseData.Message);
+            
+            Assert.AreEqual(prevBrand.Name, newBrand.Name);
         }
         
         [Test, Order(8)]
@@ -187,9 +223,15 @@ namespace Shop.API.Tests.Controllers
         }
         
         [Test, Order(9)]
-        public void HttpDeleteBrand_WithOut_ExistingId()
+        public async Task HttpDeleteBrand_WithOut_ExistingId()
         {
-            Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
+            IActionResult actionResult = await _controller.Delete(999);
+            
+            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+            var responseData = (actionResult as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Cannot find Brand with id: 999", responseData.Message);
         }
         
         [OneTimeTearDown]
