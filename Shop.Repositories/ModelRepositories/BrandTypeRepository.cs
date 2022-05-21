@@ -43,10 +43,6 @@ namespace Shop.Repositories.ModelRepositories
         public async Task<List<Type>> GetByBrand(long id)
         {
             var res = new List<Type>();
-            if (await Context.Brands.FindAsync(id) == null)
-            {
-                throw new Exception("Cannot find this Brand");
-            }
             var brandTypes = await Context.BrandTypes.Where(bt => bt.Brand.Id == id).Include(t=>t.Type).ToListAsync();
             foreach (var brandType in brandTypes)
             {
@@ -58,10 +54,6 @@ namespace Shop.Repositories.ModelRepositories
         public async Task<List<Brand>> GetByType(long typeId)
         {
             var res = new List<Brand>();
-            if (await Context.Types.FindAsync(typeId) == null)
-            {
-                throw new Exception("Cannot find this Type");
-            }
             var brandTypes = await Context.BrandTypes.Where(bt => bt.Type.Id == typeId).Include(t=>t.Brand).ToListAsync();
             foreach (var brandType in brandTypes)
             {

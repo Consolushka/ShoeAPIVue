@@ -63,11 +63,6 @@ namespace Shop.API.Tests.Controllers
         public async Task HttpGet_GetAllByBrand()
         {
             IActionResult actionResult = await _controller.GetAllByBrand(1);
-
-            if (actionResult == null)
-            {
-                Assert.AreEqual(2,1);
-            }
             
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             
@@ -78,12 +73,6 @@ namespace Shop.API.Tests.Controllers
             
             Assert.AreEqual(1, res[0].Id);
             Assert.AreEqual(2,res[1].Id);
-        }
-        
-        [Test, Order(3)]
-        public void HttpGet_GetAllByBrand_NotExistingBrandId()
-        {   
-            Assert.That(async ()=>await _controller.GetAllByBrand(999),Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find this Brand"));
         }
         
         [Test, Order(4)]
@@ -101,12 +90,6 @@ namespace Shop.API.Tests.Controllers
             Assert.AreEqual(1, res[0].Id);
             Assert.AreEqual(2,res[1].Id);
         }
-
-        [Test, Order(5)]
-        public void HttpGet_GetAllByType_NoExistingType()
-        {
-            Assert.That(async ()=>await _controller.GetAllByType(999),Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find this Type"));
-        }
         
         [Test, Order(6)]
         public async Task HttpPost_AddBrandType_Success()
@@ -121,7 +104,7 @@ namespace Shop.API.Tests.Controllers
             var allAfterRes = ((allAfterAdding as OkObjectResult).Value as List<BrandType>).OrderBy(bt => bt.Id).ToList();
             var allBeforeRes = ((allBeforeAdding as OkObjectResult).Value as List<BrandType>).OrderBy(bt => bt.Id).ToList();
             
-            Assert.That(actionResult, Is.TypeOf<OkResult>());
+            Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             Assert.AreEqual(allBeforeRes.Count+1, allAfterRes.Count);
             Assert.AreEqual(2, allAfterRes[3].BrandId);
             Assert.AreEqual(2, allAfterRes[3].TypeId);
@@ -131,13 +114,17 @@ namespace Shop.API.Tests.Controllers
         public async Task HttpPost_AddBrandType_Err_AlreadyExists()
         {
             IActionResult allBeforeAdding = await _controller.GetAll();
-            Assert.That(async ()=>await _controller.Add(new BrandType(){TypeId = 1,BrandId = 1}), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same BrandType already exists"));
+
+            var res = (await _controller.Add(new BrandType() { TypeId = 1, BrandId = 1 }) as BadRequestObjectResult)
+                .Value as Exception;
+            
+            Assert.AreEqual("Same BrandType already exists", res.Message);
+            
             IActionResult allAfterAdding = await _controller.GetAll();
             var allAfterRes = (allAfterAdding as OkObjectResult).Value as List<BrandType>;
             var allBeforeRes = (allBeforeAdding as OkObjectResult).Value as List<BrandType>;
-            var res = allAfterRes.OrderBy(bt => bt.Id).ToList();
             
-            Assert.AreEqual(allBeforeRes.Count, res.Count);
+            Assert.AreEqual(allBeforeRes.Count, allAfterRes.Count);
         }
         
         
