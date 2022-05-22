@@ -65,25 +65,38 @@ namespace Shop.API.Tests.Controllers
         }
 
         [Test]
-        public void HttpPost_Authenticate_IncorrectPasswordOrUser()
+        public async Task HttpPost_Authenticate_IncorrectPasswordOrUser()
         {
-            Assert.That(async ()=>await _controller.Authenticate(new UserVM()
+            var res = await _controller.Authenticate(new UserVM()
             {
                 Email = "consolushka@gmail.com",
                 Password = "admin123",
                 UserName = "admin"
-            }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find User with this login parameters, or your account is unconfirmed"));
+            });
+            
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+
+            var resData = (res as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Cannot find User with this login parameters, or your account is unconfirmed", resData.Message);
         }
 
         [Test]
-        public void HttpPost_Register_Err()
+        public async Task HttpPost_Register_Err()
         {   
-            Assert.That(async ()=>await _controller.Register(new UserVM()
+            
+            var res = await _controller.Register(new UserVM()
             {
                 Email = "consolushka@gmail.com",
                 Password = "admin123",
                 UserName = "admin"
-            }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same User with email or username already exists"));
+            });
+            
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+
+            var resData = (res as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Same User with email or username already exists", resData.Message);
         }
 
         [Test]

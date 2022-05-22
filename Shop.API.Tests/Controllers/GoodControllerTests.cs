@@ -73,9 +73,13 @@ namespace Shop.API.Tests.Controllers
         }
 
         [Test, Order(3)]
-        public void HttpGet_GetById_Err()
+        public async Task HttpGet_GetById_Err()
         {
-            Assert.That(()=> _controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
+            var res = await _controller.GetById(999);
+            
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+            var actionDate = (res as BadRequestObjectResult).Value as Exception;
+            Assert.AreEqual("Cannot find Good with id: 999", actionDate.Message);
         }
 
         [Test, Order(4)]
@@ -92,10 +96,17 @@ namespace Shop.API.Tests.Controllers
             });
             var afterData = ((await _controller.GetAll() as OkObjectResult).Value as List<Good>).OrderBy(g=>g.Id).ToList();
             
-            Assert.That(res, Is.TypeOf<OkResult>());
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
             
             Assert.AreEqual(beforeData.Count+1, afterData.Count);
             Assert.AreEqual("Test", afterData.Last().Name);
+            
+            var addedGood = (res as OkObjectResult).Value as Good;
+            
+            Assert.AreEqual("Test", addedGood.Name);
+            Assert.AreEqual(1, addedGood.BrandId);
+            Assert.AreEqual(1, addedGood.TypeId);
+            Assert.AreEqual("undefined.png", addedGood.PhotoFileName);
         }
 
         [Test, Order(5)]
@@ -107,7 +118,11 @@ namespace Shop.API.Tests.Controllers
             
             var afterData = ((await _controller.GetAll() as OkObjectResult).Value as List<Good>).OrderBy(g=>g.Id).ToList();
             
-            Assert.That(res, Is.TypeOf<BadRequestResult>());
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+
+            var resData = (res as BadRequestObjectResult).Value as string;
+            
+            Assert.AreEqual("Null entity", resData);
             
             Assert.AreEqual(beforeData.Count, afterData.Count);
         }
@@ -115,14 +130,20 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(5)]
         public async Task HttpPost_AddGood_Err_Exists()
         {   
-            var beforeData = (await _controller.GetAll() as OkObjectResult).Value as List<Good>; 
-            
-            Assert.That(async ()=>await _controller.Add(new GoodVm(){
+            var beforeData = (await _controller.GetAll() as OkObjectResult).Value as List<Good>;
+
+            var response = await _controller.Add(new GoodVm()
+            {
                 Name = "Nike v.1",
                 BrandId = 1,
                 TypeId = 1,
                 PhotoFileName = "undefined.png"
-            }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Good already exists"));
+            });
+            
+            Assert.That(response, Is.TypeOf<BadRequestObjectResult>());
+
+            var responseData = (response as BadRequestObjectResult).Value as Exception;
+            Assert.AreEqual("Same Good already exists", responseData.Message);
             
             var afterData = ((await _controller.GetAll() as OkObjectResult).Value as List<Good>).OrderBy(g=>g.Id).ToList();
             
@@ -140,9 +161,9 @@ namespace Shop.API.Tests.Controllers
                 PhotoFileName = "undefined1.png"
             }, 3);
             
-            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            Assert.That(res, Is.TypeOf<OkResult>());
 
-            var resData = (res as OkObjectResult).Value as Good;
+            var resData = (await _controller.GetById(3) as OkObjectResult).Value as Good;
             
             Assert.AreEqual(3, resData.Id);
             Assert.AreEqual(2, resData.BrandId);
@@ -156,32 +177,46 @@ namespace Shop.API.Tests.Controllers
         {
             var res = await _controller.Update(null, 1);
             
-            Assert.That(res, Is.TypeOf<BadRequestResult>());
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+
+            var resData = (res as BadRequestObjectResult).Value as string;
+            
+            Assert.AreEqual("Null entity", resData);
         }
         
         [Test, Order(8)]
-        public void HttpPut_Update_WithoutId()
+        public async Task HttpPut_Update_WithoutId()
         {
-            
-            Assert.That(()=>_controller.Update(new GoodVm()
+            var res = await _controller.Update(new GoodVm()
             {
                 BrandId = 2,
                 Name = "Test",
                 PhotoFileName = "undefined1.png"
-            }, 999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
+            }, 999);
+            
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+
+            var resData = (res as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Cannot find Good with id: 999", resData.Message);
         }
         
         [Test, Order(8)]
-        public void HttpPut_Update_Err_Existing()
+        public async Task HttpPut_Update_Err_Existing()
         {
-            
-            Assert.That(()=>_controller.Update(new GoodVm()
+            var res = await _controller.Update(new GoodVm()
             {
                 TypeId = 1,
                 BrandId = 1,
                 Name = "Nike v.1",
                 PhotoFileName = "undefined1.png"
-            }, 3), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Good already exists"));
+            }, 3);
+            
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+
+            var resData = (res as BadRequestObjectResult).Value as Exception;
+            
+            Assert.AreEqual("Same Good already exists", resData.Message);
         }
 
         [Test, Order(9)]
@@ -193,9 +228,13 @@ namespace Shop.API.Tests.Controllers
         }
 
         [Test, Order(10)]
-        public void HttpDelete_Delete_Err()
+        public async Task HttpDelete_Delete_Err()
         {
-            Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Good with id: 999"));
+            var res = await _controller.Delete(999);
+            
+            Assert.That(res, Is.TypeOf<BadRequestObjectResult>());
+            var actionDate = (res as BadRequestObjectResult).Value as Exception;
+            Assert.AreEqual("Cannot find Good with id: 999", actionDate.Message);
         }
     }
 }

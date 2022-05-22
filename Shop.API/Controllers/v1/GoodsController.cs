@@ -48,6 +48,10 @@ namespace Shop.API.Controllers.V1
         [HttpPost("add")]
         public async Task<IActionResult> Add(GoodVm goodVm)
         {
+            if (goodVm == null)
+            {
+                return BadRequest("Null entity");
+            }
             try
             {
                 return Ok(await _service.Add(goodVm));
@@ -62,6 +66,10 @@ namespace Shop.API.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(GoodVm good, long id)
         {
+            if (good == null)
+            {
+                return BadRequest("Null entity");
+            }
             try
             {
                 await _service.Update(good, id);
