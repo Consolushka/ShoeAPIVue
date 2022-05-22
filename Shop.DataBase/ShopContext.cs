@@ -20,5 +20,7 @@ namespace Shop.DataBase
         public DbSet<BrandType> BrandTypes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        
+        public DbSet<Store> Stores { get; set; }
     }
 }

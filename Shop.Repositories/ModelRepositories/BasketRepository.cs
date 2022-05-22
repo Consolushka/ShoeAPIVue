@@ -6,7 +6,7 @@ using Shop.Repositories.Contracts;
 
 namespace Shop.Repositories.ModelRepositories
 {
-    public class BasketRepository: IBasketRepository
+    internal class BasketRepository: IBasketRepository
     {
         private readonly ShopContext _context;
 
