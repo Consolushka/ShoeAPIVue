@@ -46,7 +46,7 @@ namespace Shop.API.Tests.Controllers
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
-            _userService = new UserService(new UserRepository(_context), configuration, mapper);
+            _userService = new UserService(new UserRepository(_context), new BasketRepository(_context), configuration, mapper);
             
             _controller = new UsersController(_userService);
         }

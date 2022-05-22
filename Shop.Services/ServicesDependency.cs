@@ -15,6 +15,7 @@ namespace Shop.Services
             services.AddScoped<IGoodsService, GoodsService>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IBasketService, BasketService>();
         }
     }
 }

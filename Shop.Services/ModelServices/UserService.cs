@@ -19,11 +19,13 @@ namespace Shop.Services.ModelServices
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration, IMapper mapper)
+        public UserService(IUserRepository userRepository, IBasketRepository basketRepository,IConfiguration configuration, IMapper mapper)
         {
             _userRepository = userRepository;
+            _basketRepository = basketRepository;
             _configuration = configuration;
             _mapper = mapper;
         }
@@ -58,6 +60,10 @@ namespace Shop.Services.ModelServices
             user.IsAdmin = false;
             user.ConfirmString = Guid.NewGuid();
             var addedUser = await _userRepository.Add(user);
+            await _basketRepository.Add(new Basket()
+            {
+                UserId = addedUser.Id
+            });
 
             return addedUser;
         }
