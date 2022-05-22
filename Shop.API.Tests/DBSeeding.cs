@@ -35,13 +35,14 @@ namespace Shop.API.Tests
             _context.SaveChanges();
             SeedBrandTypes();
             SeedGoods();
+            SeedOrders();
 
             _context.SaveChanges();
         }
         
         private static void SeedUsers()
         {
-            _context.Users.Add(new User()
+            _context.Users.AddRange(new []{new User()
             {
                 ConfirmString = new Guid(),
                 Email = "consolushka@gmail.com",
@@ -49,7 +50,14 @@ namespace Shop.API.Tests
                 Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
                 IsActive = true,
                 UserName = "admin"
-            });
+            },new User()
+            {
+                ConfirmString = new Guid(),
+                Email = "newuser@gmail.com",
+                UserName = "newUser",
+                Address = "sdasd",
+                Password = "wwetwwww"
+            }});
         }
         
         private static void SeedTypes()
@@ -129,6 +137,20 @@ namespace Shop.API.Tests
                     BrandId = 2,
                     PhotoFileName = "undefined.jpg"
                 },
+            });
+        }
+
+        private static void SeedOrders()
+        {
+            _context.Orders.AddRange(new []
+            {
+                new Order()
+                {
+                    Status = 1,
+                    UserId = 1,
+                    IsPaid = false,
+                    OrderTime = DateTime.Now.AddDays(-10)
+                }
             });
         }
     }

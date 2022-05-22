@@ -23,29 +23,49 @@ namespace Shop.Services.ModelServices
 
         public async Task<Order> GetById(long id)
         {
-            // await _repository.CheckForExistingId(id);
-            return await _repository.GetById(id);
+            
+            var res =await _repository.GetById(id);
+            if (res == null)
+            {
+                throw new System.NullReferenceException($"Cannot find Order with id: {id}");
+            }
+            return res;
+        }
+
+        public async Task<List<Order>> GetByUser(long id)
+        {
+            return await _repository.GetAllByUser(id);
         }
 
         public async Task<Order> Add(Order order)
         {
-            if (order.IsNull())
-            {
-                throw new Exception("Model is Null");
-            }
             return await _repository.Add(order);
         }
 
         public async Task UpdateStatus(short status, long id)
         {
-            // await _repository.CheckForExistingId(id);
-            await _repository.UpdateStatus(id, status);
+            try
+            {
+                await _repository.GetById(id);
+                await _repository.UpdateStatus(id, status);
+            }
+            catch(System.NullReferenceException ex)
+            {
+                throw new System.NullReferenceException($"Cannot find Order with id: {id}");
+            }
         }
 
         public async Task ChangePaidTrigger(bool isPaid, long id)
         {
-            // await _repository.CheckForExistingId(id);
-            await _repository.ChangePaidTrigger(id, isPaid);
+            try
+            {
+                await _repository.GetById(id);
+                await _repository.ChangePaidTrigger(id, isPaid);
+            }
+            catch(System.NullReferenceException ex)
+            {
+                throw new System.NullReferenceException($"Cannot find order with id: {id}");
+            }
         }
     }
 }

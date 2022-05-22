@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Shop.Data.Models;
 using Shop.Data.ViewModels;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Shop.Repositories.Contracts;
 using Shop.Services.Contracts;
 
@@ -36,16 +40,16 @@ namespace Shop.Services.ModelServices
                 throw new Exception("Cannot find User with this login parameters, or your account is unconfirmed");
             }
             
-            var token = _configuration.GenerateJwtToken(user);
+            var token = generateJwtToken(matched);
 
-            return new UserResponse(user, token);
+            return new UserResponse(matched, token);
         }
 
         public async Task<User> Register(UserVM userVm)
         {
             userVm.Password = Encryption.Encode(userVm.Password);
             var user = _mapper.Map<User>(userVm);
-            var thisUser = _userRepository.GetByUsernameOrEmail(user);
+            var thisUser = await _userRepository.GetByUsernameOrEmail(user);
             if (thisUser != null)
             {
                 throw new Exception("Same User with email or username already exists");
@@ -94,6 +98,21 @@ namespace Shop.Services.ModelServices
             user.ConfirmString = Guid.NewGuid();
             user.IsActive = false;
             return await _userRepository.Update(user);
+        }
+        
+        private string generateJwtToken(User user)
+        {
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Secret"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

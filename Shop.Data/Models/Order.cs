@@ -5,9 +5,9 @@ namespace Shop.Data.Models
 {
     public class Order: Base
     {
-        [JsonIgnore]
         public long UserId { get; set;}
-        public User User { get; set; }
+        [JsonIgnore]
+        public User? User { get; set; }
         public DateTime OrderTime { get; set; }
         public short Status { get; set;}
         public bool IsPaid { get; set;}

@@ -89,9 +89,10 @@ namespace Shop.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+//keep the middleware order.
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseMiddleware<JwtMiddleware>();
             
             app.ConfigurationBuildInException(factory);

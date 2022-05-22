@@ -24,14 +24,6 @@ namespace Shop.Repositories.ModelRepositories
             return await Context.Orders.Include(o => o.User).ToListAsync();
         }
 
-        public async Task CheckForExistingId(long id)
-        {
-            if (await Context.Orders.FirstOrDefaultAsync(t => t.Id == id) == null)
-            {
-                throw new Exception($"Cannot find Order with id: {id}");
-            }
-        }
-
         public async Task<Order> GetById(long id)
         {
             return await Context.Orders.Include(o => o.User).FirstOrDefaultAsync(o=>o.Id==id);
@@ -51,7 +43,6 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task UpdateStatus(long id, short status)
         {
-            await CheckForExistingId(id);
             var order = await Context.Orders.FindAsync(id);
             order.Status = status;
             Context.Update(order);
@@ -59,7 +50,6 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task ChangePaidTrigger(long id, bool isPaid)
         {
-            await CheckForExistingId(id);
             var order = await Context.Orders.FindAsync(id);
             order.IsPaid = isPaid;
             Context.Update(order);

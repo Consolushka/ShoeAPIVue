@@ -9,6 +9,7 @@ namespace Shop.Services.Contracts
     {
         Task<List<Order>> GetAll();
         Task<Order> GetById(long id);
+        Task<List<Order>> GetByUser(long id);
         Task<Order> Add(Order order);
         Task UpdateStatus(short status, long id);
         Task ChangePaidTrigger(bool isPaid, long id);

@@ -44,12 +44,25 @@ namespace Shop.API.Controllers.V1
             }
         }
 
+        
+        [Authorize]
+        [HttpGet("get-by-user")]
+        public async Task<IActionResult> GetByUser(long id)
+        {
+            return Ok(await _service.GetByUser(id));
+        }
+
         [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> Add(Order order)
         {
+            if (order == null)
+            {
+                return BadRequest("Null entity");
+            }
             try
             {
+                order.IsPaid = false;
                 return Ok(await _service.Add(order));
             }
             catch(Exception ex)
@@ -62,6 +75,10 @@ namespace Shop.API.Controllers.V1
         [HttpPut("update-status")]
         public async Task<IActionResult> UpdateStatus(short status, long id)
         {
+            if (status==0)
+            {
+                return BadRequest("Null status");
+            }
             try
             {
                 await _service.UpdateStatus(status, id);

@@ -44,6 +44,7 @@ namespace Shop.API.Core
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            var us = context.HttpContext.Items["User"];
             var answer = new UserCheck().IsActiveUserExistingUser((User)context.HttpContext.Items["User"]);
         }
     }
