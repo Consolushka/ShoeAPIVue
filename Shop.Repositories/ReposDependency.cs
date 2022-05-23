@@ -32,6 +32,8 @@ namespace Shop.Repositories
             services.AddScoped<IOrderRepository, OrderRepository>();
             
             services.AddScoped<IBasketRepository, BasketRepository>();
+            
+            services.AddScoped<IStockItemRepository, StockItemRepository>();
         }
     }
 }
