@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Shop.Data.Models
@@ -11,6 +12,8 @@ namespace Shop.Data.Models
         public DateTime OrderTime { get; set; }
         public short Status { get; set;}
         public bool IsPaid { get; set;}
+        
+        public List<OrderItem>? OrderItems { get; set; }
 
         public bool IsNull()
         {

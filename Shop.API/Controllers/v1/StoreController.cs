@@ -78,6 +78,7 @@ namespace Shop.API.Controllers.V1
         }
 
         [Admin]
+        [HttpDelete("delete")]
         public async Task<IActionResult> Delete(long id)
         {
             try

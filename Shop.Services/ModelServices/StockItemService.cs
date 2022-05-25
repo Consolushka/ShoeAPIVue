@@ -23,7 +23,7 @@ namespace Shop.Services.ModelServices
 
         public async Task<StockItem> Add(StockItem stockItem)
         {
-            var curr = _repository.GetByGoodAndStore(stockItem.GoodId, stockItem.StoreId);
+            var curr = await _repository.GetByGoodAndStore(stockItem.GoodId, stockItem.StoreId);
             if (curr != null)
             {
                 throw new Exception("Same StockItem with pair of good and store already exists");
@@ -35,6 +35,10 @@ namespace Shop.Services.ModelServices
         public async Task WriteOff(long stockItemId, int minusCount)
         {
             var curr = await _repository.GetById(stockItemId);
+            if (curr != null)
+            {
+                throw new Exception("Same StockItem with pair of good and store already exists");
+            }
             curr.Count -= minusCount;
             await _repository.Update(curr);
         }
@@ -42,6 +46,10 @@ namespace Shop.Services.ModelServices
         public async Task Refill(long stockItemId, int plusCount)
         {
             var curr = await _repository.GetById(stockItemId);
+            if (curr != null)
+            {
+                throw new Exception("Same StockItem with pair of good and store already exists");
+            }
             curr.Count += plusCount;
             await _repository.Update(curr);
         }

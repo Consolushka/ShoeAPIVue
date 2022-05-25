@@ -7,6 +7,6 @@ namespace Shop.Data.Models
         public string Name { get; set; }
         public string Address { get; set; }
         
-        public List<StockItem> StockItems { get; set; }
+        public List<StockItem>? StockItems { get; set; }
     }
 }
