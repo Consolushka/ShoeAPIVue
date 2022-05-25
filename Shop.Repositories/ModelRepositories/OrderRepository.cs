@@ -21,12 +21,21 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task<List<Order>> GetAll()
         {
-            return await Context.Orders.Include(o => o.User).ToListAsync();
+            var res = await Context.Orders.Include(o => o.User).Include(o => o.OrderItems).ToListAsync();
+            foreach (var order in res)
+            {
+                foreach (var orderItem in order.OrderItems)
+                {
+                    orderItem.StockItem = Context.StockItems.Find(orderItem.StockItemId);
+                    orderItem.StockItem.Good = Context.Goods.Find(orderItem.StockItem.GoodId);
+                }
+            }
+            return res;
         }
 
         public async Task<Order> GetById(long id)
         {
-            return await Context.Orders.Include(o => o.User).FirstOrDefaultAsync(o=>o.Id==id);
+            return await Context.Orders.Include(o => o.User).Include(o => o.OrderItems).FirstOrDefaultAsync(o=>o.Id==id);
         }
 
         public async Task<Order> Add(Order order)
@@ -38,7 +47,7 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task<List<Order>> GetAllByUser(long userId)
         {
-            return await Context.Orders.Where(o => o.UserId == userId).ToListAsync();
+            return await Context.Orders.Where(o => o.UserId == userId).Include(o => o.OrderItems).ToListAsync();
         }
 
         public async Task UpdateStatus(long id, short status)

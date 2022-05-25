@@ -19,17 +19,9 @@ namespace Shop.API.Controllers.V1
         }
 
         [HttpGet("get-by-user")]
-        [Authorize]
         public async Task<IActionResult> GetByUser(long id)
         {
-            try
-            {
-                return Ok(await _service.GetByUser(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _service.GetByUser(id));
         }
     }
 }

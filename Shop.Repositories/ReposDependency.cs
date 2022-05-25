@@ -30,6 +30,7 @@ namespace Shop.Repositories
             services.AddScoped<ITypeRepository, TypeRepository>();
 
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             
             services.AddScoped<IBasketRepository, BasketRepository>();
             

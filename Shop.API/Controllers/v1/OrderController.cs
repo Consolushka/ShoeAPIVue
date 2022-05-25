@@ -22,7 +22,6 @@ namespace Shop.API.Controllers.V1
             _service = service;
         }
         
-        [Admin]
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
@@ -52,7 +51,7 @@ namespace Shop.API.Controllers.V1
             return Ok(await _service.GetByUser(id));
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> Add(Order order)
         {

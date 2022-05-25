@@ -21,6 +21,17 @@ namespace Shop.Services.ModelServices
             return await _repository.GetAll();
         }
 
+        public async Task<StockItem> GetById(long id)
+        {
+            var res = await _repository.GetById(id);
+            if (res == null)
+            {
+                throw new Exception($"Cannot find StockItem with id: {id}");
+            }
+
+            return res;
+        }
+
         public async Task<StockItem> Add(StockItem stockItem)
         {
             var curr = await _repository.GetByGoodAndStore(stockItem.GoodId, stockItem.StoreId);
@@ -35,9 +46,9 @@ namespace Shop.Services.ModelServices
         public async Task WriteOff(long stockItemId, int minusCount)
         {
             var curr = await _repository.GetById(stockItemId);
-            if (curr != null)
+            if (curr == null)
             {
-                throw new Exception("Same StockItem with pair of good and store already exists");
+                throw new Exception($"Cannot find StockItem with id: {stockItemId}");
             }
             curr.Count -= minusCount;
             await _repository.Update(curr);
