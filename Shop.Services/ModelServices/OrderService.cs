@@ -48,7 +48,7 @@ namespace Shop.Services.ModelServices
                 var stockItem = _stockItemService.GetById(oi.StockItemId).Result;
                 if (stockItem.Count < oi.Count)
                 {
-                    throw new Exception($"there is not enough of product with id: {oi.StockItemId}");
+                    throw new Exception($"There is not enough of product with id: {oi.StockItemId}");
                 }
             }
             

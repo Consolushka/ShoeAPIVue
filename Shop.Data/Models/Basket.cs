@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Shop.Data.Models
 {
@@ -7,5 +8,7 @@ namespace Shop.Data.Models
         public long UserId { get; set; }
         [JsonIgnore]
         public User? User { get; set;}
+        
+        public List<BasketItem> BasketItems { get; set; }
     }
 }

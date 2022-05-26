@@ -4,7 +4,7 @@ using Shop.Repositories.Basis;
 
 namespace Shop.Repositories.Contracts
 {
-    public interface IStockItemRepository: IGettable<StockItem>, IAddable<StockItem>, IChangeable<StockItem>
+    public interface IStockItemRepository: IGettable<StockItem>, IAddable<StockItem>, IUpdatable<StockItem>
     {
         Task<StockItem> GetByGoodAndStore(long goodId, long storeId);
     }

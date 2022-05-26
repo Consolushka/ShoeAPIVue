@@ -5,7 +5,7 @@ using Shop.Repositories.Basis;
 
 namespace Shop.Repositories.Contracts
 {
-    public interface IOrderItemRepository: IGettable<OrderItem>, IAddable<OrderItem>, IChangeable<OrderItem>
+    public interface IOrderItemRepository: IGettable<OrderItem>, IAddable<OrderItem>, IUpdatable<OrderItem>
     {
         Task<List<OrderItem>> GetAllByOrder(long orderId);
     }

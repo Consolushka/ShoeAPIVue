@@ -42,6 +42,11 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task<List<Type>> GetByBrand(long id)
         {
+            var brand = Context.Brands.FirstOrDefault(t => t.Id == id);
+            if (brand == null)
+            {
+                return null;
+            }
             var res = new List<Type>();
             var brandTypes = await Context.BrandTypes.Where(bt => bt.Brand.Id == id).Include(t=>t.Type).ToListAsync();
             foreach (var brandType in brandTypes)
@@ -53,6 +58,11 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task<List<Brand>> GetByType(long typeId)
         {
+            var type = Context.Types.FirstOrDefault(t => t.Id == typeId);
+            if (type == null)
+            {
+                return null;
+            }
             var res = new List<Brand>();
             var brandTypes = await Context.BrandTypes.Where(bt => bt.Type.Id == typeId).Include(t=>t.Brand).ToListAsync();
             foreach (var brandType in brandTypes)
@@ -64,10 +74,7 @@ namespace Shop.Repositories.ModelRepositories
 
         public override async Task<BrandType> GetById(long id)
         {
-            var res = await Context.BrandTypes.Include(s=>s.Brand).Include(s=>s.Type).FirstOrDefaultAsync(t => t.Id == id); 
-            if (res == null)
-                throw new Exception($"Cannot find BrandType with id: {id}");
-            return res;
+            return await Context.BrandTypes.Include(s=>s.Brand).Include(s=>s.Type).FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<BrandType> GetByBrandAndType(long brandId, long typeId)

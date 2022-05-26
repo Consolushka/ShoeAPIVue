@@ -33,6 +33,8 @@ namespace Shop.Repositories
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<BaseRepository<BasketItem>,BasketItemRepository>();
+            services.AddScoped<IBasketItemRepository, BasketItemRepository>();
             
             services.AddScoped<IStoreRepository, StoreRepository>();
             

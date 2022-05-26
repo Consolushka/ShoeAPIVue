@@ -55,26 +55,24 @@ namespace Shop.Services.ModelServices
         
         public async Task<List<Brand>> GetBrandsByType(long id)
         {
-            try
+            var res = await _brandTypeRepository.GetByType(id);
+            if (res == null)
             {
-                return await _brandTypeRepository.GetByType(id);
+                throw new System.NullReferenceException("Cannot find this Type");
             }
-            catch(System.NullReferenceException ex)
-            {
-                throw new System.NullReferenceException("Cannot fin this Type");
-            }
+
+            return res;
         }
         
         public async Task<List<Type>> GetTypesByBrand(long id)
         {
-            try
+            var res = await _brandTypeRepository.GetByBrand(id);
+            if (res == null)
             {
-                return await _brandTypeRepository.GetByBrand(id);
+                throw new System.NullReferenceException("Cannot find this Brand");
             }
-            catch(System.NullReferenceException ex)
-            {
-                throw new System.NullReferenceException("Cannot fin this Brand");
-            }
+
+            return res;
         }
     }
 }

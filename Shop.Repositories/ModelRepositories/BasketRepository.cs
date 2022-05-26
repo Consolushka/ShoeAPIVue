@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data.Models;
 using Shop.DataBase;
@@ -17,7 +18,13 @@ namespace Shop.Repositories.ModelRepositories
 
         public async Task<Basket> GetByUser(long id)
         {
-            return await _context.Baskets.FirstOrDefaultAsync(b => b.UserId == id);
+            var res = await _context.Baskets.Include(b=>b.BasketItems).FirstOrDefaultAsync(b => b.UserId == id);
+            foreach (var item in res.BasketItems)
+            {
+                item.StockItem = _context.StockItems.Include(s=>s.Good).FirstOrDefault(s=>s.Id==item.StockItemId);
+            }
+
+            return res;
         }
 
         public async Task<Basket> Add(Basket basket)

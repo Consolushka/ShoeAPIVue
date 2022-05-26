@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.Core;
+using Shop.Data.Models;
 using Shop.Services.Contracts;
 
 namespace Shop.API.Controllers.V1
@@ -12,10 +13,12 @@ namespace Shop.API.Controllers.V1
     public class BasketController: Controller
     {
         private readonly IBasketService _service;
+        private readonly IBasketItemService _itemService;
 
-        public BasketController(IBasketService service)
+        public BasketController(IBasketService service, IBasketItemService itemService)
         {
             _service = service;
+            _itemService = itemService;
         }
 
         [HttpGet("get-by-user")]
@@ -23,5 +26,27 @@ namespace Shop.API.Controllers.V1
         {
             return Ok(await _service.GetByUser(id));
         }
+
+        [HttpPost("add-item")]
+        public async Task<IActionResult> AddItem(BasketItem basketItem)
+        {
+            await _itemService.Add(basketItem);
+            return Ok();
+        }
+
+        [HttpPut("update-quantity")]
+        public async Task<IActionResult> UpdateQuantity(long itemId, int newCount)
+        {
+            await _itemService.UpdateQuantity(itemId, newCount);
+            return Ok();
+        }
+
+        [HttpDelete("delete-item")]
+        public async Task<IActionResult> DeleteItem(long itemId)
+        {
+            await _itemService.Delete(itemId);
+            return Ok();
+        }
+        
     }
 }

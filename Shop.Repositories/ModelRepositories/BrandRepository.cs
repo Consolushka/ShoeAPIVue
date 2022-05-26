@@ -43,6 +43,10 @@ namespace Shop.Repositories.ModelRepositories
         public override async Task<Brand> GetById(long id)
         {
             var res = await Context.Brands.Include(e => e.Goods).FirstOrDefaultAsync(b=>b.Id==id);
+            if (res == null)
+            {
+                return res;
+            }
             List<BrandType> brandTypes = await Context.BrandTypes.Where(bt=>bt.BrandId==id).Include(e => e.Brand).Include(e=>e.Type).ToListAsync();
             foreach (var brandGood in res.Goods)
             {

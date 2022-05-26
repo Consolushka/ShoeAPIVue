@@ -27,14 +27,13 @@ namespace Shop.Services.ModelServices
 
         public async Task<Brand> GetById(long id)
         {
-            try
+            var res = await _brandRepository.GetById(id);
+            if (res == null)
             {
-                return await _brandRepository.GetById(id);
+                throw new Exception($"Cannot find Brand with id: {id}");
             }
-            catch (System.NullReferenceException ex)
-            {
-                throw new System.NullReferenceException($"Cannot find Brand with id: {id}");
-            }
+
+            return res;
         }
 
         public async Task<Brand> Add(BrandVM brandVm)
@@ -50,15 +49,15 @@ namespace Shop.Services.ModelServices
 
         public async Task<Brand> Update(BrandVM brandVm, long id)
         {
-            var sameBrand = await _brandRepository.GetByName(brandVm.Name);
-            if (sameBrand != null)
-            {
-                throw new Exception($"Same Brand already exists");
-            }
             var brand = await GetById(id);
             if (brand == null)
             {
                 throw new Exception($"Cannot find Brand with id: {id}");
+            }
+            var sameBrand = await _brandRepository.GetByName(brandVm.Name);
+            if (sameBrand != null)
+            {
+                throw new Exception($"Same Brand already exists");
             }
             brand.Name = brandVm.Name;
             return await _brandRepository.Update(brand);
@@ -66,12 +65,14 @@ namespace Shop.Services.ModelServices
 
         public async Task Delete(long id)
         {
-            var brand = await GetById(id);
-            if (brand == null)
+            try
+            {
+                await _brandRepository.Delete(id);
+            }
+            catch(System.NullReferenceException ex)
             {
                 throw new Exception($"Cannot find Brand with id: {id}");
             }
-            await _brandRepository.Delete(id);
         }
     }
 }
