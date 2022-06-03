@@ -46,11 +46,11 @@ namespace Shop.Repositories.ModelRepositories
                 u.UserName == user.UserName);
         }
 
-        public void ConfirmUser(User user)
+        public async Task ConfirmUser(User user)
         {
             user.IsActive = true;
             Context.Users.Update(user);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Shop.Repositories.Contracts
     public interface IUserRepository: IBaseRepository<User>
     {
         Task<User> GetByKey(Guid key);
-        void ConfirmUser(User user);
+        Task ConfirmUser(User user);
         Task<User> GetByUserNameOrEmailAndPassword(User user);
         Task<User> GetByUsernameOrEmail(User user);
     }

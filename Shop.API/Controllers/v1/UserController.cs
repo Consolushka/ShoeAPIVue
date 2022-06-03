@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shop.Data.Models;
 using Shop.Data.ViewModels;
@@ -11,7 +10,7 @@ namespace Shop.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0", Deprecated = true)]
-    [Route("api/v{version:apiVersion}/[controller]")]  
+    [Microsoft.AspNetCore.Mvc.Route("api/v{version:apiVersion}/[controller]")]  
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -48,20 +47,12 @@ namespace Shop.API.Controllers.V1
                 return BadRequest(ex);
             }
         }
-
-        [HttpPost("confirm-registration")]
-        public async Task<IActionResult> ConfirmRegistration(string key)
+        
+        [HttpPost("confirm")]
+        public async Task<IActionResult> ConfirmRegistration(Guid key)
         {
-            try
-            {
-                var Gkey = Guid.Parse(key);
-                await _userService.ConfirmUser(Gkey);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _userService.ConfirmUser(key);
+            return Ok();
         }
 
         [Authorize]
@@ -70,7 +61,7 @@ namespace Shop.API.Controllers.V1
         {
             try
             {
-                return Ok(new UserResponse(_userService.GetById(id)));
+                return Ok(_userService.GetById(id));
             }
             catch(Exception ex)
             {
@@ -93,6 +84,15 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest(ex);
             }
+        }
+
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword(string password, long id)
+        {
+            await _userService.ChangePassword(password, id);
+            MailSender.ConfirmUpdate(_userService.GetById(id));
+            return Ok();
         }
 
         [Authorize]

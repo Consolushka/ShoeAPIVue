@@ -64,8 +64,10 @@ export default {
     text: ""
   }),
   mounted() {
-    if(localStorage.getItem("userId") !== '0' && localStorage.getItem("userId") !== null){
-      this.$store.commit('LOGIN', localStorage.getItem("userId"));
+    console.log(this.$store.getters.USER);
+    if(this.$store.getters.USER.Id === 0){
+      this.$store.dispatch('SET_TOKEN');
+      this.$store.dispatch('GET_USER');
     }
     this.$store.dispatch('UPDATE_SHOES');
     this.$store.dispatch('UPDATE_BRANDS');

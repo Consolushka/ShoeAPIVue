@@ -14,5 +14,6 @@ namespace Shop.Services.Contracts
         Task<List<User>> GetAll();
         User GetById(long Id);
         Task<User> Update(UserVM user, long id);
+        Task ChangePassword(string password, long id);
     }
 }

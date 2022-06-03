@@ -71,12 +71,12 @@ namespace Shop.Services.ModelServices
         public async Task ConfirmUser(Guid key)
         {
             var user = await _userRepository.GetByKey(key);
-            if (user != null)
+            if (user == null)
             {
-                _userRepository.ConfirmUser(user);
+                throw new Exception("Cannot find user with this Confirm Key");
             }
-
-            throw new Exception("Cannot find user with this Confirm Key");
+            
+            await _userRepository.ConfirmUser(user);
         }
 
         public async Task<List<User>> GetAll()
@@ -96,6 +96,15 @@ namespace Shop.Services.ModelServices
             user.ConfirmString = Guid.NewGuid();
             // user.Password = _configuration.Encode(user.Password);
             return await _userRepository.Update(user);
+        }
+
+        public async Task ChangePassword(string password, long id)
+        {
+            var user = await _userRepository.GetById(id);
+            user.Password = Encryption.Encode(password);
+            user.IsActive = false;
+            user.ConfirmString = Guid.NewGuid();
+            await _userRepository.Update(user);
         }
 
         public async Task<User> AbortUpdation(Guid key)

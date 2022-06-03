@@ -101,25 +101,26 @@ export class Shoe {
     }
 
     POST(config) {
-        return axios.post(utils.API.SHOES+"Add", this.ToModel(), config)
+        return axios.post(utils.API.GOODS+"Add", this.ToModel(), config)
             .then(response => response)
             .catch(err=>err.response);
     }
 
     PUT(config) {
-        return axios.put(utils.API.SHOES + "Update", this, config)
+        return axios.put(utils.API.GOODS + "Update", this, config)
             .then(response => response.status)
             .catch(err=>err.response);
     }
 
     DELETE(config) {
-        return axios.delete(utils.API.SHOES +"Delete/" + this.Id, config).then(response => response.status);
+        return axios.delete(utils.API.GOODS +"Delete/" + this.Id, config).then(response => response.status);
     }
 }
 
 export class User {
     Id
     Login
+    Address
     Email
     UserName
     Password
@@ -128,7 +129,6 @@ export class User {
     IsConfirmed
 
     constructor(user) {
-        console.log(user);
         if (user === undefined) {
             user = {
                 id: 0,
@@ -142,6 +142,7 @@ export class User {
         }
         this.Id = user.id;
         this.Email = user.email;
+        this.Address = user.address;
         this.UserName = user.userName;
         this.Password = user.Password;
         this.token = user.token;
@@ -168,8 +169,16 @@ export class User {
             .catch(err=>err.response);
     }
 
-    Update(){
-        return axios.post(utils.API.USER+"Update", this)
+    Update(config){
+        console.log(config);
+        return axios.put(utils.API.USER+`update/${this.Id}`, this, config)
+            .then(response => response)
+            .catch(err=>err.response);
+    }
+
+    ChangePassword(pass, config){
+        console.log(config);
+        return axios.put(utils.API.USER+`change-password?password=${pass}&id=${this.Id}`,null, config)
             .then(response => response)
             .catch(err=>err.response);
     }

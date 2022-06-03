@@ -42,20 +42,21 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        LOGIN: (state, id) => {
-            state.IsAuth= localStorage.getItem('IsAuth');
+        SET_TOKEN: (state)=>{
+            console.log(localStorage.getItem('token'));
             state.Token = localStorage.getItem('token');
-            let config = {
-                headers:{
-                    "Authorization": state.Token
-                }
-            };
-            axios.post(utils.API.USER+`GetById?id=${id}`, null,config)
+        },
+        GET_USER: (state)=>{
+            axios.get(utils.API.USER+`get-by-id?id=${localStorage.getItem('userId')}`, {headers:{"Authorization": state.Token}})
                 .then((response)=>{
-                    localStorage.setItem('userId', response.data.id);
                     console.log(response.data);
                     state.User = new User(response.data);
                 })
+        },
+        LOGIN: (state, object) => {
+            state.IsAuth= localStorage.getItem('IsAuth');
+            state.Token = localStorage.getItem('token');
+            state.User = new User(object);
         },
         LOGOUT: (state) => {
             localStorage.setItem('IsAuth', "false");
@@ -66,7 +67,7 @@ export const store = new Vuex.Store({
             state.User = new User();
         },
         UPDATE_BRANDS: (state)=>{
-            axios.get(utils.API.BRANDS+"GetAll")
+            axios.get(utils.API.BRANDS+"get-all")
                 .then((response)=>{
                     state.Brands = [];
                     response.data.forEach((brand)=>{
@@ -75,7 +76,7 @@ export const store = new Vuex.Store({
                 })
         },
         UPDATE_SHOES: (state)=>{
-            axios.get(utils.API.SHOES+"GetAll")
+            axios.get(utils.API.GOODS+"get-all")
                 .then((response)=>{
                     state.Shoes = [];
                     response.data.forEach((shoe)=>{
@@ -85,6 +86,12 @@ export const store = new Vuex.Store({
         }
     },
     actions: {
+        SET_TOKEN: (context)=>{
+          context.commit('SET_TOKEN');
+        },
+        GET_USER: (context)=>{
+            context.commit('GET_USER');
+        },
         LOGIN: (context) => {
             context.commit('LOGIN');
         },

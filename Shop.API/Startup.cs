@@ -1,7 +1,10 @@
 using System.IO;
+using System.Linq;
+using System.Web.Http;
 using Shop.DataBase;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +57,21 @@ namespace Shop.API
             services.AddDbContext<ShopContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SchoolContext"), b=>b.MigrationsAssembly("Shop.DataBase")));
             
-            services.AddCors(c => {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
+            
+            //Enable CORS
+            var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy  =>
+                    {
+                        policy.WithOrigins("http://localhost:8080")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                            
+                    });
             });
             
             services.AddAutoMapper(typeof(Mapper));
@@ -68,9 +84,16 @@ namespace Shop.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider, ILoggerFactory factory)
         {
-            //Enable CORS
-            app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
-            
+            app.Use((context, next) =>
+            {
+                if (context.Request.Headers.Any(k => k.Key.Contains("Origin")) && context.Request.Method == "OPTIONS")
+                {
+                    context.Response.StatusCode = 200;
+                    return context.Response.WriteAsync("handled");
+                }
+
+                return next.Invoke();
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -90,6 +113,10 @@ namespace Shop.API
 
             app.UseRouting();
 //keep the middleware order.
+            
+            app.UseCors("_myAllowSpecificOrigins");
+            app.UseCors(c => c.AllowAnyHeader());
+
             app.UseAuthentication();
             app.UseAuthorization();
             

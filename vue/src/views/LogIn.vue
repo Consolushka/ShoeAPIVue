@@ -8,7 +8,7 @@
               cols="12"
           >
             <v-text-field
-                v-model="user.Login"
+                v-model="user.Email"
                 :rules="emailRules"
                 label="E-mail"
                 required
@@ -52,16 +52,22 @@ export default {
       this.user.Authenticate()
           .then(response => {
             if(response.status>=200 && response.status<=300){
+              console.log(response.data);
+              console.log(response.data.Id);
               eventBus.$emit('showNotification', {responseFine: "Fine", snackBar: true, text: "Logged in"});
               localStorage.setItem('token', response.data.token);
               localStorage.setItem('IsAuth', "true");
-              this.$store.commit('LOGIN', response.data.id);
+              localStorage.setItem("userId", response.data.id);
+              this.$store.commit('LOGIN', response.data);
               router.push({name: 'brand'});
             }
             else{
-              eventBus.$emit('showNotification', {responseFine: "Error", snackBar: true, text: response.data});
+              eventBus.$emit('showNotification', {responseFine: "Error", snackBar: true, text: response.data.Message});
             }
-          });
+          })
+      .catch(err=>{
+        console.log(err);
+      });
     },
   }
 }

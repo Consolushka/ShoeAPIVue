@@ -73,6 +73,7 @@ export default {
         this.err = "Your passwords are not common";
         return;
       }
+      this.user.Address = "";
       this.user.Register()
           .then((res) => {
             if(res.status >=200 && res.status<=300){

@@ -26,10 +26,24 @@ export default {
   mounted() {
     let url = window.location.href;
     let keyParam =url.split('?')[1];
-    let stringKey = keyParam.substring(4,keyParam.length);
-    axios.post(utils.API.USER+`ConfirmRegistration?key=${stringKey}`)
+    let stringKey = keyParam.substring(4,keyParam.length).toUpperCase();
+    console.log(this.$store.getters.CONFIG_HEADER);
+    // (async () => {
+    //   const rawResponse = await fetch(utils.API.USER+`confirm-registration`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(stringKey)
+    //   });
+    //   const content = await rawResponse.json();
+    //   console.log(content);
+    // })();
+    axios.post(utils.API.USER+`confirm?key=${stringKey}`)
     .then(()=>{
       this.isFine = true;
+      this.$store.dispatch('GET_USER');
     })
     .catch(()=>{
       this.isFine = false;
