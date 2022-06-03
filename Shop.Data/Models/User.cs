@@ -22,8 +22,6 @@ namespace Shop.Data.Models
             Email = vm.Email;
             Address = vm.Address;
             UserName = vm.UserName;
-            Password = vm.Password;
-            IsActive = false;
         }
     }
 }

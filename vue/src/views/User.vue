@@ -125,12 +125,9 @@ export default {
   methods: {
     Update() {
       console.log(this.user);
-      if (this.user.Password !== this.confPass) {
-        this.err = "Your passwords are not common";
-        return;
-      }
       this.user.Update(this.$store.getters.CONFIG_HEADER)
           .then((res) => {
+            console.log(res);
             if (res.status >= 200 && res.status <= 300) {
               eventBus.$emit('showNotification', {
                 responseFine: "Fine",

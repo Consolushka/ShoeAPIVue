@@ -8,9 +8,8 @@
               cols="12"
           >
             <v-text-field
-                v-model="user.Email"
-                :rules="emailRules"
-                label="E-mail"
+                v-model="user.Login"
+                label="E-mail or Username"
                 required
             ></v-text-field>
           </v-col>

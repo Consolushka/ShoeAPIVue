@@ -164,6 +164,8 @@ export class User {
     }
 
     Authenticate(){
+        this.Email = this.Login;
+        this.UserName = this.Login;
         return axios.post(utils.API.USER+"authenticate", this)
             .then(response => response)
             .catch(err=>err.response);

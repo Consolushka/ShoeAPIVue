@@ -10,7 +10,7 @@ namespace Shop.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0", Deprecated = true)]
-    [Microsoft.AspNetCore.Mvc.Route("api/v{version:apiVersion}/[controller]")]  
+    [Route("api/v{version:apiVersion}/[controller]")]  
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;

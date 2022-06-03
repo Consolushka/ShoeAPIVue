@@ -93,6 +93,7 @@ namespace Shop.Services.ModelServices
         {
             var user = await _userRepository.GetById(id);
             user.FillFromVM(userVm);
+            user.IsActive = false;
             user.ConfirmString = Guid.NewGuid();
             // user.Password = _configuration.Encode(user.Password);
             return await _userRepository.Update(user);
