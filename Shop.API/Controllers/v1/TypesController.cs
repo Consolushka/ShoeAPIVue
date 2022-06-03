@@ -8,7 +8,7 @@ using Shop.API.Core;
 namespace Shop.API.Controllers.V1
 {
     [ApiController]
-    [ApiVersion("2.0", Deprecated = false)]
+    [ApiVersion("1.0", Deprecated = false)]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class TypesController : Controller
     {

@@ -32,6 +32,7 @@
 
       <v-card-text>
         <brand-form v-if="model.ModelName === `Brand`" :brand="model"></brand-form>
+        <type-form v-if="model.ModelName === `Type`" :type="model"></type-form>
         <shoe-form v-if="model.ModelName === 'Shoe'" :shoe="model" :brands="brands"></shoe-form>
       </v-card-text>
 
@@ -58,9 +59,10 @@
 import {eventBus} from "../../main";
 import BrandForm from "./brand-form";
 import ShoeForm from "./shoe-form";
+import TypeForm from "./type-form";
 
 export default {
-  components: {ShoeForm, BrandForm},
+  components: {TypeForm, ShoeForm, BrandForm},
   props: {
     model: Object,
     brands: {

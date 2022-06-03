@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {Brand, Shoe, User} from "../utils/classes";
+import {Brand, Shoe, Type, User} from "../utils/classes";
 import axios from "axios";
 import {utils} from "../utils/utils";
 
@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
         Token: localStorage.getItem('token'),
         User: new User(),
         Brands: [],
-        Shoes: []
+        Shoes: [],
+        Types: []
     },
     getters: {
         ISAUTH: state => {
@@ -29,10 +30,13 @@ export const store = new Vuex.Store({
             };
         },
         IS_ADMIN: state => {
-            return state.User.RoleId === 2;
+            return state.User.IsAdmin;
         },
         BRANDS: state =>{
             return state.Brands;
+        },
+        TYPES: state =>{
+            return state.Types;
         },
         SHOES: state=>{
             return state.Shoes;
@@ -83,6 +87,15 @@ export const store = new Vuex.Store({
                         state.Shoes.push(new Shoe(shoe));
                     })
                 })
+        },
+        UPDATE_TYPES: (state)=>{
+            axios.get(utils.API.TYPES+"get-all")
+                .then((response)=>{
+                    state.Types = [];
+                    response.data.forEach((type)=>{
+                        state.Types.push(new Type(type));
+                    })
+                })
         }
     },
     actions: {
@@ -103,6 +116,9 @@ export const store = new Vuex.Store({
         },
         UPDATE_SHOES: (context)=>{
             context.commit('UPDATE_SHOES');
+        },
+        UPDATE_TYPES: (context)=>{
+            context.commit('UPDATE_TYPES');
         }
     },
 });

@@ -29,6 +29,9 @@
         <v-tab to="/brand">
           Brands
         </v-tab>
+        <v-tab to="/type" v-if="$store.getters.IS_ADMIN">
+          Types
+        </v-tab>
         <v-tab to="/shoe">
           Shoes
         </v-tab>
@@ -64,13 +67,13 @@ export default {
     text: ""
   }),
   mounted() {
-    console.log(this.$store.getters.USER);
     if(this.$store.getters.USER.Id === 0){
       this.$store.dispatch('SET_TOKEN');
       this.$store.dispatch('GET_USER');
     }
     this.$store.dispatch('UPDATE_SHOES');
     this.$store.dispatch('UPDATE_BRANDS');
+    this.$store.dispatch('UPDATE_TYPES');
   },
   created() {
     eventBus.$on('showNotification', (params)=>{

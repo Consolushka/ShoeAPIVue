@@ -31,13 +31,53 @@ export class Brand {
     }
 
     PUT(config) {
-        return axios.put(utils.API.BRANDS + "Update", this, config)
+        return axios.put(utils.API.BRANDS + `update/${this.Id}`, this, config)
             .then(response => response)
             .catch(err=>err.response);
     }
 
     DELETE(config) {
         return axios.delete(utils.API.BRANDS + "Delete/"+this.Id, config).then(response => response.status);
+    }
+}
+
+export class Type {
+    Id
+    Name
+    ModelName = "Type"
+
+    constructor(type) {
+        if (type === undefined) {
+            type = {
+                id: 0,
+                Name: "all",
+            }
+        }
+        this.Id = type.id;
+        this.Name = type.name;
+    }
+
+    ToModel(){
+        return {
+            id: this.Id,
+            name: this.Name
+        }
+    }
+
+    POST(config) {
+        return axios.post(utils.API.TYPES+"Add", this, config)
+            .then(response => response)
+            .catch(err => err.response);
+    }
+
+    PUT(config) {
+        return axios.put(utils.API.TYPES + `update/${this.Id}`, this, config)
+            .then(response => response)
+            .catch(err=>err.response);
+    }
+
+    DELETE(config) {
+        return axios.delete(utils.API.TYPES + "Delete/"+this.Id, config).then(response => response.status);
     }
 }
 
@@ -124,7 +164,7 @@ export class User {
     Email
     UserName
     Password
-    RoleId
+    IsAdmin
     token
     IsConfirmed
 
@@ -146,7 +186,7 @@ export class User {
         this.UserName = user.userName;
         this.Password = user.Password;
         this.token = user.token;
-        this.RoleId = user.roleId;
+        this.IsAdmin = user.isAdmin;
         this.IsConfirmed = user.isConfirmed;
     }
 

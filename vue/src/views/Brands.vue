@@ -53,6 +53,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$store.getters.IS_ADMIN);
     eventBus.$on('refresh', ()=>{
       this.Refresh();
     })

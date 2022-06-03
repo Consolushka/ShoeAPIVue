@@ -33,6 +33,7 @@
 
       <v-card-text>
         <brand-form v-if="model.ModelName === `Brand`" :brand="model" :disabled="true"></brand-form>
+        <type-form v-if="model.ModelName === `Type`" :type="model" :disabled="true"></type-form>
         <shoe-form v-if="model.ModelName === 'Shoe'" :shoe="model" :brands="brands" :disabled="true"></shoe-form>
       </v-card-text>
     </v-card>
@@ -42,11 +43,12 @@
 <script>
 import ShoeForm from "./shoe-form";
 import BrandForm from "./brand-form";
+import TypeForm from "./type-form";
 
 
 export default {
   name: "dialog-info",
-  components: {ShoeForm, BrandForm},
+  components: {TypeForm, ShoeForm, BrandForm},
   props: {
     model: Object,
     brands: {
