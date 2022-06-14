@@ -74,6 +74,19 @@ public class BrandTypesControllerTests
     }
 
     [Test]
+    [Order(3)]
+    public async Task HttpGet_GetAllByBrand_NoBrand()
+    {
+        var actionResult = await _controller.GetAllByBrand(999);
+
+        Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+        var actionResultData = (actionResult as BadRequestObjectResult).Value as Exception;
+
+        Assert.AreEqual("Cannot find this Brand", actionResultData.Message);
+    }
+
+    [Test]
     [Order(4)]
     public async Task HttpGet_GetAllByType()
     {
@@ -88,6 +101,19 @@ public class BrandTypesControllerTests
 
         Assert.AreEqual(1, res[0].Id);
         Assert.AreEqual(2, res[1].Id);
+    }
+
+    [Test]
+    [Order(5)]
+    public async Task HttpGet_GetAllByType_NoType()
+    {
+        var actionResult = await _controller.GetAllByType(999);
+
+        Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
+
+        var actionResultData = (actionResult as BadRequestObjectResult).Value as Exception;
+
+        Assert.AreEqual("Cannot find this Type", actionResultData.Message);
     }
 
     [Test]
@@ -127,86 +153,6 @@ public class BrandTypesControllerTests
 
         Assert.AreEqual(allBeforeRes.Count, allAfterRes.Count);
     }
-
-
-    // [Test, Order(4)]
-    // public async Task HttpPost_AddBrand()
-    // {
-    //     IActionResult actionResult = await _controller.Add(new BrandVM()
-    //     {
-    //         Name = "Test"
-    //     });
-    //
-    //     IActionResult allRes = await _controller.GetAll();
-    //     var allResData = (allRes as OkObjectResult).Value as List<Brand>;
-    //     
-    //     Assert.That(actionResult, Is.TypeOf<OkResult>());
-    //     Assert.AreEqual(allResData.Count, 3);
-    //     Assert.AreEqual("Test", allResData[2].Name);
-    // }
-    //
-    // [Test, Order(5)]
-    // public async Task HttpPost_AddBrand_Err()
-    // {
-    //     IActionResult actionResult = await _controller.Add(null);
-    //     IActionResult allRes = await _controller.GetAll();
-    //     var allResData = (allRes as OkObjectResult).Value as List<Brand>;
-    //     
-    //     Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
-    //     Assert.AreEqual(allResData.Count, 3);
-    // }
-    //
-    // [Test, Order(6)]
-    // public async Task HttpPut_UpdateBrand()
-    // {
-    //     IActionResult actionResult = await _controller.Update(new BrandVM()
-    //     {
-    //         Name = "Test"
-    //     }, 1);
-    //     
-    //     IActionResult currBrand = await _controller.GetById(1);
-    //     var currBrandData = (currBrand as OkObjectResult).Value as Brand;
-    //     
-    //     Assert.That(actionResult, Is.TypeOf<OkResult>());
-    //     Assert.AreEqual(currBrandData.Name, "Test");
-    // }
-    //
-    // [Test, Order(7)]
-    // public async Task HttpPut_UpdateBrand_Err_WoVM()
-    // {
-    //     IActionResult actionResult = await _controller.Update(null, 1);
-    //     
-    //     IActionResult currBrand = await _controller.GetById(1);
-    //     var currBrandData = (currBrand as OkObjectResult).Value as Brand;
-    //     
-    //     Assert.That(actionResult, Is.TypeOf<BadRequestResult>());
-    //     Assert.AreEqual(currBrandData.Name, "Test");
-    // }
-    //
-    // [Test, Order(8)]
-    // public void HttpPut_UpdateBrand_Err_WVm_WithOutExistingId()
-    // {   
-    //     Assert.That(()=>_controller.Update(new BrandVM() { Name = "Test1" }, 999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
-    // }
-    //
-    // [Test, Order(8)]
-    // public async Task HttpDelete_DeleteBrand()
-    // {
-    //     var actionResult =  await _controller.Delete(1);
-    //     
-    //     IActionResult allRes = await _controller.GetAll();
-    //     var allResData = (allRes as OkObjectResult).Value as List<Brand>;
-    //     
-    //     Assert.That(actionResult, Is.TypeOf<OkResult>());
-    //     
-    //     Assert.AreEqual(allResData.Count, 2);
-    // }
-    //
-    // [Test, Order(9)]
-    // public void HttpDeleteBrand_WithOut_ExistingId()
-    // {
-    //     Assert.That(()=>_controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
-    // }
 
     [OneTimeTearDown]
     public void CleanUp()

@@ -42,16 +42,6 @@ namespace Shop.Services.ModelServices
             }
             await _brandTypeRepository.Delete(id);
         }
-
-        public async Task<BrandType> GetById(long id)
-        {
-            var matched =await _brandTypeRepository.GetById(id);
-            if (matched == null)
-            {
-                throw new Exception($"Cannot find BrandType with id: {id}");
-            }
-            return matched;
-        }
         
         public async Task<List<Brand>> GetBrandsByType(long id)
         {

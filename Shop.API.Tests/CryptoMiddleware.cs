@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 
-namespace Shop.API.Tests.Controllers
+namespace Shop.API.Tests
 {
     public static class CryptoMiddleware
     {
@@ -41,7 +41,7 @@ namespace Shop.API.Tests.Controllers
             {
                 using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 {
-                    List<Byte> bytes = new List<byte>();
+                    List<byte> bytes = new List<byte>();
                     int b;
                     do
                     {
