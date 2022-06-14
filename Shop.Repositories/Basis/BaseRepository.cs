@@ -43,7 +43,12 @@ namespace Shop.Repositories.Basis
 
         public async Task Delete(long id)
         {
-            Context.Set<T>().Remove(await Context.Set<T>().FindAsync(id));
+            var current = await Context.Set<T>().FindAsync(id);
+            if (current == null)
+            {
+                throw new System.NullReferenceException();
+            }
+            Context.Set<T>().Remove(current);
             await Context.SaveChangesAsync();
         }
     }

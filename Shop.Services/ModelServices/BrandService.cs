@@ -69,7 +69,7 @@ namespace Shop.Services.ModelServices
             {
                 await _brandRepository.Delete(id);
             }
-            catch(System.NullReferenceException ex)
+            catch (System.NullReferenceException ex)
             {
                 throw new Exception($"Cannot find Brand with id: {id}");
             }

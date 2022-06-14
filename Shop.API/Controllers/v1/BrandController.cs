@@ -82,7 +82,6 @@ namespace Shop.API.Controllers.V1
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            Brand res = null;
             try
             {
                 await _brandService.Delete(id);

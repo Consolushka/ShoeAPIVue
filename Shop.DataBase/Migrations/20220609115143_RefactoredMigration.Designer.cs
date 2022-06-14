@@ -12,8 +12,8 @@ using Shop.DataBase;
 namespace Shop.DataBase.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20220526132640_AddedBasketItems")]
-    partial class AddedBasketItems
+    [Migration("20220609115143_RefactoredMigration")]
+    partial class RefactoredMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -133,7 +133,7 @@ namespace Shop.API
                 RequestPath = "/Photos"
             });
             
-            DataInitializer.SeedData(app,Configuration);
+            DataInitializer.SeedData(app, Configuration);
         }
     }
 }

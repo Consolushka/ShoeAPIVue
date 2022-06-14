@@ -34,6 +34,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Shop.DataBase\Shop.DataBase.csproj" />
       <ProjectReference Include="..\Shop.Data\Shop.Data.csproj" />
       <ProjectReference Include="..\Shop.MiddleWare\Shop.MiddleWare.csproj" />

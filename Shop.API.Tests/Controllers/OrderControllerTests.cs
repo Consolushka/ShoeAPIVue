@@ -37,7 +37,7 @@ namespace Shop.API.Tests.Controllers
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
-            _service = new OrderService(new OrderRepository(_context));
+            _service = new OrderService(new OrderRepository(_context), new OrderItemRepository(_context), new StockItemService(new StockItemRepository(_context)));
 
             _controller = new OrderController(_service);
         }

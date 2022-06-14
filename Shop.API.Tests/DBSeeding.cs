@@ -118,23 +118,23 @@ namespace Shop.API.Tests
             {
                 new Good()
                 {
-                    TypeId = 1,
+                    Type = _context.Types.FirstOrDefault(e=>e.Id==1),
                     Name = "Nike v.1",
-                    BrandId = 1,
+                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==1),
                     PhotoFileName = "undefined.jpg"
                 },
                 new Good()
                 {
-                    TypeId = 2,
+                    Type = _context.Types.FirstOrDefault(e=>e.Id==2),
                     Name = "Nike t-shirt v.1",
-                    BrandId = 1,
+                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==1),
                     PhotoFileName = "undefined.jpg"
                 },
                 new Good()
                 {
-                    TypeId = 1,
+                    Type = _context.Types.FirstOrDefault(e=>e.Id==1),
                     Name = "Puma v.1",
-                    BrandId = 2,
+                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==2),
                     PhotoFileName = "undefined.jpg"
                 },
             });

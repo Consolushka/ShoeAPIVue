@@ -27,15 +27,18 @@ namespace Shop.DataBase
                 SeedGoodsTypes();
                 SeedUsersIfNone();
                 SeedBrandsIfNone();
-                
                 _context.SaveChanges();
                 
                 SeedGoodsIfNone();
-
                 _context.SaveChanges();
 
                 SeedBrandTypes();
-
+                _context.SaveChanges();
+                
+                SeedStoresIfNone();
+                _context.SaveChanges();
+                
+                SeedStockItemsIfNone();
                 _context.SaveChanges();
             }
         }
@@ -72,9 +75,19 @@ namespace Shop.DataBase
                     IsAdmin = true,
                     UserName = "admin"
                 });
+                _context.SaveChanges();
+            }
+
+            if (!_context.Baskets.Any())
+            {
+                _context.Baskets.Add(new Basket()
+                {
+                    User = _context.Users.Find((long)1)
+                });
+                _context.SaveChanges();
             }
         }
-        
+
         private static void SeedBrandsIfNone()
         {
             if (!_context.Brands.Any())
@@ -146,6 +159,49 @@ namespace Shop.DataBase
                         TypeId = 1,
                         PhotoFileName = "undefined.jpg"
                     },
+                });
+            }
+        }
+
+        private static void SeedStoresIfNone()
+        {
+            if (!_context.Stores.Any())
+            {
+                _context.Stores.Add(new Store()
+                {
+                    Address = "Internacionlnaya 54",
+                    Name = "Nearest"
+                });
+            }
+        }
+
+        private static void SeedStockItemsIfNone()
+        {
+            if (!_context.StockItems.Any())
+            {
+                _context.StockItems.AddRange(new List<StockItem>()
+                {
+                    new StockItem()
+                    {
+                        Good = _context.Goods.Find((long)1),
+                        Store = _context.Stores.Find((long)1),
+                        Count = 100,
+                        Price = 220.31
+                    },
+                    new StockItem()
+                    {
+                        Good = _context.Goods.Find((long)2),
+                        Store = _context.Stores.Find((long)1),
+                        Count = 250,
+                        Price = 115
+                    },
+                    new StockItem()
+                    {
+                        Good = _context.Goods.Find((long)3),
+                        Store = _context.Stores.Find((long)1),
+                        Count = 55,
+                        Price = 1000
+                    }
                 });
             }
         }

@@ -1,18 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.API", "Shop.API\Shop.API.csproj", "{708BE08C-3AA7-458C-9A11-13FCD0A1D77B}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.API", "Shop.API\Shop.API.csproj", "{708BE08C-3AA7-458C-9A11-13FCD0A1D77B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.API.Tests", "Shop.API.Tests\Shop.API.Tests.csproj", "{674E162D-EB03-4738-BD35-BE385D6F661D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.API.Tests", "Shop.API.Tests\Shop.API.Tests.csproj", "{674E162D-EB03-4738-BD35-BE385D6F661D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Data", "Shop.Data\Shop.Data.csproj", "{FBE2EDEB-24CA-41A0-BA6C-115607CC1273}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Data", "Shop.Data\Shop.Data.csproj", "{FBE2EDEB-24CA-41A0-BA6C-115607CC1273}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Repositories", "Shop.Repositories\Shop.Repositories.csproj", "{385E9BD5-065F-4113-98C1-F9E92E8083E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Repositories", "Shop.Repositories\Shop.Repositories.csproj", "{385E9BD5-065F-4113-98C1-F9E92E8083E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.DataBase", "Shop.DataBase\Shop.DataBase.csproj", "{98A74C30-1DF7-45AD-86ED-5A37F74B49BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.DataBase", "Shop.DataBase\Shop.DataBase.csproj", "{98A74C30-1DF7-45AD-86ED-5A37F74B49BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Services", "Shop.Services\Shop.Services.csproj", "{5EF54139-AA3A-40EB-81F8-485F40E01965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Services", "Shop.Services\Shop.Services.csproj", "{5EF54139-AA3A-40EB-81F8-485F40E01965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.MiddleWare", "Shop.MiddleWare\Shop.MiddleWare.csproj", "{66D29CE3-A619-4FCA-A52A-17E8151BD88E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.MiddleWare", "Shop.MiddleWare\Shop.MiddleWare.csproj", "{66D29CE3-A619-4FCA-A52A-17E8151BD88E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C5B8A636-5392-4942-B910-C8AE6C962A70}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +56,11 @@ Global
 		{66D29CE3-A619-4FCA-A52A-17E8151BD88E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D29CE3-A619-4FCA-A52A-17E8151BD88E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D29CE3-A619-4FCA-A52A-17E8151BD88E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F999E0FF-EDEA-46F1-BCAB-3F1C630AE11C}
 	EndGlobalSection
 EndGlobal

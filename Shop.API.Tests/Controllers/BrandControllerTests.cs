@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Shop.Data.Models;
@@ -34,7 +35,7 @@ namespace Shop.API.Tests.Controllers
             {
                 mc.AddProfile(new Mapper());
             });
-            IMapper mapper = mapperConfig.CreateMapper();
+            var mapper = mapperConfig.CreateMapper();
 
             _brandService = new BrandService(new BrandRepository(_context), mapper);
 
@@ -44,7 +45,7 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(1)]
         public async Task HttpGet_GetAll()
         {
-            IActionResult actionResult = await _controller.GetAll();
+            var actionResult = await _controller.GetAll();
             var actionResultData = (actionResult as OkObjectResult).Value as List<Brand>;
 
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
@@ -62,7 +63,7 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(2)]
         public async Task HttpGet_GetById()
         {
-            IActionResult actionResult = await _controller.GetById(1);
+            var actionResult = await _controller.GetById(1);
             
             Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
             
@@ -77,7 +78,7 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(3)]
         public async Task HttpGet_GetById_Error()
         {
-            IActionResult actionResult = await _controller.GetById(999);
+            var actionResult = await _controller.GetById(999);
             
             Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
 
@@ -89,10 +90,10 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(4)]
         public async Task HttpPost_AddBrand()
         {
-            IActionResult allResBefore = await _controller.GetAll();
+            var allResBefore = await _controller.GetAll();
             var allResDataBefore = (allResBefore as OkObjectResult).Value as List<Brand>;
             
-            IActionResult actionResult = await _controller.Add(new BrandVM()
+            var actionResult = await _controller.Add(new BrandVM()
             {
                 Name = "Test"
             });
@@ -100,7 +101,7 @@ namespace Shop.API.Tests.Controllers
             var responseData = (actionResult as OkObjectResult).Value as Brand;
             
             
-            IActionResult allResAfter = await _controller.GetAll();
+            var allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
 
             
@@ -113,16 +114,16 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(5)]
         public async Task HttpPost_AddBrand_Err_AlreadyExists()
         {
-            IActionResult allResBefore = await _controller.GetAll();
+            var allResBefore = await _controller.GetAll();
             var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
 
-            IActionResult addedBrand = await _controller.Add(new BrandVM() { Name = "Nike" });
+            var addedBrand = await _controller.Add(new BrandVM() { Name = "Nike" });
             var responseData = (addedBrand as BadRequestObjectResult).Value as Exception;
             
             Assert.AreEqual("Same Brand already exists", responseData.Message);
             
             
-            IActionResult allResAfter = await _controller.GetAll();
+            var allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             Assert.AreEqual(allResData.Count, allResDataAfter.Count);
         }
@@ -130,12 +131,12 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(5)]
         public async Task HttpPost_AddBrand_Err_NoWM()
         {
-            IActionResult allResBefore = await _controller.GetAll();
+            var allResBefore = await _controller.GetAll();
             var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
 
-            IActionResult actionResult = await _controller.Add(null);
+            var actionResult = await _controller.Add(null);
             
-            IActionResult allResAfter = await _controller.GetAll();
+            var allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
@@ -149,16 +150,23 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(6)]
         public async Task HttpPut_UpdateBrand()
         {
-            IActionResult actionResult = await _controller.Update(new BrandVM()
+            var brandTypesCountBeforeUpdate = _context.BrandTypes.Count(bt => bt.BrandId == 1);
+            var goods = _context.Goods.Where(g=>g.BrandId==1).ToList();
+            var goodsCountBeforeUpdate = _context.Goods.Count(bt => bt.BrandId == 1);
+
+            var actionResult = await _controller.Update(new BrandVM()
             {
                 Name = "TestNew"
             }, 1);
             
-            IActionResult currBrand = await _controller.GetById(1);
-            var currBrandData = (currBrand as OkObjectResult).Value as Brand;
+            var currentBrand = await _controller.GetById(1);
+            var currentBrandData = (currentBrand as OkObjectResult).Value as Brand;
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
-            Assert.AreEqual(currBrandData.Name, "TestNew");
+            Assert.AreEqual(currentBrandData.Name, "TestNew");
+
+            Assert.AreEqual( brandTypesCountBeforeUpdate, _context.BrandTypes.Count(bt => bt.BrandId == 1));
+            Assert.AreEqual(goodsCountBeforeUpdate, _context.Goods.Count(bt => bt.BrandId == 1));
         }
 
         [Test, Order(7)]
@@ -166,22 +174,22 @@ namespace Shop.API.Tests.Controllers
         {
             var prevBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
             
-            IActionResult actionResult = await _controller.Update(null, 1);
+            var actionResult = await _controller.Update(null, 1);
             
-            IActionResult currBrand = await _controller.GetById(1);
-            var currBrandData = (currBrand as OkObjectResult).Value as Brand;
+            var currentBrand = await _controller.GetById(1);
+            var currentBrandData = (currentBrand as OkObjectResult).Value as Brand;
             
             Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
 
             var responseData = (actionResult as BadRequestObjectResult).Value as string;
             Assert.AreEqual("Null entity", responseData);
-            Assert.AreEqual(currBrandData.Name, prevBrand.Name);
+            Assert.AreEqual(currentBrandData.Name, prevBrand.Name);
         }
         
         [Test, Order(8)]
         public async Task HttpPut_UpdateBrand_Err_WVm_WithOutExistingId()
         {   
-            IActionResult actionResult = await _controller.Update(new BrandVM() { Name = "Test1" }, 999);
+            var actionResult = await _controller.Update(new BrandVM() { Name = "Test1" }, 999);
             
             Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
 
@@ -195,7 +203,7 @@ namespace Shop.API.Tests.Controllers
         {
             var prevBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
             
-            IActionResult addedBrand = await _controller.Update(new BrandVM() { Name = "Puma" }, 1);
+            var addedBrand = await _controller.Update(new BrandVM() { Name = "Puma" }, 1);
             var responseData = (addedBrand as BadRequestObjectResult).Value as Exception;
             
             var newBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
@@ -208,24 +216,26 @@ namespace Shop.API.Tests.Controllers
         [Test, Order(8)]
         public async Task HttpDelete_DeleteBrand()
         {
-            
-            IActionResult allResBefore = await _controller.GetAll();
+            var allResBefore = await _controller.GetAll();
             var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
 
             var actionResult =  await _controller.Delete(1);
             
-            IActionResult allResAfter = await _controller.GetAll();
+            var allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             
             Assert.That(actionResult, Is.TypeOf<OkResult>());
             
             Assert.AreEqual(allResData.Count-1, allResDataAfter.Count);
+
+            Assert.AreEqual(0, _context.BrandTypes.Count(bt => bt.BrandId == 1));
+            Assert.AreEqual(0, _context.Goods.Count(bt => bt.BrandId == 1));
         }
         
         [Test, Order(9)]
         public async Task HttpDeleteBrand_WithOut_ExistingId()
         {
-            IActionResult actionResult = await _controller.Delete(999);
+            var actionResult = await _controller.Delete(999);
             
             Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
 
