@@ -28,130 +28,185 @@ namespace Shop.API.Tests
         
         private static void SeedDatabase()
         {
-            SeedUsers();
-            SeedTypes();
-            SeedBrands();
-
+            SeedGoodsTypes();
+            SeedUsersIfNone();
+            SeedBrandsIfNone();
             _context.SaveChanges();
+
+            SeedGoodsIfNone();
+            _context.SaveChanges();
+
             SeedBrandTypes();
-            SeedGoods();
-            SeedOrders();
+            _context.SaveChanges();
 
+            SeedStoresIfNone();
+            _context.SaveChanges();
+
+            SeedStockItemsIfNone();
             _context.SaveChanges();
         }
-        
-        private static void SeedUsers()
+
+        private static void SeedGoodsTypes()
         {
-            _context.Users.AddRange(new []{new User()
+            if (!_context.Types.Any())
             {
-                ConfirmString = new Guid(),
-                Email = "consolushka@gmail.com",
-                Address = "Listvenichnaya alleya 2A",
-                Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
-                IsActive = true,
-                UserName = "admin"
-            },new User()
-            {
-                ConfirmString = new Guid(),
-                Email = "newuser@gmail.com",
-                UserName = "newUser",
-                Address = "sdasd",
-                Password = "wwetwwww"
-            }});
+                _context.Types.AddRange(new List<Type>()
+                {
+                    new Type()
+                    {
+                        Name = "Shoe"
+                    },
+                    new Type()
+                    {
+                        Name = "T-Shirt"
+                    },
+                });
+            }
         }
-        
-        private static void SeedTypes()
+
+        private static void SeedUsersIfNone()
         {
-            _context.Types.AddRange(new List<Type>()
+            if (!_context.Users.Any())
             {
-                new Type()
+                _context.Users.Add(new User()
                 {
-                    Name = "Shoe"
-                },
-                new Type()
+                    ConfirmString = new Guid(),
+                    Email = "consolushka@gmail.com",
+                    Address = "Listvenichnaya alleya 2A",
+                    Password = "CgwJ4C/o1BOl1hyEtdcTwg==",
+                    IsActive = true,
+                    IsAdmin = true,
+                    UserName = "admin"
+                });
+                _context.SaveChanges();
+            }
+
+            if (!_context.Baskets.Any())
+            {
+                _context.Baskets.Add(new Basket()
                 {
-                    Name = "T-Shirt"
-                }
-            });
+                    User = _context.Users.Find((long)1)
+                });
+                _context.SaveChanges();
+            }
         }
-        
-        private static void SeedBrands()
+
+        private static void SeedBrandsIfNone()
         {
-            _context.Brands.AddRange(new List<Brand>()
+            if (!_context.Brands.Any())
             {
-                new Brand()
+                _context.Brands.AddRange(new List<Brand>()
                 {
-                    Name = "Nike"
-                },
-                new Brand()
-                {
-                    Name = "Puma"
-                },
-            });
+                    new Brand()
+                    {
+                        Name = "Nike"
+                    },
+                    new Brand()
+                    {
+                        Name = "Puma"
+                    },
+                });
+                _context.SaveChanges();
+            }
         }
 
         private static void SeedBrandTypes()
         {
-            _context.BrandTypes.AddRange(new List<BrandType>()
+            if (!_context.BrandTypes.Any())
             {
-                new BrandType()
+                _context.BrandTypes.AddRange(new List<BrandType>()
                 {
-                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==1),
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==1)
-                },
-                new BrandType()
-                {
-                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==1),
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==2)
-                },
-                new BrandType()
-                {
-                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==2),
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==1)
-                }
-            });
-        }
-        
-        private static void SeedGoods()
-        {
-            _context.Goods.AddRange(new List<Good>()
-            {
-                new Good()
-                {
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==1),
-                    Name = "Nike v.1",
-                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==1),
-                    PhotoFileName = "undefined.jpg"
-                },
-                new Good()
-                {
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==2),
-                    Name = "Nike t-shirt v.1",
-                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==1),
-                    PhotoFileName = "undefined.jpg"
-                },
-                new Good()
-                {
-                    Type = _context.Types.FirstOrDefault(e=>e.Id==1),
-                    Name = "Puma v.1",
-                    Brand = _context.Brands.FirstOrDefault(e=>e.Id==2),
-                    PhotoFileName = "undefined.jpg"
-                },
-            });
+                    new BrandType()
+                    {
+                        Brand = _context.Brands.Find((long)1),
+                        Type = _context.Types.Find((long)1),
+                    },
+                    new BrandType()
+                    {
+                        Brand = _context.Brands.Find((long)1),
+                        Type = _context.Types.Find((long)2),
+                    },
+                    new BrandType()
+                    {
+                        Brand = _context.Brands.Find((long)2),
+                        Type = _context.Types.Find((long)1),
+                    },
+                });
+            }
         }
 
-        private static void SeedOrders()
+        private static void SeedGoodsIfNone()
         {
-            _context.Orders.AddRange(new []
+            if (!_context.Goods.Any())
             {
-                new Order()
+                _context.Goods.AddRange(new List<Good>()
                 {
-                    Status = 1,
-                    UserId = 1,
-                    IsPaid = false,
-                    OrderTime = DateTime.Now.AddDays(-10)
-                }
-            });
+                    new Good()
+                    {
+                        Name = "Nike v.1",
+                        BrandId = 1,
+                        TypeId = 1,
+                        PhotoFileName = "undefined.jpg"
+                    },
+                    new Good()
+                    {
+                        Name = "Nike T-Shirt",
+                        BrandId = 1,
+                        TypeId = 2,
+                        PhotoFileName = "undefined.jpg"
+                    },
+                    new Good()
+                    {
+                        Name = "Puma v.1",
+                        BrandId = 2,
+                        TypeId = 1,
+                        PhotoFileName = "undefined.jpg"
+                    },
+                });
+            }
+        }
+
+        private static void SeedStoresIfNone()
+        {
+            if (!_context.Stores.Any())
+            {
+                _context.Stores.Add(new Store()
+                {
+                    Address = "Internacionlnaya 54",
+                    Name = "Nearest"
+                });
+            }
+        }
+
+        private static void SeedStockItemsIfNone()
+        {
+            if (!_context.StockItems.Any())
+            {
+                _context.StockItems.AddRange(new List<StockItem>()
+                {
+                    new StockItem()
+                    {
+                        Good = _context.Goods.Find((long)1),
+                        Store = _context.Stores.Find((long)1),
+                        Count = 100,
+                        Price = 220.31
+                    },
+                    new StockItem()
+                    {
+                        Good = _context.Goods.Find((long)2),
+                        Store = _context.Stores.Find((long)1),
+                        Count = 250,
+                        Price = 115
+                    },
+                    new StockItem()
+                    {
+                        Good = _context.Goods.Find((long)3),
+                        Store = _context.Stores.Find((long)1),
+                        Count = 55,
+                        Price = 1000
+                    }
+                });
+            }
         }
     }
 }
