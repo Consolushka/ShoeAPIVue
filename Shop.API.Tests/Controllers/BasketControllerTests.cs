@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -50,6 +51,14 @@ public class BasketControllerTests
         Assert.AreEqual(0, resultDataBasket.BasketItems.Count);
     }
 
+    [Test, Order(1)]
+    public void GetByUser_Failure()
+    {
+        const long userId = 999;
+
+        Assert.That(()=>_controller.GetByUser(userId),Throws.Exception.TypeOf<Exception>().With.Message.EqualTo($"Cannot find User with id: {userId}"));
+    }
+
     [Test, Order(2)]
     public async Task AddItem_Success()
     {
@@ -89,11 +98,34 @@ public class BasketControllerTests
     }
 
     [Test, Order(4)]
+    public async Task UpdateQuantity_Failure()
+    {
+        Assert.That(()=>_controller.UpdateQuantity(999,2), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find BasketItem with id: 999"));
+
+        var userBasket = (await _controller.GetByUser(1) as OkObjectResult).Value as Basket;
+
+        Assert.AreEqual(1, userBasket.BasketItems.Count);
+        Assert.AreEqual(1, userBasket.BasketItems[0].StockItemId);
+        Assert.AreEqual(2, userBasket.BasketItems[0].Count);
+        Assert.AreEqual(220.31, userBasket.BasketItems[0].Cost);
+    }
+
+    [Test, Order(4)]
     public async Task DeleteItem_Success()
     {
         var result = await _controller.DeleteItem(1);
 
         Assert.That(result, Is.TypeOf<OkResult>());
+
+        var userBasket = (await _controller.GetByUser(1) as OkObjectResult).Value as Basket;
+
+        Assert.AreEqual(0, userBasket.BasketItems.Count);
+    }
+
+    [Test, Order(4)]
+    public async Task DeleteItem_Failure()
+    {
+        Assert.That(() => _controller.DeleteItem(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find BasketItem with id: 999"));
 
         var userBasket = (await _controller.GetByUser(1) as OkObjectResult).Value as Basket;
 

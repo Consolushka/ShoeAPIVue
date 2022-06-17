@@ -19,7 +19,7 @@ namespace Shop.Services.ModelServices
             var res = await _repository.GetByUser(id);
             if (res == null)
             {
-                throw new System.NullReferenceException($"Cannot find User with id: {id}");
+                throw new ($"Cannot find User with id: {id}");
             }
 
             return res;

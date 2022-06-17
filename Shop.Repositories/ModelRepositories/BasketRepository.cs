@@ -19,6 +19,10 @@ namespace Shop.Repositories.ModelRepositories
         public async Task<Basket> GetByUser(long id)
         {
             var res = await _context.Baskets.Include(b=>b.BasketItems).FirstOrDefaultAsync(b => b.UserId == id);
+            if (res == null)
+            {
+                return res;
+            }
             foreach (var item in res.BasketItems)
             {
                 item.StockItem = _context.StockItems.Include(s=>s.Good).FirstOrDefault(s=>s.Id==item.StockItemId);
