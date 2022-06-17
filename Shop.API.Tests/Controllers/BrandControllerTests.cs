@@ -76,15 +76,9 @@ namespace Shop.API.Tests.Controllers
         }
         
         [Test, Order(3)]
-        public async Task HttpGet_GetById_Error()
+        public void HttpGet_GetById_Error()
         {
-            var actionResult = await _controller.GetById(999);
-            
-            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
-
-            var responseData = (actionResult as BadRequestObjectResult).Value as Exception;
-            
-            Assert.AreEqual("Cannot find Brand with id: 999", responseData.Message);
+            Assert.That(() => _controller.GetById(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
         }
 
         [Test, Order(4)]
@@ -117,12 +111,9 @@ namespace Shop.API.Tests.Controllers
             var allResBefore = await _controller.GetAll();
             var allResData = (allResBefore as OkObjectResult).Value as List<Brand>;
 
-            var addedBrand = await _controller.Add(new BrandVM() { Name = "Nike" });
-            var responseData = (addedBrand as BadRequestObjectResult).Value as Exception;
-            
-            Assert.AreEqual("Same Brand already exists", responseData.Message);
-            
-            
+            Assert.That(() => _controller.Add(new BrandVM() { Name = "Nike" }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Brand already exists"));
+
+
             var allResAfter = await _controller.GetAll();
             var allResDataAfter = (allResAfter as OkObjectResult).Value as List<Brand>;
             Assert.AreEqual(allResData.Count, allResDataAfter.Count);
@@ -187,28 +178,21 @@ namespace Shop.API.Tests.Controllers
         }
         
         [Test, Order(8)]
-        public async Task HttpPut_UpdateBrand_Err_WVm_WithOutExistingId()
+        public void HttpPut_UpdateBrand_Err_WVm_WithOutExistingId()
         {   
-            var actionResult = await _controller.Update(new BrandVM() { Name = "Test1" }, 999);
-            
-            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
-
-            var responseData = (actionResult as BadRequestObjectResult).Value as Exception;
-            
-            Assert.AreEqual("Cannot find Brand with id: 999", responseData.Message);
+            Assert.That(() => _controller.Update(new BrandVM() { Name = "Test1" }, 999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
         }
         
         [Test, Order(8)]
         public async Task HttpPut_UpdateBrand_Err_WVm_AlreadyExists()
         {
             var prevBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
-            
-            var addedBrand = await _controller.Update(new BrandVM() { Name = "Puma" }, 1);
-            var responseData = (addedBrand as BadRequestObjectResult).Value as Exception;
-            
+
+
+            Assert.That(() => _controller.Update(new BrandVM() { Name = "Puma" }, 1), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same Brand already exists"));
+
+
             var newBrand = (await _controller.GetById(1) as OkObjectResult).Value as Brand;
-            
-            Assert.AreEqual("Same Brand already exists", responseData.Message);
             
             Assert.AreEqual(prevBrand.Name, newBrand.Name);
         }
@@ -233,15 +217,9 @@ namespace Shop.API.Tests.Controllers
         }
         
         [Test, Order(9)]
-        public async Task HttpDeleteBrand_WithOut_ExistingId()
+        public void HttpDeleteBrand_WithOut_ExistingId()
         {
-            var actionResult = await _controller.Delete(999);
-            
-            Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
-
-            var responseData = (actionResult as BadRequestObjectResult).Value as Exception;
-            
-            Assert.AreEqual("Cannot find Brand with id: 999", responseData.Message);
+            Assert.That(() => _controller.Delete(999), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Cannot find Brand with id: 999"));
         }
         
         [OneTimeTearDown]
