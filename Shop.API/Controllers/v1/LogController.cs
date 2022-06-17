@@ -29,29 +29,15 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-id")]
         public IActionResult GetById(long id)
         {
-            try
-            {
-                return Ok(_logService.GetById(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(_logService.GetById(id));
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public IActionResult Delete(long id)
         {
-            try
-            {
-                _logService.Delete(id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            _logService.Delete(id);
+            return Ok();
         }
     }
 }

@@ -29,56 +29,28 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-brand/{brandId}")]
         public async Task<IActionResult> GetAllByBrand(long brandId)
         {
-            try
-            {
-                return Ok(await _brandService.GetTypesByBrand(brandId));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _brandService.GetTypesByBrand(brandId));
         }
 
         [HttpGet("get-by-type/{typeId}")]
         public async Task<IActionResult> GetAllByType(long typeId)
         {
-            try
-            {
-                return Ok(await _brandService.GetBrandsByType(typeId));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _brandService.GetBrandsByType(typeId));
         }
 
         [Admin]
         [HttpPost("add")]
         public async Task<IActionResult> Add(BrandType brand)
         {
-            try
-            {
-                return Ok(await _brandService.Add(brand));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _brandService.Add(brand));
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await _brandService.Delete(id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _brandService.Delete(id);
+            return Ok();
         }
     }
 }

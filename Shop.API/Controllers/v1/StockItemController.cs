@@ -29,41 +29,20 @@ namespace Shop.API.Controllers.V1
         {
             var res = await _service.Add(stockItem);
             return Ok(res);
-            try
-            {
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
         }
 
         [HttpPut("write-off")]
         public async Task<IActionResult> WriteOff(long id, int minusCount)
         {
-            try
-            {
-                await _service.WriteOff(id, minusCount);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _service.WriteOff(id, minusCount);
+            return Ok();
         }
 
         [HttpPut("refill")]
         public async Task<IActionResult> Refill(long id, int plusCount)
         {
-            try
-            {
-                await _service.Refill(id, plusCount);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _service.Refill(id, plusCount);
+            return Ok();
         }
         
     }

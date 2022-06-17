@@ -33,14 +33,7 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            try
-            {
-                return Ok(await _service.GetById(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _service.GetById(id));
         }
 
         
@@ -59,15 +52,9 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            try
-            {
-                order.IsPaid = false;
-                return Ok(await _service.Add(order));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+
+            order.IsPaid = false;
+            return Ok(await _service.Add(order));
         }
 
         [Authorize]
@@ -78,30 +65,17 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null status");
             }
-            try
-            {
-                await _service.UpdateStatus(status, id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+
+            await _service.UpdateStatus(status, id);
+            return Ok();
         }
 
         [Authorize]
         [HttpPut("change-isPaid")]
         public async Task<IActionResult> ChangeIsPaid(bool isPaid, long id)
         {
-            try
-            {
-                await _service.ChangePaidTrigger(isPaid, id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _service.ChangePaidTrigger(isPaid, id);
+            return Ok();
         }
     }
 }

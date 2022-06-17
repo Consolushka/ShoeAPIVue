@@ -34,14 +34,8 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            try
-            {
-                return Ok(await _service.GetById(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _service.GetById(id));
+            
         }
 
         [Admin]
@@ -52,14 +46,8 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            try
-            {
-                return Ok(await _service.Add(goodVm));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+
+            return Ok(await _service.Add(goodVm));
         }
 
         [Admin]
@@ -70,30 +58,17 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            try
-            {
-                await _service.Update(good, id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+
+            await _service.Update(good, id);
+            return Ok();
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await _service.Delete(id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _service.Delete(id);
+            return Ok();
         }
         
         [Admin]

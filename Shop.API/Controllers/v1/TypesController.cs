@@ -30,14 +30,7 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            try
-            {
-                return Ok(await _service.GetById(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _service.GetById(id));
         }
 
         [Admin]
@@ -45,14 +38,7 @@ namespace Shop.API.Controllers.V1
         [HttpPost("add")]
         public async Task<IActionResult> Add(TypeVM type)
         {
-            try
-            {
-                return Ok(await _service.Add(type));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _service.Add(type));
         }
 
         [Admin]
@@ -60,15 +46,8 @@ namespace Shop.API.Controllers.V1
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(TypeVM typeVm, long id)
         {
-            try
-            {
-                await _service.Update(typeVm, id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _service.Update(typeVm, id);
+            return Ok();
         }
 
         [Admin]
@@ -76,15 +55,8 @@ namespace Shop.API.Controllers.V1
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await _service.Delete(id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _service.Delete(id);
+            return Ok();
         }
     }
 }

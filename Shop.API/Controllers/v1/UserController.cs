@@ -23,29 +23,15 @@ namespace Shop.API.Controllers.V1
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(UserVM user)
         {
-            try
-            {
-                return Ok(await _userService.Authenticate(user));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _userService.Authenticate(user));
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserVM userVm)
         {
-            try
-            {
-                User response = await _userService.Register(userVm);
-                MailSender.ConfirmRegistration(response);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            User response = await _userService.Register(userVm);
+            MailSender.ConfirmRegistration(response);
+            return Ok();
         }
         
         [HttpPost("confirm")]
@@ -59,31 +45,17 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-id")]
         public IActionResult GetById(int id)
         {
-            try
-            {
-                return Ok(_userService.GetById(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(_userService.GetById(id));
         }
 
         [Authorize]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(UserVM userVm, long id)
         {
-            try
-            {
-                User u =await _userService.Update(userVm, id);
-            
-                MailSender.ConfirmUpdate(u);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            User u = await _userService.Update(userVm, id);
+
+            MailSender.ConfirmUpdate(u);
+            return Ok();
         }
 
         [Authorize]

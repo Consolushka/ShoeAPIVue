@@ -31,14 +31,7 @@ namespace Shop.API.Controllers.V1
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(long id)
         {
-            try
-            {
-                return Ok(await _brandService.GetById(id));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return Ok(await _brandService.GetById(id));
         }
 
         [Admin]
@@ -49,14 +42,8 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            try
-            {
-                return Ok(await _brandService.Add(brand));
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+
+            return Ok(await _brandService.Add(brand));
         }
 
         [Admin]
@@ -67,30 +54,16 @@ namespace Shop.API.Controllers.V1
             {
                 return BadRequest("Null entity");
             }
-            try
-            {
-                await _brandService.Update(brandVm, id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _brandService.Update(brandVm, id);
+            return Ok();
         }
 
         [Admin]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await _brandService.Delete(id);
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            await _brandService.Delete(id);
+            return Ok();
         }
     }
 }
