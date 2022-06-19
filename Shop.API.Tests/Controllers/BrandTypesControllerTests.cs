@@ -75,15 +75,9 @@ public class BrandTypesControllerTests
 
     [Test]
     [Order(3)]
-    public async Task HttpGet_GetAllByBrand_NoBrand()
+    public void HttpGet_GetAllByBrand_NoBrand()
     {
-        var actionResult = await _controller.GetAllByBrand(999);
-
-        Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
-
-        var actionResultData = (actionResult as BadRequestObjectResult).Value as Exception;
-
-        Assert.AreEqual("Cannot find this Brand", actionResultData.Message);
+        Assert.That(()=>_controller.GetAllByBrand(999), Throws.Exception.TypeOf<System.NullReferenceException>().With.Message.EqualTo("Cannot find this Brand"));
     }
 
     [Test]
@@ -105,15 +99,9 @@ public class BrandTypesControllerTests
 
     [Test]
     [Order(5)]
-    public async Task HttpGet_GetAllByType_NoType()
+    public void HttpGet_GetAllByType_NoType()
     {
-        var actionResult = await _controller.GetAllByType(999);
-
-        Assert.That(actionResult, Is.TypeOf<BadRequestObjectResult>());
-
-        var actionResultData = (actionResult as BadRequestObjectResult).Value as Exception;
-
-        Assert.AreEqual("Cannot find this Type", actionResultData.Message);
+        Assert.That(() => _controller.GetAllByType(999), Throws.Exception.TypeOf<System.NullReferenceException>().With.Message.EqualTo("Cannot find this Type"));
     }
 
     [Test]
@@ -140,12 +128,8 @@ public class BrandTypesControllerTests
     [Order(7)]
     public async Task HttpPost_AddBrandType_Err_AlreadyExists()
     {
+        Assert.That(() => _controller.Add(new BrandType() { TypeId = 1, BrandId = 1 }), Throws.Exception.TypeOf<Exception>().With.Message.EqualTo("Same BrandType already exists"));
         var allBeforeAdding = await _controller.GetAll();
-
-        var res = (await _controller.Add(new BrandType() { TypeId = 1, BrandId = 1 }) as BadRequestObjectResult)
-            .Value as Exception;
-
-        Assert.AreEqual("Same BrandType already exists", res.Message);
 
         var allAfterAdding = await _controller.GetAll();
         var allAfterRes = (allAfterAdding as OkObjectResult).Value as List<BrandType>;
